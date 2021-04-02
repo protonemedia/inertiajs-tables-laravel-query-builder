@@ -1,0 +1,44 @@
+{
+  "name": "@protonemedia/laravel-query-builder-inertiajs",
+  "version": "1.0.15",
+  "description": "Inertia.js Front-end Components for Spatie's Laravel Query Builder",
+  "main": "js/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Pascal Baljet",
+  "license": "MIT",
+  "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "@vue-hero-icons/outline": "^1.7.2",
+    "@vue-hero-icons/solid": "^1.7.2",
+    "lodash-es": "^4.17.21",
+    "qs": "^6.10.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.13.12",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-typescript": "^7.13.0",
+    "@vue/cli-plugin-unit-jest": "^4.5.12",
+    "@vue/test-utils": "^1.1.3",
+    "babel-jest": "^26.6.3",
+    "expect": "^26.6.2",
+    "jest": "^26.6.3",
+    "vue": "^2.6.12",
+    "vue-jest": "^3.0.7",
+    "vue-template-compiler": "^2.6.12"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(js)$": "babel-jest",
+      ".*\\.(vue)$": "vue-jest"
+    }
+  }
+}
