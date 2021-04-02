@@ -3,7 +3,7 @@
     class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
     v-if="meta"
   >
-    <p v-if="meta.total < 1" class>No results found</p>
+    <p v-if="meta.total < 1">No results found</p>
     <div v-if="meta.total > 0" class="flex-1 flex justify-between sm:hidden">
       <component
         :is="meta.prev_page_url ? 'inertia-link' : 'div'"
@@ -16,7 +16,7 @@
         class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500"
       >Next</component>
     </div>
-    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+    <div v-if="meta.total > 0" class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
       <div>
         <p class="hidden lg:block text-sm text-gray-700">
           <span class="font-medium">{{ meta.from }}</span>
