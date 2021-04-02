@@ -3,31 +3,39 @@ export default {
   props: {
     meta: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return {};
+      },
       required: false,
     },
 
     columns: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return {};
+      },
       required: false,
     },
 
     filters: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return {};
+      },
       required: false,
     },
 
     search: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return {};
+      },
       required: false,
     },
 
     onUpdate: {
       type: Function,
-      required: true,
+      required: false,
     },
   },
 
@@ -96,7 +104,9 @@ export default {
     queryBuilderData: {
       deep: true,
       handler() {
-        this.onUpdate(this.queryBuilderData);
+        if (this.onUpdate) {
+          this.onUpdate(this.queryBuilderData);
+        }
       },
     },
   },

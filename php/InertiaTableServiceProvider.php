@@ -10,17 +10,13 @@ class InertiaTableServiceProvider extends ServiceProvider
     public function boot()
     {
         Response::macro('table', function (callable $withTableBuilder = null) {
-            $request = request();
-
-            $response = $this;
+            $tableBuilder = new InertiaTable(request());
 
             if ($withTableBuilder) {
-                $tableBuilder = new InertiaTable($request);
                 $withTableBuilder($tableBuilder);
-                $tableBuilder->applyTo($response);
             }
 
-            return $response;
+            return $tableBuilder->applyTo($this);
         });
     }
 }
