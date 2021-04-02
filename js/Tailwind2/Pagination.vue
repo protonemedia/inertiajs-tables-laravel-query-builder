@@ -3,7 +3,8 @@
     class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
     v-if="meta"
   >
-    <div class="flex-1 flex justify-between sm:hidden">
+    <p v-if="meta.total < 1" class>No results found</p>
+    <div v-if="meta.total > 0" class="flex-1 flex justify-between sm:hidden">
       <component
         :is="meta.prev_page_url ? 'inertia-link' : 'div'"
         :href="meta.prev_page_url"
