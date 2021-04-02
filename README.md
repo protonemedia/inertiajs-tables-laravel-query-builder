@@ -39,6 +39,7 @@ We proudly support the community by developing Laravel packages and giving them 
 * Remove @tailwindcss/forms dependency
 * Debounce delay for inputs
 * Convert Table.vue styling to proper Tailwind syntax
+* Improve styling on really small screens
 * Better documentation about customization and move to real renderless components
 
 ## Installation
