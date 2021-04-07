@@ -47,7 +47,7 @@
 <script>
 import ButtonWithDropdown from "./ButtonWithDropdown.vue";
 import TableColumns from "./../Components/TableColumns.vue";
-import { DotsVerticalIcon } from "@vue-hero-icons/solid";
+import { DotsVerticalIcon } from "@heroicons/vue/solid";
 
 export default {
   mixins: [TableColumns],

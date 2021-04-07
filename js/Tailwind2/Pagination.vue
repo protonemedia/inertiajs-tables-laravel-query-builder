@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { ChevronLeftIcon, ChevronRightIcon } from "@vue-hero-icons/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/solid";
 import Pagination from "./../Components/Pagination.vue";
 
 export default {

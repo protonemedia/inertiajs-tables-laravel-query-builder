@@ -24,7 +24,7 @@
 import ButtonWithDropdown from "./ButtonWithDropdown.vue";
 import OnClickOutside from "./../Components/OnClickOutside.vue";
 import TableAddSearchRow from "./../Components/TableAddSearchRow.vue";
-import { PlusCircleIcon } from "@vue-hero-icons/outline";
+import { PlusCircleIcon } from "@heroicons/vue/outline";
 
 export default {
   mixins: [TableAddSearchRow],

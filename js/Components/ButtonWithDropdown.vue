@@ -1,5 +1,4 @@
 <script>
-import OnClickOutside from "./OnClickOutside.vue";
 import { createPopper } from "@popperjs/core/lib/popper-lite";
 import preventOverflow from "@popperjs/core/lib/modifiers/preventOverflow";
 import flip from "@popperjs/core/lib/modifiers/flip";
@@ -23,10 +22,6 @@ export default {
       default: false,
       required: false,
     },
-  },
-
-  components: {
-    OnClickOutside,
   },
 
   data() {
@@ -53,6 +48,10 @@ export default {
   },
 
   mounted() {
+    if (!this.$refs.button || !this.$refs.tooltip) {
+      return;
+    }
+
     this.popper = createPopper(this.$refs.button, this.$refs.tooltip, {
       placement: this.placement,
       modifiers: [flip, preventOverflow],

@@ -38,7 +38,7 @@
 
 <script>
 import TableSearchRows from "./../Components/TableSearchRows.vue";
-import { XIcon } from "@vue-hero-icons/outline";
+import { XIcon } from "@heroicons/vue/outline";
 
 export default {
   mixins: [TableSearchRows],

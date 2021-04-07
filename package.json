@@ -9,9 +9,8 @@
   "author": "Pascal Baljet",
   "license": "MIT",
   "dependencies": {
+    "@heroicons/vue": "^1.0.0",
     "@popperjs/core": "^2.9.2",
-    "@vue-hero-icons/outline": "^1.7.2",
-    "@vue-hero-icons/solid": "^1.7.2",
     "lodash-es": "^4.17.21",
     "qs": "^6.10.1"
   },

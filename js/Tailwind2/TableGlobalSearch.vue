@@ -15,7 +15,7 @@
 
 <script>
 import TableGlobalSearch from "./../Components/TableGlobalSearch.vue";
-import { SearchIcon } from "@vue-hero-icons/solid";
+import { SearchIcon } from "@heroicons/vue/solid";
 
 export default {
   mixins: [TableGlobalSearch],

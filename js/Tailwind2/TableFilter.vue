@@ -27,7 +27,7 @@
 <script>
 import ButtonWithDropdown from "./ButtonWithDropdown.vue";
 import TableFilter from "./../Components/TableFilter.vue";
-import { FilterIcon } from "@vue-hero-icons/solid";
+import { FilterIcon } from "@heroicons/vue/solid";
 
 export default {
   mixins: [TableFilter],
