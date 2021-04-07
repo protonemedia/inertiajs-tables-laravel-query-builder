@@ -25,7 +25,7 @@ export default {
       columns: this.getColumnsForQuery(this.queryBuilderProps.columns || {}),
     };
 
-    return { queryBuilderData };
+    return { queryBuilderData, queryBuilderDataIteration: 0 };
   },
 
   methods: {
@@ -85,12 +85,14 @@ export default {
         page = 1;
       }
 
-      this.$set(this, "queryBuilderData", {
+      this.queryBuilderData = {
         page,
         sort: this.queryBuilderData.sort || "",
         filter,
         columns: this.getColumnsForQuery(data.columns || {}),
-      });
+      };
+
+      this.queryBuilderDataIteration++;
     },
   },
 

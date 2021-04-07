@@ -1,9 +1,26 @@
+<template>
+  <div>
+    <slot />
+  </div>
+</template>
+
 <script>
 export default {
-  props: ["do"],
+  props: {
+    do: {
+      type: Function,
+      required: true,
+    },
+  },
+
+  data() {
+    return {
+      listener: null,
+    };
+  },
 
   mounted() {
-    const listener = (e) => {
+    this.listener = (e) => {
       if (e.target === this.$el || this.$el.contains(e.target)) {
         return;
       }
@@ -11,17 +28,13 @@ export default {
       this.do();
     };
 
-    document.addEventListener("click", listener);
-    document.addEventListener("touchstart", listener);
-
-    this.$once("hook:beforeDestroy", () => {
-      document.removeEventListener("click", listener);
-      document.removeEventListener("touchstart", listener);
-    });
+    document.addEventListener("click", this.listener);
+    document.addEventListener("touchstart", this.listener);
   },
 
-  render() {
-    return this.$slots.default[0];
+  beforeUnmount() {
+    document.removeEventListener("click", this.listener);
+    document.removeEventListener("touchstart", this.listener);
   },
 };
 </script>

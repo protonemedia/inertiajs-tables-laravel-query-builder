@@ -31,7 +31,13 @@ export default {
     },
 
     focus(key) {
-      this.$refs[key][0].focus();
+      const keyRef = this.$refs[key];
+
+      if (keyRef.length === 1) {
+        return keyRef[0].focus();
+      }
+
+      keyRef.focus();
     },
   },
 
