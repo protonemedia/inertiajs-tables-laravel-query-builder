@@ -27,7 +27,7 @@ We proudly support the community by developing Laravel packages and giving them 
 
 ## Compatibility
 
-* [Vue 2.6](https://vuejs.org/v2/guide/installation.html)
+* [Vue 2.6](https://vuejs.org/v2/guide/installation.html) and [Vue 3](https://v3.vuejs.org/guide/installation.html)
 * [Laravel 8](https://laravel.com/)
 * [Inertia.js](https://inertiajs.com/)
 * [Tailwind CSS v2](https://tailwindcss.com/) + [Forms plugin](https://github.com/tailwindlabs/tailwindcss-forms)
@@ -35,7 +35,6 @@ We proudly support the community by developing Laravel packages and giving them 
 
 ## Roadmap
 
-* Support for Vue 3
 * Remove @tailwindcss/forms dependency
 * Debounce delay for inputs
 * Convert Table.vue styling to proper Tailwind syntax
@@ -44,7 +43,7 @@ We proudly support the community by developing Laravel packages and giving them 
 
 ## Installation
 
-You need to install both the server-side package as well as the client-side package. Note that this package is only compatible with Laravel 8, Vue 2.6 and requires the Tailwind Forms plugin.
+You need to install both the server-side package as well as the client-side package. Note that this package is only compatible with Laravel 8, Vue 2.6 + 3.0 and requires the Tailwind Forms plugin.
 
 ### Server-side installation (Laravel)
 

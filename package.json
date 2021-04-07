@@ -4,12 +4,14 @@
   "description": "Inertia.js Front-end Components for Spatie's Laravel Query Builder",
   "main": "js/index.js",
   "scripts": {
-    "test": "jest"
+    "test:2": "vue-demi-switch 2 && jest",
+    "test:3": "vue-demi-switch 3 vue3 && jest"
   },
   "author": "Pascal Baljet",
   "license": "MIT",
   "dependencies": {
     "@popperjs/core": "^2.9.2",
+    "@vue/composition-api": "^1.0.0-rc.6",
     "lodash-es": "^4.17.21",
     "qs": "^6.10.1"
   },
@@ -25,8 +27,19 @@
     "expect": "^26.6.2",
     "jest": "^26.6.3",
     "vue": "^2.6.12",
+    "vue3": "npm:vue@3",
+    "vue-demi": "^0.7.4",
     "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.12"
+  },
+  "peerDependencies": {
+    "@vue/composition-api": "^1.0.0-rc.6",
+    "vue": "^2.6.12 || >=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
   },
   "jest": {
     "moduleFileExtensions": [

@@ -48,10 +48,6 @@ export default {
   },
 
   mounted() {
-    if (!this.$refs.button || !this.$refs.tooltip) {
-      return;
-    }
-
     this.popper = createPopper(this.$refs.button, this.$refs.tooltip, {
       placement: this.placement,
       modifiers: [flip, preventOverflow],
