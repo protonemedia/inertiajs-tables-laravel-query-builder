@@ -1,10 +1,17 @@
 <template>
   <ButtonWithDropdown placement="bottom-end" :active="hasDisabledFilter">
     <template #button>
-      <DotsVerticalIcon
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
         class="h-5 w-5"
         :class="{'text-gray-400': !hasDisabledFilter, 'text-green-400': hasDisabledFilter}"
-      />
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"
+        />
+      </svg>
     </template>
 
     <div role="menu" aria-orientation="vertical" aria-labelledby="sort-menu">
@@ -47,14 +54,12 @@
 <script>
 import ButtonWithDropdown from "./ButtonWithDropdown.vue";
 import TableColumns from "./../Components/TableColumns.vue";
-import { DotsVerticalIcon } from "@vue-hero-icons/solid";
 
 export default {
   mixins: [TableColumns],
 
   components: {
     ButtonWithDropdown,
-    DotsVerticalIcon,
   },
 };
 </script>

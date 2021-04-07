@@ -26,7 +26,20 @@
                 class="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <span class="sr-only">Remove search</span>
-                <XIcon class="h-5 w-5" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
             </div>
           </div>
@@ -38,13 +51,8 @@
 
 <script>
 import TableSearchRows from "./../Components/TableSearchRows.vue";
-import { XIcon } from "@vue-hero-icons/outline";
 
 export default {
   mixins: [TableSearchRows],
-
-  components: {
-    XIcon,
-  },
 };
 </script>
