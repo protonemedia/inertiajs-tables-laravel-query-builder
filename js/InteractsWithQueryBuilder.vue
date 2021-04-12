@@ -125,9 +125,7 @@ export default {
         if (this.$inertia) {
           const query = this.queryBuilderString;
 
-          this.$inertia.replace(
-            this.route(this.route().current()) + `?${query}`
-          );
+          this.$inertia.replace(location.pathname + `?${query}`);
         }
       },
     },
