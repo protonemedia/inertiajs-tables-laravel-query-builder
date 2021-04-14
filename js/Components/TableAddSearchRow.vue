@@ -21,6 +21,10 @@ export default {
   },
 
   computed: {
+    hasRows() {
+      return filter(this.rows, (row) => row.key !== "global").length > 0;
+    },
+
     rowsLeft() {
       return filter(this.rows, (row) => this.showRow(row)).length > 0;
     },

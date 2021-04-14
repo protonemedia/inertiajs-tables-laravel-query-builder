@@ -1,5 +1,5 @@
 <template>
-  <ButtonWithDropdown ref="dropdown" :disabled="!rowsLeft" class="w-auto">
+  <ButtonWithDropdown ref="dropdown" v-if="hasRows" :disabled="!rowsLeft" class="w-auto">
     <template #button>
       <svg
         xmlns="http://www.w3.org/2000/svg"

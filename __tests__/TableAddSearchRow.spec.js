@@ -37,6 +37,24 @@ describe('TableAddSearchRow.vue', () => {
         expect(newRows[0]).toEqual("name");
     });
 
+    it('hides the button when the only row is the global search', () => {
+        const component = mount(TableAddSearchRow, {
+            propsData: {
+                rows: {
+                    global: {
+                        key: "global",
+                        label: "global",
+                        value: null,
+                    },
+                },
+
+                onAdd() { }
+            }
+        });
+
+        const dropdownButton = component.find("button[aria-haspopup='true']");
+        expect(dropdownButton.exists()).toBeFalsy();
+    });
 
     it('hides the rows where a value is set', () => {
         const component = mount(TableAddSearchRow, {
