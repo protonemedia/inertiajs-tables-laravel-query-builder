@@ -3,27 +3,30 @@
     class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
     v-if="meta"
   >
-    <p v-if="meta.total < 1">{{ translations.no_results_found }}</p>
-    <div v-if="meta.total > 0" class="flex-1 flex justify-between sm:hidden">
+    <p v-if="pagination.total < 1">{{ translations.no_results_found }}</p>
+    <div v-if="pagination.total > 0" class="flex-1 flex justify-between sm:hidden">
       <component
-        :is="meta.prev_page_url ? 'inertia-link' : 'div'"
-        :href="meta.prev_page_url"
+        :is="previousPageUrl ? 'inertia-link' : 'div'"
+        :href="previousPageUrl"
         class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500"
       >{{ translations.previous }}</component>
       <component
-        :is="meta.next_page_url ? 'inertia-link' : 'div'"
-        :href="meta.next_page_url"
+        :is="nextPageUrl ? 'inertia-link' : 'div'"
+        :href="nextPageUrl"
         class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500"
       >{{ translations.next }}</component>
     </div>
-    <div v-if="meta.total > 0" class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+    <div
+      v-if="pagination.total > 0"
+      class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
+    >
       <div>
         <p class="hidden lg:block text-sm text-gray-700">
-          <span class="font-medium">{{ meta.from }}</span>
+          <span class="font-medium">{{ pagination.from }}</span>
           {{ translations.to }}
-          <span class="font-medium">{{ meta.to }}</span>
+          <span class="font-medium">{{ pagination.to }}</span>
           {{ translations.of }}
-          <span class="font-medium">{{ meta.total }}</span>
+          <span class="font-medium">{{ pagination.total }}</span>
           {{ translations.results }}
         </p>
       </div>
@@ -33,8 +36,8 @@
           aria-label="Pagination"
         >
           <component
-            :is="meta.prev_page_url ? 'inertia-link' : 'div'"
-            :href="meta.prev_page_url"
+            :is="previousPageUrl ? 'inertia-link' : 'div'"
+            :href="previousPageUrl"
             class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
           >
             <span class="sr-only">{{ translations.previous }}</span>
@@ -52,7 +55,7 @@
             </svg>
           </component>
 
-          <div v-for="(link, key) in meta.links" :key="key">
+          <div v-for="(link, key) in pagination.links" :key="key">
             <slot name="link">
               <component
                 v-if="!isNaN(link.label) || link.label === '...'"
@@ -65,8 +68,8 @@
           </div>
 
           <component
-            :is="meta.next_page_url ? 'inertia-link' : 'div'"
-            :href="meta.next_page_url"
+            :is="nextPageUrl ? 'inertia-link' : 'div'"
+            :href="nextPageUrl"
             class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
           >
             <span class="sr-only">{{ translations.next }}</span>
