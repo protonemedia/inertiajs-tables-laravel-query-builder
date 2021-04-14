@@ -3,28 +3,28 @@
     class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
     v-if="meta"
   >
-    <p v-if="meta.total < 1">No results found</p>
+    <p v-if="meta.total < 1">{{ translations.no_results_found }}</p>
     <div v-if="meta.total > 0" class="flex-1 flex justify-between sm:hidden">
       <component
         :is="meta.prev_page_url ? 'inertia-link' : 'div'"
         :href="meta.prev_page_url"
         class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500"
-      >Previous</component>
+      >{{ translations.previous }}</component>
       <component
         :is="meta.next_page_url ? 'inertia-link' : 'div'"
         :href="meta.next_page_url"
         class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500"
-      >Next</component>
+      >{{ translations.next }}</component>
     </div>
     <div v-if="meta.total > 0" class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
       <div>
         <p class="hidden lg:block text-sm text-gray-700">
           <span class="font-medium">{{ meta.from }}</span>
-          to
+          {{ translations.to }}
           <span class="font-medium">{{ meta.to }}</span>
-          of
+          {{ translations.of }}
           <span class="font-medium">{{ meta.total }}</span>
-          results
+          {{ translations.results }}
         </p>
       </div>
       <div>
@@ -37,7 +37,7 @@
             :href="meta.prev_page_url"
             class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
           >
-            <span class="sr-only">Previous</span>
+            <span class="sr-only">{{ translations.previous }}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-5 w-5"
@@ -69,7 +69,7 @@
             :href="meta.next_page_url"
             class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
           >
-            <span class="sr-only">Next</span>
+            <span class="sr-only">{{ translations.next }}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-5 w-5"
