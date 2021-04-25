@@ -88,11 +88,12 @@ Inertia::render('Page/Index')->table(function ($table) {
 
 #### Columns
 
-With the `addColumn` method, you can specify which columns you want to be toggleable. You need to pass in a key and label for each column. With the `addColumns` method, you can add multiple columns at once.
+With the `addColumn` method, you can specify which columns you want to be toggleable. You need to pass in a key and label for each column. Of course, you may not want all columns to shown initially. In this case you can pass an optional third parameter - boolean `false` if you want the column to start off hidden. With the `addColumns` method, you can add multiple columns at once, and they will default to being shown.
 
 ```php
 Inertia::render('Page/Index')->table(function ($table) {
     $table->addColumn('name', 'Name');
+    $table->addColumn('hidden_column', 'Hidden Column', false);
 
     $table->addColumns([
         'email' => 'Email',
@@ -153,7 +154,7 @@ class UserIndexController
             ])->addColumns([
                 'email' => 'Email address',
                 'language_code' => 'Language',
-            ]);
+            ])->addColumn('hidden_column', 'Hidden Column', false);
         });
     }
 }
@@ -191,6 +192,7 @@ You can use the named `#head` slot to provide the table header and the named `#b
         <th @click.prevent="sortBy('name')">Name</th>
         <th v-show="showColumn('email')" @click.prevent="sortBy('email')">Email</th>
         <th v-show="showColumn('language_code')" @click.prevent="sortBy('language_code')">Language</th>
+        <th v-show="showColumn('hidden_column')">Hidden Column</th>
       </tr>
     </template>
 
@@ -199,6 +201,7 @@ You can use the named `#head` slot to provide the table header and the named `#b
         <td>{{ user.name }}</td>
         <td v-show="showColumn('email')">{{ user.email }}</td>
         <td v-show="showColumn('language_code')">{{ user.language_code }}</td>
+        <td v-show="showColumn('hidden_column')">{{ user.hidden_column }}</td>
       </tr>
     </template>
   </Table>
