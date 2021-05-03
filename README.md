@@ -169,6 +169,16 @@ npm install @protonemedia/inertiajs-tables-laravel-query-builder --save
 yarn add @protonemedia/inertiajs-tables-laravel-query-builder
 ```
 
+Add the repository path to the `purge` array of your [Tailwind configuration file](https://tailwindcss.com/docs/optimizing-for-production#basic-usage). This ensures that the styling also works on production builds.
+
+```js
+module.exports = {
+  purge: [
+    './node_modules/@protonemedia/inertiajs-tables-laravel-query-builder/**/*.{js,vue}',
+  ]
+}
+```
+
 #### Table component
 
 To use the `Table` component and all its related features, you need to add the `InteractsWithQueryBuilder` mixin to your component and add the `Tailwind2.Table` component to the `components` key.
