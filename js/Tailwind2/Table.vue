@@ -106,7 +106,7 @@ table >>> tr:hover td {
     </slot>
 
     <slot name="tableWrapper" :meta="meta">
-      <TableWrapper>
+      <TableWrapper :class="{'mt-2': !onlyData}">
         <slot name="table">
           <table class="min-w-full divide-y divide-gray-200 bg-white">
             <thead class="bg-gray-50">
