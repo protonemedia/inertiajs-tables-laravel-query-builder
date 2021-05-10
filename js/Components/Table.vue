@@ -51,6 +51,18 @@ export default {
     hasSearchRows() {
       return Object.keys(this.search || {}).length > 0;
     },
+
+    onlyData() {
+      if (this.hasFilters || this.hasColumns || this.hasSearchRows) {
+        return false;
+      }
+
+      if (!this.search) {
+        return true;
+      }
+
+      return this.search.global ? false : true;
+    },
   },
 
   data() {
