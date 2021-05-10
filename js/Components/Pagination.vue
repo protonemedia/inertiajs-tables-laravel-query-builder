@@ -12,6 +12,10 @@ const Pagination = {
       return Pagination.defaultTranslations;
     },
 
+    hasPagination() {
+      return Object.keys(this.pagination).length > 0;
+    },
+
     pagination() {
       if ("total" in this.meta && "to" in this.meta && "from" in this.meta) {
         return this.meta;
