@@ -9,7 +9,9 @@ export default {
 
   methods: {
     onClick() {
-      this.cell.onSort(this.cell.key);
+      if (this.cell.sortable) {
+        this.cell.onSort(this.cell.key);
+      }
     },
   },
 };
