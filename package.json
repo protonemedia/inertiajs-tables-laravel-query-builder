@@ -1,6 +1,6 @@
 {
   "name": "@protonemedia/inertiajs-tables-laravel-query-builder",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "description": "Inertia.js Front-end Components for Spatie's Laravel Query Builder",
   "main": "js/index.js",
   "scripts": {
