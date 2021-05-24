@@ -57,6 +57,40 @@ export default {
       });
     },
 
+    staticHeader(columnKey) {
+      return this._headerCellData(columnKey, false);
+    },
+
+    sortableHeader(columnKey) {
+      return this._headerCellData(columnKey, true);
+    },
+
+    _headerCellData(columnKey, sortable) {
+      let sort = false;
+
+      if (this.queryBuilderData.sort === columnKey) {
+        sort = "asc";
+      } else if (this.queryBuilderData.sort === `-${columnKey}`) {
+        sort = "desc";
+      }
+
+      let show = true;
+
+      if (this.queryBuilderProps.columns) {
+        const columnData = this.queryBuilderProps.columns[columnKey];
+
+        show = columnData ? columnData.enabled : true;
+      }
+
+      return {
+        key: columnKey,
+        sort,
+        show,
+        sortable,
+        onSort: this.sortBy,
+      };
+    },
+
     sortBy(column) {
       this.queryBuilderData.page = 1;
       this.queryBuilderData.sort =
