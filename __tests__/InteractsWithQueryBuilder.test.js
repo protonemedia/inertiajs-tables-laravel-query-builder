@@ -89,6 +89,52 @@ describe('InteractsWithQueryBuilder.vue', () => {
         );
     });
 
+    it('it provides helper method for table header cells', () => {
+        const queryBuilderProps = {
+            sort: "name",
+            columns: {
+                name: { key: "name", enabled: true },
+                email: { key: "email", enabled: false },
+                country: { key: "country", enabled: false },
+            },
+        };
+
+        const component = mount(InteractsWithQueryBuilder, {
+            propsData: {
+                queryBuilderProps,
+            },
+
+            render() { }
+        });
+
+        expect(component.vm.sortableHeader('name').sortable).toBeTruthy();
+        expect(component.vm.staticHeader('name').sortable).toBeFalsy();
+
+        expect(component.vm.sortableHeader('name').sort).toEqual('asc');
+        expect(component.vm.sortableHeader('email').sort).toBeFalsy();
+        expect(component.vm.sortableHeader('country').sort).toBeFalsy();
+    });
+
+    it('it provides helper method for table header cells to switch to sort order', () => {
+        const queryBuilderProps = {
+            sort: "name",
+            columns: {
+                name: { key: "name", enabled: true },
+            },
+        };
+
+        const component = mount(InteractsWithQueryBuilder, {
+            propsData: {
+                queryBuilderProps,
+            },
+
+            render() { }
+        });
+
+        component.vm.sortableHeader('name').onSort('name');
+        expect(component.vm.sortableHeader('name').sort).toEqual('desc');
+    });
+
     it('it toggles a column without changing the page', () => {
         const queryBuilderProps = {
             columns: {
