@@ -38,14 +38,14 @@ table >>> tr:hover td {
 
 <template>
   <div>
-    <div class="flex space-x-4">
+    <div class="flex flex-wrap space-x-4 justify-end md:justify-between">
       <slot
         name="tableFilter"
         :hasFilters="hasFilters"
         :filters="filters"
         :changeFilterValue="changeFilterValue"
       >
-        <TableFilter v-if="hasFilters" :filters="filters" :on-change="changeFilterValue" />
+        <TableFilter class="mt-2" v-if="hasFilters" :filters="filters" :on-change="changeFilterValue" />
       </slot>
 
       <slot
@@ -55,6 +55,7 @@ table >>> tr:hover td {
       >
         <div class="flex-grow">
           <TableGlobalSearch
+            class="mt-2"
             v-if="search && search.global"
             :value="search.global.value"
             :on-change="changeGlobalSearchValue"
@@ -70,6 +71,7 @@ table >>> tr:hover td {
         :enableSearch="enableSearch"
       >
         <TableAddSearchRow
+          class="mt-2"
           v-if="hasSearchRows"
           :rows="search"
           :new="newSearch"
@@ -83,7 +85,7 @@ table >>> tr:hover td {
         :columns="columns"
         :changeColumnStatus="changeColumnStatus"
       >
-        <TableColumns v-if="hasColumns" :columns="columns" :on-change="changeColumnStatus" />
+        <TableColumns class="mt-2" v-if="hasColumns" :columns="columns" :on-change="changeColumnStatus" />
       </slot>
     </div>
 
