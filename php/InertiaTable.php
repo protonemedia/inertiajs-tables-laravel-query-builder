@@ -161,14 +161,15 @@ class InertiaTable
      *
      * @param string $key
      * @param string $label
+     * @param bool $enabled
      * @return self
      */
-    public function addColumn(string $key, string $label): self
+    public function addColumn(string $key, string $label, bool $enabled = true): self
     {
         $this->columns->put($key, [
             'key'     => $key,
             'label'   => $label,
-            'enabled' => true,
+            'enabled' => $enabled,
         ]);
 
         return $this;
@@ -177,7 +178,7 @@ class InertiaTable
     public function addColumns(array $columns = []): self
     {
         foreach ($columns as $key => $value) {
-            $this->addColumn($key, $value);
+            $this->addColumn($key, $value, true);
         }
 
         return $this;
