@@ -240,7 +240,7 @@ When you pass a `meta` object to the table, it will automatically provide a pagi
 You can override the default pagination translations with the `setTranslations` method of the base component. You can do this in your main JavaScript file:
 
 ```js
-import Components from "@protonemedia/inertiajs-tables-laravel-query-builder";
+import { Components } from "@protonemedia/inertiajs-tables-laravel-query-builder";
 
 Components.Pagination.setTranslations({
   no_results_found: "No results found",
