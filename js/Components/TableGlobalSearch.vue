@@ -12,5 +12,13 @@ export default {
       required: true,
     },
   },
+  
+  defaultTranslations: {
+    placeholder: "Search...",
+  },
+
+  setTranslations(translations) {
+    TableGlobalSearch.defaultTranslations = translations;
+  },  
 };
 </script>
