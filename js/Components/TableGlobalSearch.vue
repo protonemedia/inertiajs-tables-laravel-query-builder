@@ -13,6 +13,12 @@ export default {
     },
   },
   
+  computed: {
+    translations() {
+      return Pagination.defaultTranslations;
+    },
+  },
+  
   defaultTranslations: {
     placeholder: "Search...",
   },
