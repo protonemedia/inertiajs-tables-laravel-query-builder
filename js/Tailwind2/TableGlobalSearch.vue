@@ -2,7 +2,7 @@
   <div class="relative">
     <input
       class="block w-full sm:text-sm rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300"
-      placeholder="Search..."
+      placeholder="{{ translations.placeholder }}"
       :value="value"
       type="text"
       @input="onChange($event.target.value)"
