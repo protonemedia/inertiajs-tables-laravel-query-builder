@@ -101,6 +101,12 @@ Inertia::render('Page/Index')->table(function ($table) {
 });
 ```
 
+The `addColumn` method has an optional third parameter to disable the column by default:
+
+```php
+$table->addColumn('name', 'Name', false);
+```
+
 #### Disable global search
 
 By default, global search is enabled. This query will be applied to the filters by the `global` attribute. If you don't want to use the global search, you can use the `disableGlobalSearch` method.
