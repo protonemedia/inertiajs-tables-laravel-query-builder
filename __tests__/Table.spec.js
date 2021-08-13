@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils"
 import Table from "../js/Tailwind2/Table.vue";
 import expect from 'expect'
+import TableWithDataWithoutPagination from "./TableWithDataWithoutPagination.vue";
 
 describe('Table.vue', () => {
     it('can enable a search row', () => {
@@ -199,5 +200,36 @@ describe('Table.vue', () => {
         component.vm.$nextTick(() => {
             expect(updates).toHaveLength(1);
         });
+    });
+
+    it('knows when there are no results and there is no pagination', () => {
+        const component = mount(Table, {
+            propsData: {
+                meta: {},
+            }
+        });
+
+        expect(component.vm.paginationMeta).toEqual({ meta: { total: 0 } });
+    });
+
+    it('knows when there are results while there is no pagination', () => {
+        const component = mount(TableWithDataWithoutPagination, {
+            propsData: {
+                meta: {},
+            }
+        });
+
+        expect(component.html()).toContain("<td></td>");
+        expect(component.html()).not.toContain("No results found");
+    });
+
+    it('uses the meta property for pagination', () => {
+        const component = mount(Table, {
+            propsData: {
+                meta: { meta: { total: 1 } },
+            }
+        });
+
+        expect(component.html()).not.toContain("No results found");
     });
 })

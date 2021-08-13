@@ -52,6 +52,10 @@ export default {
       return Object.keys(this.search || {}).length > 0;
     },
 
+    hasBody() {
+      return !!this.$slots.body;
+    },
+
     onlyData() {
       if (this.hasFilters || this.hasColumns || this.hasSearchRows) {
         return false;
@@ -63,6 +67,20 @@ export default {
 
       return this.search.global ? false : true;
     },
+
+    paginationMeta() {
+      if (this.hasBody) {
+        return this.meta;
+      }
+
+      const hasPagination = 'meta' in this.meta || ('total' in this.meta && 'to' in this.meta && 'from' in this.meta);
+
+      if (hasPagination) {
+        return this.meta;
+      }
+
+      return { meta: { total: 0 } };
+    }
   },
 
   data() {
