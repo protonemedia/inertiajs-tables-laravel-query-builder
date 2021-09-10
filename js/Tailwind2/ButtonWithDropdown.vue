@@ -14,7 +14,7 @@
       </button>
 
       <div ref="tooltip" class="absolute z-10" v-show="opened">
-        <div class="mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+        <div class="mt-2 container rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
           <slot />
         </div>
       </div>
