@@ -41,7 +41,7 @@
               <span
                 aria-hidden="true"
                 :class="{'translate-x-5':column.enabled,'translate-x-0':!column.enabled }"
-                class="translate-x-0 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
+                class="inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
               ></span>
             </button>
           </li>
