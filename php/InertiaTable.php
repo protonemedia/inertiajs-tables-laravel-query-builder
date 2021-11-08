@@ -175,6 +175,27 @@ class InertiaTable
         return $this;
     }
 
+    /**
+     * Add an action to the query builder.
+     *
+     * @param string $key
+     * @param string $label
+     * @param bool $enabled
+     * @return self
+     */
+    public function addActionColumn(string $key, string $label, string $action, string $icon, bool $enabled = true): self
+    {
+        $this->columns->put($key, [
+            'key'     => $key,
+            'label'   => $label,
+            'action'   => $action,
+            'icon'   => $icon,
+            'enabled' => $enabled,
+        ]);
+
+        return $this;
+    }
+
     public function addColumns(array $columns = []): self
     {
         foreach ($columns as $key => $value) {
