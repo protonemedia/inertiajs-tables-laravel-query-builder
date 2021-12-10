@@ -3,7 +3,7 @@
 TODO: Convert to @apply
 */
 
-table >>> th {
+table :deep(th) {
   font-weight: 500;
   font-size: 0.75rem;
   line-height: 1rem;
@@ -18,7 +18,7 @@ table >>> th {
   letter-spacing: 0.05em;
 }
 
-table >>> td {
+table :deep(td) {
   font-size: 0.875rem;
   line-height: 1.25rem;
   padding-top: 1rem;
@@ -30,7 +30,7 @@ table >>> td {
   white-space: nowrap;
 }
 
-table >>> tr:hover td {
+table :deep(tr:hover td) {
   --tw-bg-opacity: 1;
   background-color: rgba(249, 250, 251, var(--tw-bg-opacity));
 }
