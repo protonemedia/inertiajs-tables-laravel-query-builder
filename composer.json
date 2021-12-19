@@ -16,7 +16,8 @@
     },
     "require-dev": {
         "inertiajs/inertia-laravel": "^0.4.5",
-        "orchestra/testbench": "^6.23"
+        "orchestra/testbench": "^6.23",
+        "phpunit/phpunit": "^9.4"
     },
     "autoload": {
         "psr-4": {
