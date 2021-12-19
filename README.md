@@ -34,7 +34,7 @@ We proudly support the community by developing Laravel packages and giving them 
 * [Laravel 8](https://laravel.com/)
 * [Inertia.js](https://inertiajs.com/)
 * [Tailwind CSS v2](https://tailwindcss.com/) + [Forms plugin](https://github.com/tailwindlabs/tailwindcss-forms)
-* PHP 7.4 + 8.0
+* PHP 7.4 + 8.0 + 8.1
 
 ## Roadmap
 
