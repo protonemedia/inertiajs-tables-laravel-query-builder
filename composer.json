@@ -15,7 +15,7 @@
         "illuminate/support": "^8.67"
     },
     "require-dev": {
-        "inertiajs/inertia-laravel": "^0.4.0",
+        "inertiajs/inertia-laravel": "^0.4.5",
         "orchestra/testbench": "^6.23"
     },
     "autoload": {
