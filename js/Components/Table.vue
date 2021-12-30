@@ -121,7 +121,7 @@ export default {
 
     changeGlobalSearchValue: debounce(function (value) {
       this.changeSearchValue("global", value);
-    }, 100),
+    }, 200),
 
     changeFilterValue(key, value) {
       this.queryBuilderData.filters[key].value = value;
