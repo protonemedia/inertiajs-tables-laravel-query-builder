@@ -126,7 +126,7 @@ export default {
 
     changeGlobalSearchValue: debounce(function (value) {
       this.changeSearchValue("global", value);
-    }, this.inputDebounceDelay),
+    }, 500),
 
     changeFilterValue(key, value) {
       this.queryBuilderData.filters[key].value = value;
