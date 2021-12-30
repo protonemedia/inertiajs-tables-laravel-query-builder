@@ -72,7 +72,7 @@
     <slot name="tableWrapper" :meta="meta">
       <TableWrapper :class="{'mt-2': !onlyData}">
         <slot name="table">
-          <table class="mt-2 min-w-full divide-y divide-gray-200 bg-white">
+          <table class="min-w-full divide-y divide-gray-200 bg-white">
             <thead class="bg-gray-50">
             <slot name="head"/>
             </thead>
