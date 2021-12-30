@@ -1,4 +1,6 @@
 <script>
+import debounce from 'lodash-es/debounce';
+
 export default {
   props: {
     meta: {
@@ -79,7 +81,7 @@ export default {
         return this.meta;
       }
 
-      return { meta: { total: 0 } };
+      return {meta: {total: 0}};
     }
   },
 
@@ -117,9 +119,9 @@ export default {
       this.queryBuilderData.search[key].value = value;
     },
 
-    changeGlobalSearchValue(value) {
+    changeGlobalSearchValue: debounce(function (value) {
       this.changeSearchValue("global", value);
-    },
+    }, 100),
 
     changeFilterValue(key, value) {
       this.queryBuilderData.filters[key].value = value;
