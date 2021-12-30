@@ -39,6 +39,11 @@ export default {
       type: Function,
       required: false,
     },
+
+    inputDebounceDelay: {
+      type: Number,
+      default: 500
+    }
   },
 
   computed: {
@@ -121,7 +126,7 @@ export default {
 
     changeGlobalSearchValue: debounce(function (value) {
       this.changeSearchValue("global", value);
-    }, 200),
+    }, this.inputDebounceDelay),
 
     changeFilterValue(key, value) {
       this.queryBuilderData.filters[key].value = value;
