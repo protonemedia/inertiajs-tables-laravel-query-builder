@@ -67,7 +67,7 @@ class InertiaTableTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_the_default_toggled_columns_from_the_query_String()
+    public function it_gets_the_default_toggled_columns_from_the_query_string()
     {
         $table = new InertiaTable($this->request(function (Request $request) {
             $request->query->set('columns', ['name', 'country']);

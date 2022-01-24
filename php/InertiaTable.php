@@ -65,7 +65,7 @@ class InertiaTable
      */
     private function transformColumns(): Collection
     {
-        $columns = $this->request->query('columns', []);
+        $columns = $this->request->all()['columns'] ?? [];
 
         if (empty($columns)) {
             return $this->columns;
@@ -97,7 +97,7 @@ class InertiaTable
             ], 'global');
         }
 
-        $filters = $this->request->query('filter', []);
+        $filters = $this->request->all()['filter'] ?? [];
 
         if (empty($filters)) {
             return $search;
@@ -122,7 +122,7 @@ class InertiaTable
      */
     private function transformFilters(): Collection
     {
-        $filters = $this->request->query('filter', []);
+        $filters = $this->request->all()['filter'] ?? [];
 
         if (empty($filters)) {
             return $this->filters;
