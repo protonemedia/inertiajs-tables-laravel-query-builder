@@ -15,7 +15,7 @@
         "illuminate/support": "^8.67|^9.0"
     },
     "require-dev": {
-        "inertiajs/inertia-laravel": "^0.4.5|^0.5",
+        "inertiajs/inertia-laravel": "^0.5",
         "orchestra/testbench": "^6.23|^7.0",
         "phpunit/phpunit": "^9.4"
     },
