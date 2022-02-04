@@ -12,11 +12,11 @@
     ],
     "require": {
         "php": "^7.4|^8.0|^8.1",
-        "illuminate/support": "^8.67"
+        "illuminate/support": "^8.67|^v9.0.0-beta.4"
     },
     "require-dev": {
-        "inertiajs/inertia-laravel": "^0.4.5",
-        "orchestra/testbench": "^6.23",
+        "inertiajs/inertia-laravel": "^0.5",
+        "orchestra/testbench": "^6.23|^7.0",
         "phpunit/phpunit": "^9.4"
     },
     "autoload": {
