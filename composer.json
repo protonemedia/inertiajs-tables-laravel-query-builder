@@ -1,5 +1,5 @@
 {
-    "name": "protonemedia/inertiajs-tables-laravel-query-builder",
+    "name": "nmkr/inertiajs-tables-laravel-query-builder",
     "description": "Inertia.js Front-end Components for Spatie's Laravel Query Builder",
     "homepage": "https://github.com/protonemedia/inertiajs-tables-laravel-query-builder",
     "type": "library",
