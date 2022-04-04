@@ -120,7 +120,7 @@ table >>> tr:hover td {
         </slot>
 
         <slot name="pagination">
-          <Pagination :meta="meta" />
+          <Pagination :meta="paginationMeta" />
         </slot>
       </TableWrapper>
     </slot>

@@ -31,10 +31,10 @@ We proudly support the community by developing Laravel packages and giving them 
 ## Compatibility
 
 * [Vue 2.6](https://vuejs.org/v2/guide/installation.html) and [Vue 3](https://v3.vuejs.org/guide/installation.html)
-* [Laravel 8](https://laravel.com/)
+* [Laravel 8 or 9](https://laravel.com/)
 * [Inertia.js](https://inertiajs.com/)
 * [Tailwind CSS v2](https://tailwindcss.com/) + [Forms plugin](https://github.com/tailwindlabs/tailwindcss-forms)
-* PHP 7.4 + 8.0
+* PHP 7.4 + 8.0 + 8.1
 
 ## Roadmap
 
