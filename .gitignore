@@ -28,3 +28,6 @@ docs
 vendor
 coverage
 .phpunit.result.cache
+app/public/css/app.css
+app/public/js/app.js
+app/public/mix-manifest.json

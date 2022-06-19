@@ -6,7 +6,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 ![run-tests](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/workflows/run-tests/badge.svg)
 
-This package provides a *DataTables-like* experience for [Inertia.js](https://inertiajs.com/) with support for searching, filtering, sorting, toggling columns, and pagination. It generates URLs that can be consumed by Spatie's excellent [Laravel Query Builder](https://github.com/spatie/laravel-query-builder) package, with no additional logic needed. The components are styled with [Tailwind CSS 2.0](https://tailwindcss.com/), but it's fully customizable and you can bring your own components. The data refresh logic is based on Inertia's [Ping CRM demo](https://github.com/inertiajs/pingcrm).
+This package provides a *DataTables-like* experience for [Inertia.js](https://inertiajs.com/) with support for searching, filtering, sorting, toggling columns, and pagination. It generates URLs that can be consumed by Spatie's excellent [Laravel Query Builder](https://github.com/spatie/laravel-query-builder) package, with no additional logic needed. The components are styled with [Tailwind CSS 3.0](https://tailwindcss.com/), but it's fully customizable and you can bring your own components. The data refresh logic is based on Inertia's [Ping CRM demo](https://github.com/inertiajs/pingcrm).
 
 ![Inertia.js Table for Laravel Query Builder](https://user-images.githubusercontent.com/8403149/113340981-e3863680-932c-11eb-8017-7a6588916508.mp4)
 
@@ -30,11 +30,11 @@ We proudly support the community by developing Laravel packages and giving them 
 
 ## Compatibility
 
-* [Vue 2.6](https://vuejs.org/v2/guide/installation.html) and [Vue 3](https://v3.vuejs.org/guide/installation.html)
-* [Laravel 8 or 9](https://laravel.com/)
+* [Vue 3](https://v3.vuejs.org/guide/installation.html)
+* [Laravel 9](https://laravel.com/)
 * [Inertia.js](https://inertiajs.com/)
-* [Tailwind CSS v2](https://tailwindcss.com/) + [Forms plugin](https://github.com/tailwindlabs/tailwindcss-forms)
-* PHP 7.4 + 8.0 + 8.1
+* [Tailwind CSS v3](https://tailwindcss.com/) + [Forms plugin](https://github.com/tailwindlabs/tailwindcss-forms)
+* PHP 8.0+
 
 ## Roadmap
 
@@ -46,7 +46,7 @@ We proudly support the community by developing Laravel packages and giving them 
 
 ## Installation
 
-You need to install both the server-side package as well as the client-side package. Note that this package is only compatible with Laravel 8, Vue 2.6 + 3.0 and requires the Tailwind Forms plugin.
+You need to install both the server-side package as well as the client-side package. Note that this package is only compatible with Laravel 9, Vue 3.0 and requires the Tailwind Forms plugin.
 
 ### Server-side installation (Laravel)
 

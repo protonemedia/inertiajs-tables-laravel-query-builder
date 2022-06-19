@@ -1,55 +1,42 @@
 {
   "name": "@protonemedia/inertiajs-tables-laravel-query-builder",
-  "version": "1.3.4",
+  "version": "2.0.0",
   "description": "Inertia.js Front-end Components for Spatie's Laravel Query Builder",
-  "main": "js/index.js",
-  "scripts": {
-    "test:2": "vue-demi-switch 2 && jest",
-    "test:3": "vue-demi-switch 3 vue3 && jest"
-  },
-  "author": "Pascal Baljet",
+  "author": "Pascal Baljet <pascal@protone.media>",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/inertiajs-tables-laravel-query-builder.umd.js",
+  "module": "./dist/inertiajs-tables-laravel-query-builder.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/inertiajs-tables-laravel-query-builder.es.js",
+      "require": "./dist/inertiajs-tables-laravel-query-builder.umd.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest run --environment jsdom",
+    "test-dev": "vitest --environment jsdom",
+    "eslint": "eslint js/ --ext .js,.vue --fix"
+  },
   "dependencies": {
-    "@popperjs/core": "^2.9.2",
+    "@inertiajs/inertia-vue3": "^0.6.0",
+    "@popperjs/core": "^2.11.5",
     "lodash-es": "^4.17.21",
-    "qs": "^6.10.1"
+    "qs": "^6.10.5"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.13.12",
-    "@babel/plugin-transform-runtime": "^7.13.10",
-    "@babel/preset-env": "^7.13.12",
-    "@babel/preset-typescript": "^7.13.0",
-    "@vue/cli-plugin-unit-jest": "^4.5.12",
-    "@vue/composition-api": "^1.0.0-rc.6",
-    "@vue/test-utils": "^1.1.3",
-    "babel-jest": "^26.6.3",
-    "expect": "^26.6.2",
-    "jest": "^26.6.3",
-    "vue": "^2.6.12",
-    "vue-demi": "^0.7.4",
-    "vue-jest": "^3.0.7",
-    "vue-template-compiler": "^2.6.12",
-    "vue3": "npm:vue@3"
-  },
-  "peerDependencies": {
-    "@vue/composition-api": "^1.0.0-rc.6",
-    "vue": "^2.6.12 || >=3.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@vue/composition-api": {
-      "optional": true
-    }
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "vue"
-    ],
-    "transform": {
-      ".*\\.(js)$": "babel-jest",
-      ".*\\.(vue)$": "vue-jest"
-    }
+    "@vitejs/plugin-vue": "^2.3.3",
+    "@vue/test-utils": "^2.0.0",
+    "eslint": "^8.18.0",
+    "eslint-plugin-vue": "^9.1.1",
+    "jsdom": "^19.0.0",
+    "vite": "^2.9.9",
+    "vite-plugin-css-injected-by-js": "^1.5.1",
+    "vitest": "^0.13.0",
+    "vue": "^3.2.36"
   }
 }
