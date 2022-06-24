@@ -15,6 +15,7 @@
         "illuminate/support": "^8.67|^v9.0.0-beta.4"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.8",
         "inertiajs/inertia-laravel": "^0.5",
         "orchestra/testbench": "^6.23|^7.0",
         "phpunit/phpunit": "^9.4"
