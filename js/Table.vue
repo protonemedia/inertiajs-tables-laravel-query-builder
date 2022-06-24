@@ -159,7 +159,7 @@ import TableFilter from "./TableFilter.vue";
 import TableGlobalSearch from "./TableGlobalSearch.vue";
 import TableSearchRows from "./TableSearchRows.vue";
 import TableWrapper from "./TableWrapper.vue";
-import { computed, ref, watch, useSlots, onMounted } from "vue"
+import { computed, ref, watch } from "vue"
 import qs from "qs";
 import clone from "lodash-es/clone";
 import filter from "lodash-es/filter";
@@ -168,8 +168,6 @@ import forEach from "lodash-es/forEach";
 import isEqual from "lodash-es/isEqual";
 import map from "lodash-es/map";
 import pickBy from "lodash-es/pickBy";
-
-const slots = useSlots()
 
 const props = defineProps({
     name: {

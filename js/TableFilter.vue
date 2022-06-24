@@ -51,9 +51,9 @@
             @change="onFilterChange(filter.key, $event.target.value)"
           >
             <option
-              v-for="(option, key) in filter.options"
-              :key="key"
-              :value="key"
+              v-for="(option, optionKey) in filter.options"
+              :key="optionKey"
+              :value="optionKey"
             >
               {{ option }}
             </option>
