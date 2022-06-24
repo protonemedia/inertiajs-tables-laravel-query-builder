@@ -1,6 +1,7 @@
 <template>
   <ButtonWithDropdown
     placement="bottom-end"
+    dusk="filters-dropdown"
     :active="hasEnabledFilters"
   >
     <template #button>
@@ -38,16 +39,9 @@
         <div class="p-2">
           <select
             v-if="filter.type === 'select'"
+            :name="filter.key"
             :value="filter.value"
-            class="
-                            block
-                            focus:ring-indigo-500 focus:border-indigo-500
-                            w-full
-                            shadow-sm
-                            sm:text-sm
-                            border-gray-300
-                            rounded-md
-                        "
+            class="block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
             @change="onFilterChange(filter.key, $event.target.value)"
           >
             <option

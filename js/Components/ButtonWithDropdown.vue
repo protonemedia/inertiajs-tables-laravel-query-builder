@@ -4,6 +4,7 @@
       <button
         ref="button"
         type="button"
+        :dusk="dusk"
         :disabled="disabled"
         class="w-full bg-white border rounded-md shadow-sm px-4 py-2 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         :class="{'border-green-300': active, 'border-gray-300': !active, 'cursor-not-allowed': disabled }"
@@ -43,6 +44,12 @@ const props = defineProps({
     active: {
         type: Boolean,
         default: false,
+        required: false,
+    },
+
+    dusk: {
+        type: String,
+        default: null,
         required: false,
     },
 

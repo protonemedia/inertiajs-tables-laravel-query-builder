@@ -1,6 +1,7 @@
 <template>
   <ButtonWithDropdown
     placement="bottom-end"
+    dusk="columns-dropdown"
     :active="hasHiddenColumns"
   >
     <template #button>
@@ -45,33 +46,15 @@
 
             <button
               type="button"
-              class="
-                  ml-4
-                  relative
-                  inline-flex
-                  flex-shrink-0
-                  h-6
-                  w-11
-                  border-2 border-transparent
-                  rounded-full
-                  cursor-pointer
-                  transition-colors
-                  ease-in-out
-                  duration-200
-                  focus:outline-none
-                  focus:ring-2
-                  focus:ring-offset-2
-                  focus:ring-light-blue-500
-              "
+              class="ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-blue-500"
               :class="{
                 'bg-green-500': !column.hidden,
                 'bg-gray-200': column.hidden,
-                'cursor-not-allowed': !column.hidden && oneVisibleFilterLeft(),
               }"
-              :disabled="!column.hidden && oneVisibleFilterLeft()"
               :aria-pressed="!column.hidden"
               :aria-labelledby="`toggle-column-${column.key}`"
               :aria-describedby="`toggle-column-${column.key}`"
+              :dusk="`toggle-column-${column.key}`"
               @click.prevent="onChange(column.key, column.hidden)"
             >
               <span class="sr-only">Column status</span>
@@ -81,19 +64,7 @@
                   'translate-x-5': !column.hidden,
                   'translate-x-0': column.hidden,
                 }"
-                class="
-                                    inline-block
-                                    h-5
-                                    w-5
-                                    rounded-full
-                                    bg-white
-                                    shadow
-                                    transform
-                                    ring-0
-                                    transition
-                                    ease-in-out
-                                    duration-200
-                                "
+                class="inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
               />
             </button>
           </li>
@@ -105,7 +76,6 @@
 
 <script setup>
 import ButtonWithDropdown from "./ButtonWithDropdown.vue";
-import filter from "lodash-es/filter";
 
 const props = defineProps({
     columns: {
@@ -123,11 +93,4 @@ const props = defineProps({
         required: true,
     },
 });
-
-function oneVisibleFilterLeft() {
-    return filter(props.columns, (column) => {
-        return !column.hidden;
-    }).length === 1;
-}
-
 </script>

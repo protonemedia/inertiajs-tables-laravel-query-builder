@@ -1,6 +1,7 @@
 <template>
   <ButtonWithDropdown
     ref="dropdown"
+    dusk="add-search-row-dropdown"
     :disabled="!hasSearchInputsWithoutValue"
     class="w-auto"
   >
@@ -30,14 +31,8 @@
       <button
         v-for="(searchInput, key) in searchInputs"
         :key="key"
-        class="
-                        text-left
-                        w-full
-                        px-4
-                        py-2
-                        text-sm text-gray-700
-                        hover:bg-gray-100 hover:text-gray-900
-                    "
+        :dusk="`add-search-row-${searchInput.key}`"
+        class="text-left w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
         role="menuitem"
         @click.prevent="enableSearch(searchInput.key)"
       >

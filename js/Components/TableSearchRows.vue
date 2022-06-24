@@ -1,16 +1,6 @@
 <template>
   <div
-    class="
-            w-full
-            bg-gradient-to-r
-            from-blue-50
-            to-blue-100
-            bg-white
-            p-4
-            mb-4
-            rounded
-            mt-4
-        "
+    class="w-full bg-gradient-to-r from-blue-50 to-blue-100 bg-white p-4 mb-4 rounded mt-4"
   >
     <div class="flex flex-row space-x-4">
       <div class="space-y-4">
@@ -35,39 +25,18 @@
             <input
               :ref="skipUnwrap.el"
               :key="searchInput.key"
-              class="
-                                block
-                                w-full
-                                sm:text-sm
-                                rounded-md
-                                shadow-sm
-                                focus:ring-indigo-500 focus:border-indigo-500
-                                border-gray-300
-                            "
+              :name="searchInput.key"
+              class="block w-full sm:text-sm rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300"
               :value="searchInput.value"
               type="text"
               @input="onChange(searchInput.key, $event.target.value)"
             >
             <div
-              class="
-                                absolute
-                                inset-y-0
-                                right-0
-                                pr-3
-                                flex
-                                items-center
-                            "
+              class="absolute inset-y-0 right-0 pr-3 flex items-center"
             >
               <button
-                class="
-                                    rounded-md
-                                    text-gray-400
-                                    hover:text-gray-500
-                                    focus:outline-none
-                                    focus:ring-2
-                                    focus:ring-offset-2
-                                    focus:ring-indigo-500
-                                "
+                class="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                :dusk="`remove-search-row-${searchInput.key}`"
                 @click.prevent="onRemove(searchInput.key)"
               >
                 <span class="sr-only">Remove search</span>

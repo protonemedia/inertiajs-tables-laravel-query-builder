@@ -1,5 +1,10 @@
 <template>
-  <div :key="`table-${name}`">
+  <fieldset
+    :key="`table-${name}`"
+    class="min-w-0"
+    :class="{'opacity-75': isVisiting}"
+    :disabled="preventOverlappingRequests && isVisiting"
+  >
     <div class="flex space-x-4">
       <slot
         name="tableFilter"
@@ -16,24 +21,45 @@
         />
       </slot>
 
-      <slot
-        name="tableGlobalSearch"
-        :has-global-search="queryBuilderProps.globalSearch"
-        :label="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.label : null"
-        :value="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.value : null"
-        :on-change="changeGlobalSearchValue"
+      <div
+        v-if="queryBuilderProps.globalSearch || canBeReset"
+        class="flex flex-row "
+        :class="{
+          'space-x-4': queryBuilderProps.globalSearch && canBeReset,
+          'flex-grow': queryBuilderProps.globalSearch
+        }"
       >
-        <div
-          v-if="queryBuilderProps.globalSearch"
-          class="flex-grow"
-        >
-          <TableGlobalSearch
-            :label="queryBuilderProps.globalSearch.label"
-            :value="queryBuilderProps.globalSearch.value"
+        <div class="flex-grow">
+          <slot
+            name="tableGlobalSearch"
+            :has-global-search="queryBuilderProps.globalSearch"
+            :label="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.label : null"
+            :value="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.value : null"
             :on-change="changeGlobalSearchValue"
-          />
+          >
+            <TableGlobalSearch
+              v-if="queryBuilderProps.globalSearch"
+              :label="queryBuilderProps.globalSearch.label"
+              :value="queryBuilderProps.globalSearch.value"
+              :on-change="changeGlobalSearchValue"
+            />
+          </slot>
         </div>
-      </slot>
+
+        <slot
+          name="tableReset"
+          can-be-reset="canBeReset"
+          :on-click="resetQuery"
+        >
+          <div>
+            <TableReset
+              v-if="canBeReset"
+              :on-click="resetQuery"
+            />
+          </div>
+        </slot>
+      </div>
+
 
       <slot
         name="tableAddSearchRow"
@@ -96,7 +122,7 @@
                 :sort-by="sortBy"
                 :header="header"
               >
-                <tr>
+                <tr class="font-medium text-xs uppercase text-left tracking-wider text-gray-500 py-3 px-6">
                   <HeaderCell
                     v-for="column in queryBuilderProps.columns"
                     :key="`table-${name}-header-${column.key}`"
@@ -114,11 +140,18 @@
                 <tr
                   v-for="(item, key) in resourceData"
                   :key="`table-${name}-row-${key}`"
+                  class=""
+                  :class="{
+                    'bg-gray-50': striped && key % 2,
+                    'hover:bg-gray-100': striped,
+                    'hover:bg-gray-50': !striped
+                  }"
                 >
                   <td
                     v-for="column in queryBuilderProps.columns"
                     v-show="show(column.key)"
                     :key="`table-${name}-row-${key}-column-${column.key}`"
+                    class="text-sm py-4 px-6 text-gray-500 whitespace-nowrap"
                   >
                     <slot
                       :name="`cell(${column.key})`"
@@ -147,7 +180,7 @@
         </slot>
       </TableWrapper>
     </slot>
-  </div>
+  </fieldset>
 </template>
 
 <script setup>
@@ -158,10 +191,12 @@ import TableColumns from "./TableColumns.vue";
 import TableFilter from "./TableFilter.vue";
 import TableGlobalSearch from "./TableGlobalSearch.vue";
 import TableSearchRows from "./TableSearchRows.vue";
+import TableReset from "./TableReset.vue";
 import TableWrapper from "./TableWrapper.vue";
 import { computed, ref, watch } from "vue"
 import qs from "qs";
 import clone from "lodash-es/clone";
+import each from "lodash-es/each";
 import filter from "lodash-es/filter";
 import findKey from "lodash-es/findKey";
 import forEach from "lodash-es/forEach";
@@ -179,6 +214,24 @@ const props = defineProps({
     inertia: {
         type: Object,
         required: true,
+    },
+
+    striped: {
+        type: Boolean,
+        default: false,
+        required: false,
+    },
+
+    preventOverlappingRequests: {
+        type: Boolean,
+        default: true,
+        required: false,
+    },
+
+    inputDebounceMs: {
+        type: Number,
+        default: 350,
+        required: false,
     },
 
     preserveScroll: {
@@ -283,7 +336,6 @@ const hasData = computed(() => {
 
 //
 
-
 function disableSearchInput(key) {
     forcedVisibleSearchInputs.value = forcedVisibleSearchInputs.value.filter((search) => search != key);
 
@@ -294,14 +346,72 @@ function showSearchInput(key) {
     forcedVisibleSearchInputs.value.push(key);
 }
 
-//
+const updates = ref(0)
 
-function changeSearchInputValue(key, value) {
-    const intKey = findDataKey("searchInputs", key);
+const canBeReset = computed(() => {
+    if(updates.value < 0){
+        return false;
+    }
 
-    queryBuilderData.value.searchInputs[intKey].value = value;
+    if(forcedVisibleSearchInputs.value.length > 0){
+        return true;
+    }
+
+    const query = qs.parse(location.search.substring(1))
+    const keys = Object.keys(query);
+
+    if(keys.length === 0) {
+        return false;
+    }
+
+    if(keys.length === 1 && query.remember === "forget"){
+        return false;
+    }
+    if(keys.length === 1 && query.page == 1){
+        return false;
+    }
+
+    return true;
+});
+
+function resetQuery() {
+    forcedVisibleSearchInputs.value = [];
+
+    each(queryBuilderData.value.filters, (filter, key)=>{
+        queryBuilderData.value.filters[key].value = null;
+    })
+
+    each(queryBuilderData.value.searchInputs, (filter, key)=>{
+        queryBuilderData.value.searchInputs[key].value = null;
+    })
+
+    each(queryBuilderData.value.columns, (column, key) => {
+        queryBuilderData.value.columns[key].hidden = column.can_be_hidden
+            ? !queryBuilderProps.value.defaultVisibleToggleableColumns.includes(column.key)
+            : false;
+    })
+
+    queryBuilderData.value.sort = null;
     queryBuilderData.value.cursor = null;
     queryBuilderData.value.page = 1;
+}
+
+const debounceTimeouts = {};
+
+function changeSearchInputValue(key, value) {
+    clearTimeout(debounceTimeouts[key]);
+
+    debounceTimeouts[key] = setTimeout(() => {
+        if(visitCancelToken.value && props.preventOverlappingRequests){
+            visitCancelToken.value.cancel();
+        }
+
+        const intKey = findDataKey("searchInputs", key);
+
+        queryBuilderData.value.searchInputs[intKey].value = value;
+        queryBuilderData.value.cursor = null;
+        queryBuilderData.value.page = 1;
+    }, props.inputDebounceMs);
 }
 
 function changeGlobalSearchValue(value) {
@@ -358,14 +468,13 @@ function getColumnsForQuery() {
     }).sort();
 
     if (isEqual(visibleColumnKeys, queryBuilderProps.value.defaultVisibleToggleableColumns)){
-        visibleColumnKeys = {};
+        return {};
     }
 
     return visibleColumnKeys;
 }
 
 function dataForNewQueryString() {
-
     const filterForQuery = getFilterForQuery()
     const columnsForQuery = getColumnsForQuery()
 
@@ -419,6 +528,8 @@ function generateNewQueryString() {
     return query;
 }
 
+const isVisiting = ref(false)
+const visitCancelToken = ref(null)
 
 function visit(url) {
     if(!url) {
@@ -432,8 +543,24 @@ function visit(url) {
             replace: true,
             preserveState: true,
             preserveScroll: props.preserveScroll.value,
+            onBefore(){
+                if(isVisiting.value && props.preventOverlappingRequests) {
+                    return false;
+                }
+
+                isVisiting.value = true
+            },
+            onCancelToken(cancelToken) {
+                visitCancelToken.value = cancelToken
+            },
+            onFinish() {
+                isVisiting.value = false
+            },
             onSuccess() {
                 queryBuilderProps.value = props.inertia.page.props.queryBuilderProps[props.name] || {}
+                queryBuilderData.value.cursor = queryBuilderProps.value.cursor
+                queryBuilderData.value.page = queryBuilderProps.value.page
+                updates.value++;
             }
         }
     );
@@ -471,39 +598,3 @@ function header(key) {
     return columnData;
 }
 </script>
-
-<style scoped>
-table :deep(th) {
-    font-weight: 500;
-    font-size: 0.75rem;
-    line-height: 1rem;
-    text-align: left;
-    --tw-text-opacity: 1;
-    color: rgba(107, 114, 128, var(--tw-text-opacity));
-    letter-spacing: 0.05em;
-}
-
-table :deep(th:not(.no-padding)) {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-}
-
-table :deep(td) {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    --tw-text-opacity: 1;
-    color: rgba(107, 114, 128, var(--tw-text-opacity));
-    white-space: nowrap;
-}
-
-table :deep(tr:hover td) {
-    --tw-bg-opacity: 1;
-    background-color: rgba(249, 250, 251, var(--tw-bg-opacity));
-}
-</style>
