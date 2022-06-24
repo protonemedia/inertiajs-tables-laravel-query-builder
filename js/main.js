@@ -1,14 +1,14 @@
-import ButtonWithDropdown from "./ButtonWithDropdown.vue";
-import HeaderCell from "./HeaderCell.vue";
-import OnClickOutside from "./OnClickOutside.vue";
-import Pagination from "./Pagination.vue";
-import Table from "./Table.vue";
-import TableAddSearchRow from "./TableAddSearchRow.vue";
-import TableColumns from "./TableColumns.vue";
-import TableFilter from "./TableFilter.vue";
-import TableGlobalSearch from "./TableGlobalSearch.vue";
-import TableSearchRows from "./TableSearchRows.vue";
-import TableWrapper from "./TableWrapper.vue";
+import ButtonWithDropdown from "./Components/ButtonWithDropdown.vue";
+import HeaderCell from "./Components/HeaderCell.vue";
+import OnClickOutside from "./Components/OnClickOutside.vue";
+import Pagination from "./Components/Pagination.vue";
+import Table from "./Components/Table.vue";
+import TableAddSearchRow from "./Components/TableAddSearchRow.vue";
+import TableColumns from "./Components/TableColumns.vue";
+import TableFilter from "./Components/TableFilter.vue";
+import TableGlobalSearch from "./Components/TableGlobalSearch.vue";
+import TableSearchRows from "./Components/TableSearchRows.vue";
+import TableWrapper from "./Components/TableWrapper.vue";
 
 export {
     ButtonWithDropdown,
