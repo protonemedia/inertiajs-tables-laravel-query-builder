@@ -22,7 +22,7 @@ We proudly support the community by developing Laravel packages and giving them 
 * Select filters
 * Toggle columns
 * Sort columns
-* Pagination
+* Pagination (support for Eloquent/API Resource/Simple/Cursor)
 * Automatically updates the query string (by using [Inertia's replace](https://inertiajs.com/manual-visits#browser-history) feature)
 
 ## Compatibility
@@ -247,7 +247,7 @@ The `Table` has some additional properties to tweak its front-end behaviour.
 ```
 
 | Property | Description | Default |
-| --- | --- |
+| --- | --- | --- |
 | striped | Adds a *striped* layout to the table. | `false` |
 | preventOverlappingRequests | Cancels a previous visit on new user input to prevent inconsistent state | `true` |
 | inputDebounceMs | Number of ms to wait before refreshing the table on user input | 350 |
