@@ -1,11 +1,13 @@
 <template>
   <fieldset
+    ref="tableFieldset"
     :key="`table-${name}`"
+    :dusk="`table-${name}`"
     class="min-w-0"
     :class="{'opacity-75': isVisiting}"
     :disabled="preventOverlappingRequests && isVisiting"
   >
-    <div class="flex space-x-4">
+    <div class="flex flex-row justify-end space-x-4">
       <slot
         name="tableFilter"
         :has-filters="queryBuilderProps.hasFilters"
@@ -23,7 +25,7 @@
 
       <div
         v-if="queryBuilderProps.globalSearch || canBeReset"
-        class="flex flex-row "
+        class="flex flex-row"
         :class="{
           'space-x-4': queryBuilderProps.globalSearch && canBeReset,
           'flex-grow': queryBuilderProps.globalSearch
@@ -196,7 +198,6 @@ import TableWrapper from "./TableWrapper.vue";
 import { computed, ref, watch } from "vue"
 import qs from "qs";
 import clone from "lodash-es/clone";
-import each from "lodash-es/each";
 import filter from "lodash-es/filter";
 import findKey from "lodash-es/findKey";
 import forEach from "lodash-es/forEach";
@@ -235,7 +236,7 @@ const props = defineProps({
     },
 
     preserveScroll: {
-        type: Boolean,
+        type: [Boolean, String],
         default: false,
         required: false,
     },
@@ -271,7 +272,13 @@ const queryBuilderProps = ref(
 
 const queryBuilderData = ref(queryBuilderProps.value);
 
+const pageName = computed(() =>{
+    return queryBuilderProps.value.pageName;
+});
+
 const forcedVisibleSearchInputs = ref([]);
+
+const tableFieldset = ref(null)
 
 const hasOnlyData = computed(() => {
     if(queryBuilderProps.value.hasToggleableColumns) {
@@ -367,7 +374,7 @@ const canBeReset = computed(() => {
     if(keys.length === 1 && query.remember === "forget"){
         return false;
     }
-    if(keys.length === 1 && query.page == 1){
+    if(keys.length === 1 && query[pageName.value] == 1){
         return false;
     }
 
@@ -377,15 +384,15 @@ const canBeReset = computed(() => {
 function resetQuery() {
     forcedVisibleSearchInputs.value = [];
 
-    each(queryBuilderData.value.filters, (filter, key)=>{
+    forEach(queryBuilderData.value.filters, (filter, key)=>{
         queryBuilderData.value.filters[key].value = null;
     })
 
-    each(queryBuilderData.value.searchInputs, (filter, key)=>{
+    forEach(queryBuilderData.value.searchInputs, (filter, key)=>{
         queryBuilderData.value.searchInputs[key].value = null;
     })
 
-    each(queryBuilderData.value.columns, (column, key) => {
+    forEach(queryBuilderData.value.columns, (column, key) => {
         queryBuilderData.value.columns[key].hidden = column.can_be_hidden
             ? !queryBuilderProps.value.defaultVisibleToggleableColumns.includes(column.key)
             : false;
@@ -508,7 +515,25 @@ function dataForNewQueryString() {
 }
 
 function generateNewQueryString() {
-    let query = qs.stringify(dataForNewQueryString(), {
+    const queryStringData = qs.parse(location.search.substring(1));
+
+    const prefix = props.name === "default" ? "" : (props.name + "_");
+
+    forEach(["filter", "columns", "cursor", "sort"], (key) => {
+        delete queryStringData[prefix + key]
+    });
+
+    delete queryStringData[pageName.value]
+
+    forEach(dataForNewQueryString(), (value, key) =>{
+        if(key === "page") {
+            queryStringData[pageName.value] = value;
+        } else {
+            queryStringData[prefix + key] = value;
+        }
+    })
+
+    let query = qs.stringify(queryStringData, {
         filter(prefix, value) {
             if (typeof value === "object" && value !== null) {
                 return pickBy(value);
@@ -521,8 +546,8 @@ function generateNewQueryString() {
         strictNullHandling: true,
     });
 
-    if (!query || query === "page=1") {
-        query = "remember=forget";
+    if (!query || query === (pageName.value + "=1")) {
+        query = "";
     }
 
     return query;
@@ -542,7 +567,7 @@ function visit(url) {
         {
             replace: true,
             preserveState: true,
-            preserveScroll: props.preserveScroll.value,
+            preserveScroll: props.preserveScroll !== false,
             onBefore(){
                 if(isVisiting.value && props.preventOverlappingRequests) {
                     return false;
@@ -560,6 +585,14 @@ function visit(url) {
                 queryBuilderProps.value = props.inertia.page.props.queryBuilderProps[props.name] || {}
                 queryBuilderData.value.cursor = queryBuilderProps.value.cursor
                 queryBuilderData.value.page = queryBuilderProps.value.page
+
+                if(props.preserveScroll === "table-top") {
+                    const offset = -8;
+                    const top = tableFieldset.value.getBoundingClientRect().top + window.pageYOffset + offset;
+
+                    window.scrollTo({top});
+                }
+
                 updates.value++;
             }
         }

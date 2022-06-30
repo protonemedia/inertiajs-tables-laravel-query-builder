@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\TwoTablesEloquent;
+use App\Http\TwoTablesSpatie;
 use App\Http\UserTableView;
 use Illuminate\Support\Facades\Route;
 
 $table = new UserTableView;
+
+Route::get('/two-tables/eloquent', TwoTablesEloquent::class);
+Route::get('/two-tables/spatie', TwoTablesSpatie::class);
 
 Route::get('/users/eloquent', fn () => $table(resource: false, paginateMethod: 'paginate'));
 Route::get('/users/resource', fn () => $table(resource: true, paginateMethod: 'paginate'));

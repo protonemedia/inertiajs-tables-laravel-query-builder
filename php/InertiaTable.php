@@ -10,12 +10,16 @@ use Inertia\Response;
 
 class InertiaTable
 {
-    private string $name = 'default';
+    private string $name     = 'default';
+    private string $pageName = 'page';
     private Request $request;
     private Collection $columns;
     private Collection $searchInputs;
     private Collection $filters;
     private string $defaultSort = '';
+
+    private static bool|string $defaultGlobalSearch = false;
+    private static array $defaultQueryBuilderConfig = [];
 
     public function __construct(Request $request)
     {
@@ -23,6 +27,55 @@ class InertiaTable
         $this->columns      = new Collection;
         $this->searchInputs = new Collection;
         $this->filters      = new Collection;
+
+        if (static::$defaultGlobalSearch !== false) {
+            $this->withGlobalSearch(static::$defaultGlobalSearch);
+        }
+    }
+
+    /**
+     * Set a default for global search.
+     *
+     * @param bool|string $label
+     * @return void
+     */
+    public static function defaultGlobalSearch(bool|string $label = 'Search...')
+    {
+        static::$defaultGlobalSearch = $label !== false ? __($label) : false;
+    }
+
+    /**
+     * Retrieve a query string item from the request.
+     *
+     * @param string $key
+     * @param mixed|null $default
+     * @return mixed
+     */
+    private function query(string $key, $default = null)
+    {
+        return $this->request->query(
+            $this->name === 'default' ? $key : "{$this->name}_{$key}",
+            $default
+        );
+    }
+
+    /**
+     * Helper method to update the Spatie Query Builder parameter config.
+     *
+     * @param string $name
+     * @return void
+     */
+    public static function updateQueryBuilderParameters(string $name)
+    {
+        if (empty(static::$defaultQueryBuilderConfig)) {
+            static::$defaultQueryBuilderConfig = config('query-builder.parameters');
+        }
+
+        $newConfig = collect(static::$defaultQueryBuilderConfig)->map(function ($value) use ($name) {
+            return "{$name}_{$value}";
+        })->all();
+
+        config(['query-builder.parameters' => $newConfig]);
     }
 
     /**
@@ -34,6 +87,19 @@ class InertiaTable
     public function name(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Page name for this table.
+     *
+     * @param string $pageName
+     * @return self
+     */
+    public function pageName(string $pageName): self
+    {
+        $this->pageName = $pageName;
 
         return $this;
     }
@@ -77,9 +143,10 @@ class InertiaTable
 
             'globalSearch' => $this->searchInputs->firstWhere('key', 'global'),
 
-            'cursor' => $this->request->query('cursor'),
-            'sort'   => $this->request->query('sort', $this->defaultSort) ?: null,
-            'page'   => Paginator::resolveCurrentPage(),
+            'cursor'   => $this->query('cursor'),
+            'sort'     => $this->query('sort', $this->defaultSort) ?: null,
+            'page'     => Paginator::resolveCurrentPage($this->pageName),
+            'pageName' => $this->pageName,
         ];
     }
 
@@ -90,15 +157,15 @@ class InertiaTable
      */
     protected function transformColumns(): Collection
     {
-        $columns = $this->request->query('columns', []);
+        $columns = $this->query('columns', []);
 
-        $sort = $this->request->query('sort', $this->defaultSort);
+        $sort = $this->query('sort', $this->defaultSort);
 
         return $this->columns->map(function (Column $column) use ($columns, $sort) {
             $key = $column->key;
 
-            if (! empty($columns)) {
-                $column->hidden = ! in_array($key, $columns);
+            if (!empty($columns)) {
+                $column->hidden = !in_array($key, $columns);
             }
 
             if ($sort === $key) {
@@ -120,7 +187,7 @@ class InertiaTable
     {
         $filters = $this->filters;
 
-        $queryFilters = $this->request->query('filter', []);
+        $queryFilters = $this->query('filter', []);
 
         if (empty($queryFilters)) {
             return $filters;
@@ -142,7 +209,7 @@ class InertiaTable
      */
     protected function transformSearchInputs(): Collection
     {
-        $filters = $this->request->query('filter', []);
+        $filters = $this->query('filter', []);
 
         if (empty($filters)) {
             return $this->searchInputs;
@@ -160,18 +227,27 @@ class InertiaTable
     /**
      * Add a column to the query builder.
      *
+     * @param string|null $key
+     * @param string|null $label
+     * @param bool $canBeHidden
+     * @param bool $hidden
+     * @param bool $sortable
+     * @param bool $searchable
+     * @param bool $custom
      * @return self
      */
     public function column(string $key = null, string $label = null, bool $canBeHidden = true, bool $hidden = false, bool $sortable = false, bool $searchable = false, bool $custom = false): self
     {
-        $this->columns->push($column = new Column(
+        $this->columns = $this->columns->reject(function (Column $column) use ($key) {
+            return $column->key === $key;
+        })->push($column = new Column(
             key: $key ?: Str::kebab($label),
             label: $label ?: Str::headline($key),
             canBeHidden: $canBeHidden,
             hidden: $hidden,
             sortable: $sortable,
             sorted: false
-        ));
+        ))->values();
 
         if ($searchable) {
             $this->searchInput($column->key, $column->label);
@@ -180,18 +256,34 @@ class InertiaTable
         return $this;
     }
 
+    /**
+     * Helper method to add a global search input.
+     *
+     * @param string|null $label
+     * @return self
+     */
     public function withGlobalSearch(string $label = null): self
     {
         return $this->searchInput('global', $label ?: __('Search...'));
     }
 
+    /**
+     * Add a search input to query builder.
+     *
+     * @param string $key
+     * @param string|null $label
+     * @param string|null $defaultValue
+     * @return self
+     */
     public function searchInput(string $key, string $label = null, string $defaultValue = null): self
     {
-        $this->searchInputs->push(new SearchInput(
+        $this->searchInputs = $this->searchInputs->reject(function (SearchInput $searchInput) use ($key) {
+            return $searchInput->key === $key;
+        })->push(new SearchInput(
             key: $key,
             label: $label ?: Str::headline($key),
             value: $defaultValue
-        ));
+        ))->values();
 
         return $this;
     }
@@ -200,13 +292,18 @@ class InertiaTable
      * Add a select filter to the query builder.
      *
      * @param string $key
-     * @param string $label
+     * @param string|null $label
      * @param array $options
+     * @param string|null $defaultValue
+     * @param bool $noFilterOption
+     * @param string|null $noFilterOptionLabel
      * @return self
      */
     public function selectFilter(string $key, string $label = null, array $options, string $defaultValue = null, bool $noFilterOption = true, string $noFilterOptionLabel = null): self
     {
-        $this->filters->push(new Filter(
+        $this->filters = $this->filters->reject(function (Filter $filter) use ($key) {
+            return $filter->key === $key;
+        })->push(new Filter(
             key: $key,
             label: $label ?: Str::headline($key),
             options: $options,
@@ -214,7 +311,7 @@ class InertiaTable
             noFilterOption: $noFilterOption,
             noFilterOptionLabel: $noFilterOptionLabel ?: '-',
             type: 'select'
-        ));
+        ))->values();
 
         return $this;
     }
@@ -227,12 +324,6 @@ class InertiaTable
      */
     public function applyTo(Response $response): Response
     {
-        if (! Response::hasMacro('getQueryBuilderProps')) {
-            Response::macro('getQueryBuilderProps', function () {
-                return $this->props['queryBuilderProps'] ?? [];
-            });
-        }
-
         $props = array_merge($response->getQueryBuilderProps(), [
             $this->name => $this->getQueryBuilderProps(),
         ]);

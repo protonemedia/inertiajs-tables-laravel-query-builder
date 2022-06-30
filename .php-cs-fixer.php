@@ -35,7 +35,7 @@ return (new PhpCsFixer\Config())
         'no_trailing_comma_in_singleline_array'  => true,
         'no_unused_imports'                      => true,
         'no_whitespace_before_comma_in_array'    => true,
-        'not_operator_with_successor_space'      => true,
+        'not_operator_with_successor_space'      => false,
         'ordered_imports'                        => true,
         'phpdoc_scalar'                          => true,
         'phpdoc_single_line_var_spacing'         => true,
