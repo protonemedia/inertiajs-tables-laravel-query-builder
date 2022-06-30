@@ -390,7 +390,7 @@ npm run production
 touch database/database.sqlite
 php artisan migrate:fresh --seed
 php artisan dusk:chrome-driver
-php artisan serve &
+php artisan serve
 php artisan dusk
 ```
 
