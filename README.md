@@ -253,6 +253,97 @@ The `Table` has some additional properties to tweak its front-end behaviour.
 | inputDebounceMs | Number of ms to wait before refreshing the table on user input. | 350 |
 | preventScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behaviour. You may also pass `table-top` to this property to scroll to the top of the table on new data. | false |
 
+#### Custom column cells
+
+When using *auto-fill*, you may want to transform the presented data for a specific column while leaving the other columns untouched. For this, you may use a cell template. This example is taken from the [Example Controller](#example-controller) above.
+
+```vue
+<template>
+  <Table :inertia="$inertia" :resource="users">
+    <template #cell(actions)="{ item: user }">
+      <a :href="`/users/${user.id}/edit`">
+        Edit
+      </a>
+    </template>
+  </Table>
+</template>
+```
+
+#### Multiple tables per page
+
+You may want to use more than one table component per page. Displaying the data is easy, but using features like filtering, sorting, and pagination require a slightly different setup. For example, by default, the `page` query key is used for paginating to data set, but now you want two different keys for both tables. Luckily, this package takes care of that, and even provides a helper method to support Spatie's query package. To get this to work, you need to *name* your tables.
+
+Let's take a look at Spatie's `QueryBuilder`. In this example, there's a table for the companies, and a table for the users. We name the tables accordingly. So first, call the static `updateQueryBuilderParameters` method to tell the package to use a different set of query parameters. Now, `filter` becomes `companies_filter`, `column` becomes `companies_column`, and so forth. Secondly, change the `pageName` of the database paginator.
+
+```php
+InertiaTable::updateQueryBuilderParameters('companies');
+
+$companies = QueryBuilder::for(Company::query())
+    ->defaultSort('name')
+    ->allowedSorts(['name', 'email'])
+    ->allowedFilters(['name', 'email'])
+    ->paginate(pageName: 'companiesPage')
+    ->withQueryString();
+
+InertiaTable::updateQueryBuilderParameters('users');
+
+$users = QueryBuilder::for(User::query())
+    ->defaultSort('name')
+    ->allowedSorts(['name', 'email'])
+    ->allowedFilters(['name', 'email'])
+    ->paginate(pageName: 'usersPage')
+    ->withQueryString();
+```
+
+Then, we need to apply these two changes to the `InertiaTable` class as well. There's a `name` and `pageName` method to do so.
+
+```php
+return Inertia::render('TwoTables', [
+    'companies' => $companies,
+    'users'     => $users,
+])->table(function (InertiaTable $inertiaTable) {
+    $inertiaTable
+        ->name('users')
+        ->pageName('usersPage')
+        ->defaultSort('name')
+        ->column(key: 'name', searchable: true)
+        ->column(key: 'email', searchable: true);
+})->table(function (InertiaTable $inertiaTable) {
+    $inertiaTable
+        ->name('companies')
+        ->pageName('companiesPage')
+        ->defaultSort('name')
+        ->column(key: 'name', searchable: true)
+        ->column(key: 'address', searchable: true);
+});
+```
+
+Lastly, in the Vue template, pass the correct `name` property to each table. Optionally, you may set the `preserve-scroll` property to `table-top`. This makes sure to scroll to the top of the table on new data. For example, when navigating to another page on the *second* table, you don't want the browser to scroll to the top of the page, but rather to the top of the table.
+
+```vue
+<script setup>
+import { Table } from "@protonemedia/inertiajs-tables-laravel-query-builder";
+
+defineProps(["companies", "users"])
+</script>
+
+<template>
+  <Table
+    :inertia="$inertia"
+    :resource="companies"
+    name="companies"
+    preserve-scroll="table-top"
+  />
+
+  <Table
+    :inertia="$inertia"
+    :resource="users"
+    name="users"
+    preserve-scroll="table-top"
+  />
+</template>
+```
+
 #### Table.vue slots
 
 The `Table.vue` has several slots that you can use to inject your own implementations.
@@ -285,26 +376,6 @@ Each slot is provided with props to interact with the parent `Table` component.
   </Table>
 </template>
 ```
-
-#### Custom column cells
-
-When using *auto-fill*, you may want to transform the presented data for a specific column while leaving the other columns untouched. For this, you may use a cell template. This example is taken from the [Example Controller](#example-controller) above.
-
-```vue
-<template>
-  <Table :inertia="$inertia" :resource="users">
-    <template #cell(actions)="{ item: user }">
-      <a :href="`/users/${user.id}/edit`">
-        Edit
-      </a>
-    </template>
-  </Table>
-</template>
-```
-
-#### Multiple tables per page
-
-...
 
 ## Testing
 
