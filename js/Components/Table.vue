@@ -1,188 +1,190 @@
 <template>
-  <fieldset
-    ref="tableFieldset"
-    :key="`table-${name}`"
-    :dusk="`table-${name}`"
-    class="min-w-0"
-    :class="{'opacity-75': isVisiting}"
-    :disabled="preventOverlappingRequests && isVisiting"
-  >
-    <div class="flex flex-row justify-end space-x-4">
-      <slot
-        name="tableFilter"
-        :has-filters="queryBuilderProps.hasFilters"
-        :has-enabled-filters="queryBuilderProps.hasEnabledFilters"
-        :filters="queryBuilderProps.filters"
-        :on-filter-change="changeFilterValue"
-      >
-        <TableFilter
-          v-if="queryBuilderProps.hasFilters"
+  <Transition>
+    <fieldset
+      ref="tableFieldset"
+      :key="`table-${name}`"
+      :dusk="`table-${name}`"
+      class="min-w-0"
+      :class="{'opacity-75': isVisiting}"
+      :disabled="preventOverlappingRequests && isVisiting"
+    >
+      <div class="flex flex-row justify-end space-x-4">
+        <slot
+          name="tableFilter"
+          :has-filters="queryBuilderProps.hasFilters"
           :has-enabled-filters="queryBuilderProps.hasEnabledFilters"
           :filters="queryBuilderProps.filters"
           :on-filter-change="changeFilterValue"
-        />
-      </slot>
+        >
+          <TableFilter
+            v-if="queryBuilderProps.hasFilters"
+            :has-enabled-filters="queryBuilderProps.hasEnabledFilters"
+            :filters="queryBuilderProps.filters"
+            :on-filter-change="changeFilterValue"
+          />
+        </slot>
 
-      <div
-        v-if="queryBuilderProps.globalSearch || canBeReset"
-        class="flex flex-row"
-        :class="{
-          'space-x-4': queryBuilderProps.globalSearch && canBeReset,
-          'flex-grow': queryBuilderProps.globalSearch
-        }"
-      >
-        <div class="flex-grow">
-          <slot
-            name="tableGlobalSearch"
-            :has-global-search="queryBuilderProps.globalSearch"
-            :label="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.label : null"
-            :value="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.value : null"
-            :on-change="changeGlobalSearchValue"
-          >
-            <TableGlobalSearch
-              v-if="queryBuilderProps.globalSearch"
-              :label="queryBuilderProps.globalSearch.label"
-              :value="queryBuilderProps.globalSearch.value"
+        <div
+          v-if="queryBuilderProps.globalSearch || canBeReset"
+          class="flex flex-row"
+          :class="{
+            'space-x-4': queryBuilderProps.globalSearch && canBeReset,
+            'flex-grow': queryBuilderProps.globalSearch
+          }"
+        >
+          <div class="flex-grow">
+            <slot
+              name="tableGlobalSearch"
+              :has-global-search="queryBuilderProps.globalSearch"
+              :label="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.label : null"
+              :value="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.value : null"
               :on-change="changeGlobalSearchValue"
-            />
+            >
+              <TableGlobalSearch
+                v-if="queryBuilderProps.globalSearch"
+                :label="queryBuilderProps.globalSearch.label"
+                :value="queryBuilderProps.globalSearch.value"
+                :on-change="changeGlobalSearchValue"
+              />
+            </slot>
+          </div>
+
+          <slot
+            name="tableReset"
+            can-be-reset="canBeReset"
+            :on-click="resetQuery"
+          >
+            <div>
+              <TableReset
+                v-if="canBeReset"
+                :on-click="resetQuery"
+              />
+            </div>
           </slot>
         </div>
 
+
         <slot
-          name="tableReset"
-          can-be-reset="canBeReset"
-          :on-click="resetQuery"
-        >
-          <div>
-            <TableReset
-              v-if="canBeReset"
-              :on-click="resetQuery"
-            />
-          </div>
-        </slot>
-      </div>
-
-
-      <slot
-        name="tableAddSearchRow"
-        :has-search-inputs="queryBuilderProps.hasSearchInputs"
-        :has-search-inputs-without-value="queryBuilderProps.hasSearchInputsWithoutValue"
-        :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
-        :on-add="showSearchInput"
-      >
-        <TableAddSearchRow
-          v-if="queryBuilderProps.hasSearchInputs"
-          :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
+          name="tableAddSearchRow"
+          :has-search-inputs="queryBuilderProps.hasSearchInputs"
           :has-search-inputs-without-value="queryBuilderProps.hasSearchInputsWithoutValue"
+          :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
           :on-add="showSearchInput"
-        />
-      </slot>
+        >
+          <TableAddSearchRow
+            v-if="queryBuilderProps.hasSearchInputs"
+            :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
+            :has-search-inputs-without-value="queryBuilderProps.hasSearchInputsWithoutValue"
+            :on-add="showSearchInput"
+          />
+        </slot>
 
-      <slot
-        name="tableColumns"
-        :has-columns="queryBuilderProps.hasToggleableColumns"
-        :columns="queryBuilderProps.columns"
-        :has-hidden-columns="queryBuilderProps.hasHiddenColumns"
-        :on-change="changeColumnStatus"
-      >
-        <TableColumns
-          v-if="queryBuilderProps.hasToggleableColumns"
+        <slot
+          name="tableColumns"
+          :has-columns="queryBuilderProps.hasToggleableColumns"
           :columns="queryBuilderProps.columns"
           :has-hidden-columns="queryBuilderProps.hasHiddenColumns"
           :on-change="changeColumnStatus"
-        />
-      </slot>
-    </div>
+        >
+          <TableColumns
+            v-if="queryBuilderProps.hasToggleableColumns"
+            :columns="queryBuilderProps.columns"
+            :has-hidden-columns="queryBuilderProps.hasHiddenColumns"
+            :on-change="changeColumnStatus"
+          />
+        </slot>
+      </div>
 
-    <slot
-      name="tableSearchRows"
-      :has-search-rows-with-value="queryBuilderProps.hasSearchInputsWithValue"
-      :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
-      :forced-visible-search-inputs="forcedVisibleSearchInputs"
-      :on-change="changeSearchInputValue"
-    >
-      <TableSearchRows
-        v-if="queryBuilderProps.hasSearchInputsWithValue || forcedVisibleSearchInputs.length > 0"
+      <slot
+        name="tableSearchRows"
+        :has-search-rows-with-value="queryBuilderProps.hasSearchInputsWithValue"
         :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
         :forced-visible-search-inputs="forcedVisibleSearchInputs"
         :on-change="changeSearchInputValue"
-        :on-remove="disableSearchInput"
-      />
-    </slot>
+      >
+        <TableSearchRows
+          v-if="queryBuilderProps.hasSearchInputsWithValue || forcedVisibleSearchInputs.length > 0"
+          :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
+          :forced-visible-search-inputs="forcedVisibleSearchInputs"
+          :on-change="changeSearchInputValue"
+          :on-remove="disableSearchInput"
+        />
+      </slot>
 
-    <slot
-      name="tableWrapper"
-      :meta="resourceMeta"
-    >
-      <TableWrapper :class="{ 'mt-2': !hasOnlyData }">
-        <slot name="table">
-          <table class="min-w-full divide-y divide-gray-200 bg-white">
-            <thead class="bg-gray-50">
-              <slot
-                name="head"
-                :show="show"
-                :sort-by="sortBy"
-                :header="header"
-              >
-                <tr class="font-medium text-xs uppercase text-left tracking-wider text-gray-500 py-3 px-6">
-                  <HeaderCell
-                    v-for="column in queryBuilderProps.columns"
-                    :key="`table-${name}-header-${column.key}`"
-                    :cell="header(column.key)"
-                  />
-                </tr>
-              </slot>
-            </thead>
-
-            <tbody class="bg-white divide-y divide-gray-200">
-              <slot
-                name="body"
-                :show="show"
-              >
-                <tr
-                  v-for="(item, key) in resourceData"
-                  :key="`table-${name}-row-${key}`"
-                  class=""
-                  :class="{
-                    'bg-gray-50': striped && key % 2,
-                    'hover:bg-gray-100': striped,
-                    'hover:bg-gray-50': !striped
-                  }"
+      <slot
+        name="tableWrapper"
+        :meta="resourceMeta"
+      >
+        <TableWrapper :class="{ 'mt-2': !hasOnlyData }">
+          <slot name="table">
+            <table class="min-w-full divide-y divide-gray-200 bg-white">
+              <thead class="bg-gray-50">
+                <slot
+                  name="head"
+                  :show="show"
+                  :sort-by="sortBy"
+                  :header="header"
                 >
-                  <td
-                    v-for="column in queryBuilderProps.columns"
-                    v-show="show(column.key)"
-                    :key="`table-${name}-row-${key}-column-${column.key}`"
-                    class="text-sm py-4 px-6 text-gray-500 whitespace-nowrap"
-                  >
-                    <slot
-                      :name="`cell(${column.key})`"
-                      :item="item"
-                    >
-                      {{ item[column.key] }}
-                    </slot>
-                  </td>
-                </tr>
-              </slot>
-            </tbody>
-          </table>
-        </slot>
+                  <tr class="font-medium text-xs uppercase text-left tracking-wider text-gray-500 py-3 px-6">
+                    <HeaderCell
+                      v-for="column in queryBuilderProps.columns"
+                      :key="`table-${name}-header-${column.key}`"
+                      :cell="header(column.key)"
+                    />
+                  </tr>
+                </slot>
+              </thead>
 
-        <slot
-          name="pagination"
-          :on-click="visit"
-          :has-data="hasData"
-          :meta="resourceMeta"
-        >
-          <Pagination
+              <tbody class="bg-white divide-y divide-gray-200">
+                <slot
+                  name="body"
+                  :show="show"
+                >
+                  <tr
+                    v-for="(item, key) in resourceData"
+                    :key="`table-${name}-row-${key}`"
+                    class=""
+                    :class="{
+                      'bg-gray-50': striped && key % 2,
+                      'hover:bg-gray-100': striped,
+                      'hover:bg-gray-50': !striped
+                    }"
+                  >
+                    <td
+                      v-for="column in queryBuilderProps.columns"
+                      v-show="show(column.key)"
+                      :key="`table-${name}-row-${key}-column-${column.key}`"
+                      class="text-sm py-4 px-6 text-gray-500 whitespace-nowrap"
+                    >
+                      <slot
+                        :name="`cell(${column.key})`"
+                        :item="item"
+                      >
+                        {{ item[column.key] }}
+                      </slot>
+                    </td>
+                  </tr>
+                </slot>
+              </tbody>
+            </table>
+          </slot>
+
+          <slot
+            name="pagination"
             :on-click="visit"
             :has-data="hasData"
             :meta="resourceMeta"
-          />
-        </slot>
-      </TableWrapper>
-    </slot>
-  </fieldset>
+          >
+            <Pagination
+              :on-click="visit"
+              :has-data="hasData"
+              :meta="resourceMeta"
+            />
+          </slot>
+        </TableWrapper>
+      </slot>
+    </fieldset>
+  </Transition>
 </template>
 
 <script setup>
@@ -267,7 +269,9 @@ const props = defineProps({
 });
 
 const queryBuilderProps = ref(
-    props.inertia.page.props.queryBuilderProps[props.name] || {}
+    props.inertia.page.props.queryBuilderProps
+        ? props.inertia.page.props.queryBuilderProps[props.name] || {}
+        : {}
 );
 
 const queryBuilderData = ref(queryBuilderProps.value);
@@ -338,7 +342,15 @@ const resourceMeta = computed(() => {
 });
 
 const hasData = computed(() => {
-    return resourceData.value.length > 0;
+    if(resourceData.value.length > 0){
+        return true;
+    }
+
+    if(resourceMeta.value.total > 0) {
+        return true;
+    }
+
+    return false;
 });
 
 //
@@ -587,9 +599,11 @@ function visit(url) {
                 isVisiting.value = false
             },
             onSuccess() {
-                queryBuilderProps.value = props.inertia.page.props.queryBuilderProps[props.name] || {}
-                queryBuilderData.value.cursor = queryBuilderProps.value.cursor
-                queryBuilderData.value.page = queryBuilderProps.value.page
+                if("queryBuilderProps" in props.inertia.page.props){
+                    queryBuilderProps.value = props.inertia.page.props.queryBuilderProps[props.name] || {}
+                    queryBuilderData.value.cursor = queryBuilderProps.value.cursor
+                    queryBuilderData.value.page = queryBuilderProps.value.page
+                }
 
                 if(props.preserveScroll === "table-top") {
                     const offset = -8;

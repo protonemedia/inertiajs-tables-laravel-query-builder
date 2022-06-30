@@ -3,9 +3,17 @@
 use App\Http\TwoTablesEloquent;
 use App\Http\TwoTablesSpatie;
 use App\Http\UserTableView;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 $table = new UserTableView;
+
+Route::get('/custom', function () {
+    return Inertia::render('CustomTable', [
+        'users' => User::paginate(10),
+    ]);
+});
 
 Route::get('/two-tables/eloquent', TwoTablesEloquent::class);
 Route::get('/two-tables/spatie', TwoTablesSpatie::class);

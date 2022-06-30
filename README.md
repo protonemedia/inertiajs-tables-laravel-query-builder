@@ -233,6 +233,29 @@ The `resource` property automatically detects the data and additional pagination
 </template>
 ```
 
+If you want to manually render the table, like in v1 of this package, you may use the `head` and `body` slot. Additionally, you can still use the `meta` property to render the paginator.
+
+```vue
+<template>
+  <Table :inertia="$inertia" :meta="users">
+    <template #head>
+      <tr>
+        <th>User</th>
+      </tr>
+    </template>
+
+    <template #body>
+      <tr
+        v-for="(user, key) in users.data"
+        :key="key"
+      >
+        <td>{{ user.name }}</td>
+      </tr>
+    </template>
+  </Table>
+</template>
+```
+
 The `Table` has some additional properties to tweak its front-end behaviour.
 
 ```vue
