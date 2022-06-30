@@ -178,7 +178,7 @@ class TwoTablesTest extends DuskTestCase
             ]);
 
             $users->last()->update([
-                'name'  => 'Pascal Baljet',
+                'name'  => 'Baljet Pascal',
                 'email' => 'pascal@pascal.pascal',
             ]);
 
