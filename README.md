@@ -6,7 +6,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 ![run-tests](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/workflows/php/badge.svg)
 
-This package provides a *DataTables-like* experience for [Inertia.js](https://inertiajs.com/) with support for searching, filtering, sorting, toggling columns, and pagination. It generates URLs that can be consumed by Spatie's excellent [Laravel Query Builder](https://github.com/spatie/laravel-query-builder) package, with no additional logic needed. The components are styled with [Tailwind CSS 3.0](https://tailwindcss.com/), but it's fully customizable and you can bring your own components. The data refresh logic is based on Inertia's [Ping CRM demo](https://github.com/inertiajs/pingcrm).
+This package provides a *DataTables-like* experience for [Inertia.js](https://inertiajs.com/) with support for searching, filtering, sorting, toggling columns, and pagination. It generates URLs that can be consumed by Spatie's excellent [Laravel Query Builder](https://github.com/spatie/laravel-query-builder) package, with no additional logic needed. The components are styled with [Tailwind CSS 3.0](https://tailwindcss.com/), but it's fully customizable with slots. The data refresh logic is based on Inertia's [Ping CRM demo](https://github.com/inertiajs/pingcrm).
 
 ![Inertia.js Table for Laravel Query Builder](https://user-images.githubusercontent.com/8403149/113340981-e3863680-932c-11eb-8017-7a6588916508.mp4)
 
@@ -35,7 +35,7 @@ We proudly support the community by developing Laravel packages and giving them 
 
 ## Installation
 
-You need to install both the server-side package as well as the client-side package. Note that this package is only compatible with Laravel 9, Vue 3.0 and requires the Tailwind Forms plugin.
+You need to install both the server-side package and the client-side package. Note that this package is only compatible with Laravel 9, Vue 3.0, and requires the Tailwind Forms plugin.
 
 ### Server-side installation (Laravel)
 
@@ -45,14 +45,14 @@ You can install the package via composer:
 composer require protonemedia/inertiajs-tables-laravel-query-builder
 ```
 
-The package will automatically register the Service Provider which provides a `table` method that you can use on an Interia Response.
+The package will automatically register the Service Provider which provides a `table` method you can use on an Interia Response.
 
 #### Search fields
 
 With the `searchInput` method, you can specify which attributes are searchable. Search queries are passed to the URL query as a `filter`. This integrates seamlessly with the [filtering feature](https://spatie.be/docs/laravel-query-builder/v5/features/filtering) of the Laravel Query Builder package.
 
 
-Though it's enough to just pass in the column key, you may specify a custom label and default value.
+Though it's enough to pass in the column key, you may specify a custom label and default value.
 
 ```php
 use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
@@ -70,7 +70,7 @@ Inertia::render('Page/Index')->table(function (InertiaTable $table) {
 
 #### Select Filters
 
-Select Filters are similar to search fields, but they use a `select` element instead of an `input` element. This way, you can present the user a pre-defined set of options. Under the hood, this uses the same filtering feature of the Laravel Query Builder package.
+Select Filters are similar to search fields but use a `select` element instead of an `input` element. This way, you can present the user a predefined set of options. Under the hood, this uses the same filtering feature of the Laravel Query Builder package.
 
 The `selectFilter` method requires two arguments: the key, and a key-value array with the options.
 
@@ -83,7 +83,7 @@ Inertia::render('Page/Index')->table(function (InertiaTable $table) {
 });
 ```
 
-By default, the `selectFilter` will add a *no filter* option to the array. You may disable this, or specify a custom label for it.
+The `selectFilter` will, by default, add a *no filter* option to the array. You may disable this or specify a custom label for it.
 
 ```php
 Inertia::render('Page/Index')->table(function (InertiaTable $table) {
@@ -100,7 +100,7 @@ Inertia::render('Page/Index')->table(function (InertiaTable $table) {
 
 #### Columns
 
-With the `column` method, you can specify which columns you want to be toggleable, sortable,and searchable. You need to pass in at least a key or label for each column.
+With the `column` method, you can specify which columns you want to be toggleable, sortable, and searchable. You must pass in at least a key or label for each column.
 
 ```php
 Inertia::render('Page/Index')->table(function (InertiaTable $table) {
@@ -211,7 +211,7 @@ module.exports = {
 
 #### Table component
 
-To use the `Table` component and all its related features, all you need to do is import the `Table` component, pass the `$inertia` object, and the `users` data to the component.
+To use the `Table` component and all its related features, you must import the `Table` component, pass the `$inertia` object, and the `users` data to the component.
 
 ```vue
 <script setup>
@@ -249,9 +249,9 @@ The `Table` has some additional properties to tweak its front-end behaviour.
 | Property | Description | Default |
 | --- | --- | --- |
 | striped | Adds a *striped* layout to the table. | `false` |
-| preventOverlappingRequests | Cancels a previous visit on new user input to prevent inconsistent state. | `true` |
+| preventOverlappingRequests | Cancels a previous visit on new user input to prevent an inconsistent state. | `true` |
 | inputDebounceMs | Number of ms to wait before refreshing the table on user input. | 350 |
-| preventScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behaviour. You may also pass `table-top` to this property to scroll to the top of the table on new data. | false |
+| preventScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behavior. You may also pass `table-top` to this property to scroll to the top of the table on new data. | false |
 
 #### Custom column cells
 
@@ -271,9 +271,9 @@ When using *auto-fill*, you may want to transform the presented data for a speci
 
 #### Multiple tables per page
 
-You may want to use more than one table component per page. Displaying the data is easy, but using features like filtering, sorting, and pagination require a slightly different setup. For example, by default, the `page` query key is used for paginating to data set, but now you want two different keys for both tables. Luckily, this package takes care of that, and even provides a helper method to support Spatie's query package. To get this to work, you need to *name* your tables.
+You may want to use more than one table component per page. Displaying the data is easy, but using features like filtering, sorting, and pagination requires a slightly different setup. For example, by default, the `page` query key is used for paginating the data set, but now you want two different keys for each table. Luckily, this package takes care of that and even provides a helper method to support Spatie's query package. To get this to work, you need to *name* your tables.
 
-Let's take a look at Spatie's `QueryBuilder`. In this example, there's a table for the companies, and a table for the users. We name the tables accordingly. So first, call the static `updateQueryBuilderParameters` method to tell the package to use a different set of query parameters. Now, `filter` becomes `companies_filter`, `column` becomes `companies_column`, and so forth. Secondly, change the `pageName` of the database paginator.
+Let's take a look at Spatie's `QueryBuilder`. In this example, there's a table for the companies and a table for the users. We name the tables accordingly. So first, call the static `updateQueryBuilderParameters` method to tell the package to use a different set of query parameters. Now, `filter` becomes `companies_filter`, `column` becomes `companies_column`, and so forth. Secondly, change the `pageName` of the database paginator.
 
 ```php
 InertiaTable::updateQueryBuilderParameters('companies');
@@ -295,7 +295,7 @@ $users = QueryBuilder::for(User::query())
     ->withQueryString();
 ```
 
-Then, we need to apply these two changes to the `InertiaTable` class as well. There's a `name` and `pageName` method to do so.
+Then, we need to apply these two changes to the `InertiaTable` class. There's a `name` and `pageName` method to do so.
 
 ```php
 return Inertia::render('TwoTables', [
@@ -318,7 +318,7 @@ return Inertia::render('TwoTables', [
 });
 ```
 
-Lastly, in the Vue template, pass the correct `name` property to each table. Optionally, you may set the `preserve-scroll` property to `table-top`. This makes sure to scroll to the top of the table on new data. For example, when navigating to another page on the *second* table, you don't want the browser to scroll to the top of the page, but rather to the top of the table.
+Lastly, pass the correct `name` property to each table in the Vue template. Optionally, you may set the `preserve-scroll` property to `table-top`. This makes sure to scroll to the top of the table on new data. For example, when changing the page of the *second* table, you want to scroll to the top of the table, instead of the top of the page.
 
 ```vue
 <script setup>
@@ -356,7 +356,7 @@ The `Table.vue` has several slots that you can use to inject your own implementa
 | tableAddSearchRow | The location of the button + dropdown to add additional search rows. |
 | tableColumns | The location of the button + dropdown to toggle columns. |
 | tableSearchRows | The location of the input elements that handle the additional search rows. |
-| tableWrapper | The components that *wraps* the table element, handling overflow, shadow, padding, etc. |
+| tableWrapper | The component that *wraps* the table element, handling overflow, shadow, padding, etc. |
 | table | The actual table element. |
 | head | The location of the table header. |
 | body | The location of the table body.  |
@@ -379,7 +379,7 @@ Each slot is provided with props to interact with the parent `Table` component.
 
 ## Testing
 
-There's a huge [Laravel Dusk](https://laravel.com/docs/9.x/dusk) E2E test-suite that can be found in the `app` directory. This is a Laravel + Inertia application.
+A huge [Laravel Dusk](https://laravel.com/docs/9.x/dusk) E2E test-suite can be found in the `app` directory. Here you'll find a Laravel + Inertia application.
 
 ```bash
 cd app
