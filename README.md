@@ -211,7 +211,7 @@ module.exports = {
 
 #### Table component
 
-To use the `Table` component and all its related features, all you need to do is import the `Table` component, pass the `$inertia` object and the `users` data to the component.
+To use the `Table` component and all its related features, all you need to do is import the `Table` component, pass the `$inertia` object, and the `users` data to the component.
 
 ```vue
 <script setup>
@@ -249,9 +249,9 @@ The `Table` has some additional properties to tweak its front-end behaviour.
 | Property | Description | Default |
 | --- | --- | --- |
 | striped | Adds a *striped* layout to the table. | `false` |
-| preventOverlappingRequests | Cancels a previous visit on new user input to prevent inconsistent state | `true` |
-| inputDebounceMs | Number of ms to wait before refreshing the table on user input | 350 |
-| preventScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behaviour. You may also pass `table-top` to this property | false |
+| preventOverlappingRequests | Cancels a previous visit on new user input to prevent inconsistent state. | `true` |
+| inputDebounceMs | Number of ms to wait before refreshing the table on user input. | 350 |
+| preventScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behaviour. You may also pass `table-top` to this property to scroll to the top of the table on new data. | false |
 
 #### Table.vue slots
 
@@ -286,13 +286,29 @@ Each slot is provided with props to interact with the parent `Table` component.
 </template>
 ```
 
+#### Custom column cells
+
+When using *auto-fill*, you may want to transform the presented data for a specific column while leaving the other columns untouched. For this, you may use a cell template. This example is taken from the [Example Controller](#example-controller) above.
+
+```vue
+<template>
+  <Table :inertia="$inertia" :resource="users">
+    <template #cell(actions)="{ item: user }">
+      <a :href="`/users/${user.id}/edit`">
+        Edit
+      </a>
+    </template>
+  </Table>
+</template>
+```
+
 #### Multiple tables per page
 
 ...
 
 ## Testing
 
-There's a huge Laravel Dusk E2E test-suite that can be found in the `app` directory. This is a Laravel + Inertia application.
+There's a huge [Laravel Dusk](https://laravel.com/docs/9.x/dusk) E2E test-suite that can be found in the `app` directory. This is a Laravel + Inertia application.
 
 ```bash
 cd app
