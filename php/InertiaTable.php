@@ -143,10 +143,11 @@ class InertiaTable
 
             'globalSearch' => $this->searchInputs->firstWhere('key', 'global'),
 
-            'cursor'   => $this->query('cursor'),
-            'sort'     => $this->query('sort', $this->defaultSort) ?: null,
-            'page'     => Paginator::resolveCurrentPage($this->pageName),
-            'pageName' => $this->pageName,
+            'cursor'      => $this->query('cursor'),
+            'sort'        => $this->query('sort', $this->defaultSort) ?: null,
+            'defaultSort' => $this->defaultSort,
+            'page'        => Paginator::resolveCurrentPage($this->pageName),
+            'pageName'    => $this->pageName,
         ];
     }
 

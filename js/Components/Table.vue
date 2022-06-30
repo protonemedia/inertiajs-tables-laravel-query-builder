@@ -195,7 +195,7 @@ import TableGlobalSearch from "./TableGlobalSearch.vue";
 import TableSearchRows from "./TableSearchRows.vue";
 import TableReset from "./TableReset.vue";
 import TableWrapper from "./TableWrapper.vue";
-import { computed, ref, watch } from "vue"
+import { computed, onMounted, ref, watch, onUnmounted } from "vue"
 import qs from "qs";
 import clone from "lodash-es/clone";
 import filter from "lodash-es/filter";
@@ -356,39 +356,44 @@ function showSearchInput(key) {
 const updates = ref(0)
 
 const canBeReset = computed(() => {
-    if(updates.value < 0){
-        return false;
-    }
-
     if(forcedVisibleSearchInputs.value.length > 0){
         return true;
     }
 
-    const query = qs.parse(location.search.substring(1))
-    const keys = Object.keys(query);
+    const queryStringData = qs.parse(location.search.substring(1));
 
-    if(keys.length === 0) {
-        return false;
+    const page = queryStringData[pageName.value];
+
+    if(page > 1) {
+        return true;
     }
 
-    if(keys.length === 1 && query.remember === "forget"){
-        return false;
-    }
-    if(keys.length === 1 && query[pageName.value] == 1){
-        return false;
-    }
+    const prefix = props.name === "default" ? "" : (props.name + "_");
+    let dirty = false
 
-    return true;
+    forEach(["filter", "columns", "cursor", "sort"], (key) => {
+        const value = queryStringData[prefix + key];
+
+        if(key === "sort" && value === queryBuilderProps.value.defaultSort) {
+            return;
+        }
+
+        if(value !== undefined) {
+            dirty = true
+        }
+    });
+
+    return dirty;
 });
 
 function resetQuery() {
     forcedVisibleSearchInputs.value = [];
 
-    forEach(queryBuilderData.value.filters, (filter, key)=>{
+    forEach(queryBuilderData.value.filters, (filter, key) => {
         queryBuilderData.value.filters[key].value = null;
     })
 
-    forEach(queryBuilderData.value.searchInputs, (filter, key)=>{
+    forEach(queryBuilderData.value.searchInputs, (filter, key) => {
         queryBuilderData.value.searchInputs[key].value = null;
     })
 
@@ -602,6 +607,18 @@ function visit(url) {
 watch(queryBuilderData, () => {
     visit(location.pathname + "?" +  generateNewQueryString())
 }, {deep: true})
+
+const inertiaListener = () => {
+    updates.value++;
+}
+
+onMounted(() => {
+    document.addEventListener("inertia:success", inertiaListener)
+})
+
+onUnmounted(() => {
+    document.removeEventListener("inertia:success", inertiaListener)
+})
 
 //
 

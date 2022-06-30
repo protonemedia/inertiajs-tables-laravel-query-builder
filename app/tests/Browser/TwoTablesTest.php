@@ -172,6 +172,16 @@ class TwoTablesTest extends DuskTestCase
                 ->orderBy('name')
                 ->get();
 
+            $companies->last()->update([
+                'name'    => 'Protone Media B.V.',
+                'address' => 'The Netherlands',
+            ]);
+
+            $users->last()->update([
+                'name'  => 'Pascal Baljet',
+                'email' => 'pascal@pascal.pascal',
+            ]);
+
             $browser->visit('/two-tables/spatie')
                 ->within('@table-companies', function (Browser $browser) use ($companies) {
                     $browser
