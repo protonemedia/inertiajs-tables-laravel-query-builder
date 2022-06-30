@@ -8,61 +8,58 @@
       :class="{'opacity-75': isVisiting}"
       :disabled="preventOverlappingRequests && isVisiting"
     >
-      <div class="flex flex-row justify-end space-x-4">
-        <slot
-          name="tableFilter"
-          :has-filters="queryBuilderProps.hasFilters"
-          :has-enabled-filters="queryBuilderProps.hasEnabledFilters"
-          :filters="queryBuilderProps.filters"
-          :on-filter-change="changeFilterValue"
-        >
-          <TableFilter
-            v-if="queryBuilderProps.hasFilters"
+      <div class="flex flex-row flex-wrap sm:flex-nowrap justify-start px-4 sm:px-0">
+        <div class="order-2 sm:order-1 mr-4">
+          <slot
+            name="tableFilter"
+            :has-filters="queryBuilderProps.hasFilters"
             :has-enabled-filters="queryBuilderProps.hasEnabledFilters"
             :filters="queryBuilderProps.filters"
             :on-filter-change="changeFilterValue"
-          />
-        </slot>
-
-        <div
-          v-if="queryBuilderProps.globalSearch || canBeReset"
-          class="flex flex-row"
-          :class="{
-            'space-x-4': queryBuilderProps.globalSearch && canBeReset,
-            'flex-grow': queryBuilderProps.globalSearch
-          }"
-        >
-          <div class="flex-grow">
-            <slot
-              name="tableGlobalSearch"
-              :has-global-search="queryBuilderProps.globalSearch"
-              :label="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.label : null"
-              :value="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.value : null"
-              :on-change="changeGlobalSearchValue"
-            >
-              <TableGlobalSearch
-                v-if="queryBuilderProps.globalSearch"
-                :label="queryBuilderProps.globalSearch.label"
-                :value="queryBuilderProps.globalSearch.value"
-                :on-change="changeGlobalSearchValue"
-              />
-            </slot>
-          </div>
-
-          <slot
-            name="tableReset"
-            can-be-reset="canBeReset"
-            :on-click="resetQuery"
           >
-            <div>
-              <TableReset
-                v-if="canBeReset"
-                :on-click="resetQuery"
-              />
-            </div>
+            <TableFilter
+              v-if="queryBuilderProps.hasFilters"
+              :has-enabled-filters="queryBuilderProps.hasEnabledFilters"
+              :filters="queryBuilderProps.filters"
+              :on-filter-change="changeFilterValue"
+            />
           </slot>
         </div>
 
+        <div
+          v-if="queryBuilderProps.globalSearch"
+          class="flex flex-row w-full sm:w-auto sm:flex-grow order-1 sm:order-2 mb-2 sm:mb-0 sm:mr-4"
+        >
+          <slot
+            name="tableGlobalSearch"
+            :has-global-search="queryBuilderProps.globalSearch"
+            :label="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.label : null"
+            :value="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.value : null"
+            :on-change="changeGlobalSearchValue"
+          >
+            <TableGlobalSearch
+              v-if="queryBuilderProps.globalSearch"
+              class="flex-grow"
+              :label="queryBuilderProps.globalSearch.label"
+              :value="queryBuilderProps.globalSearch.value"
+              :on-change="changeGlobalSearchValue"
+            />
+          </slot>
+        </div>
+
+
+        <slot
+          name="tableReset"
+          can-be-reset="canBeReset"
+          :on-click="resetQuery"
+        >
+          <div
+            v-if="canBeReset"
+            class="order-5 sm:order-3 sm:mr-4 ml-auto"
+          >
+            <TableReset :on-click="resetQuery" />
+          </div>
+        </slot>
 
         <slot
           name="tableAddSearchRow"
@@ -73,6 +70,7 @@
         >
           <TableAddSearchRow
             v-if="queryBuilderProps.hasSearchInputs"
+            class="order-3 sm:order-4 mr-4"
             :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
             :has-search-inputs-without-value="queryBuilderProps.hasSearchInputsWithoutValue"
             :on-add="showSearchInput"
@@ -88,6 +86,7 @@
         >
           <TableColumns
             v-if="queryBuilderProps.hasToggleableColumns"
+            class="order-4 mr-4 sm:mr-0 sm:order-5"
             :columns="queryBuilderProps.columns"
             :has-hidden-columns="queryBuilderProps.hasHiddenColumns"
             :on-change="changeColumnStatus"
@@ -174,11 +173,13 @@
             :on-click="visit"
             :has-data="hasData"
             :meta="resourceMeta"
+            :on-per-page-change="onPerPageChange"
           >
             <Pagination
               :on-click="visit"
               :has-data="hasData"
               :meta="resourceMeta"
+              :on-per-page-change="onPerPageChange"
             />
           </slot>
         </TableWrapper>
@@ -450,6 +451,12 @@ function changeFilterValue(key, value) {
     queryBuilderData.value.page = 1;
 }
 
+function onPerPageChange(value) {
+    queryBuilderData.value.cursor = null;
+    queryBuilderData.value.perPage = value;
+    queryBuilderData.value.page = 1;
+}
+
 function findDataKey(dataKey, key) {
     return findKey(queryBuilderData.value[dataKey], (value) => {
         return value.key == key;
@@ -515,6 +522,7 @@ function dataForNewQueryString() {
     const cursor = queryBuilderData.value.cursor;
     const page = queryBuilderData.value.page;
     const sort = queryBuilderData.value.sort;
+    const perPage = queryBuilderData.value.perPage;
 
     if(cursor) {
         queryData.cursor = cursor;
@@ -523,6 +531,11 @@ function dataForNewQueryString() {
     if(page > 1) {
         queryData.page = page;
     }
+
+    if(perPage > 1) {
+        queryData.perPage = perPage;
+    }
+
 
     if(sort) {
         queryData.sort = sort;
@@ -545,6 +558,8 @@ function generateNewQueryString() {
     forEach(dataForNewQueryString(), (value, key) =>{
         if(key === "page") {
             queryStringData[pageName.value] = value;
+        } else if(key === "perPage") {
+            queryStringData.perPage = value;
         } else {
             queryStringData[prefix + key] = value;
         }

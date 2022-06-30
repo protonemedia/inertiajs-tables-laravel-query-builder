@@ -11,7 +11,7 @@ $table = new UserTableView;
 
 Route::get('/custom', function () {
     return Inertia::render('CustomTable', [
-        'users' => User::paginate(10),
+        'users' => User::query()->paginate(10),
     ]);
 });
 

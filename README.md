@@ -147,6 +147,7 @@ InertiaTable::defaultGlobalSearch(false); // disable
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -158,9 +159,11 @@ class UserIndexController
     {
         $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
             $query->where(function ($query) use ($value) {
-                $query
-                  ->orWhere('name', 'LIKE', "%{$value}%")
-                  ->orWhere('email', 'LIKE', "%{$value}%");
+                Collection::wrap($value)->each(function ($value) use ($query) {
+                    $query
+                        ->orWhere('name', 'LIKE', "%{$value}%")
+                        ->orWhere('email', 'LIKE', "%{$value}%");
+                });
             });
         });
 

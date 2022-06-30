@@ -26,7 +26,7 @@
               :ref="skipUnwrap.el"
               :key="searchInput.key"
               :name="searchInput.key"
-              class="block w-full sm:text-sm rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300"
+              class="block w-full text-sm rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300"
               :value="searchInput.value"
               type="text"
               @input="onChange(searchInput.key, $event.target.value)"

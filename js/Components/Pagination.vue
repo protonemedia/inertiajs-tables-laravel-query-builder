@@ -26,6 +26,10 @@
       >
         {{ translations.previous }}
       </component>
+      <PerPageSelector
+        :value="perPage"
+        :on-change="onPerPageChange"
+      />
       <component
         :is="nextPageUrl ? 'a' : 'div'"
         :class="{
@@ -46,8 +50,13 @@
       v-if="hasData && hasLinks"
       class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
     >
-      <div>
-        <p class="hidden lg:block text-sm text-gray-700">
+      <div class="flex flex-row space-x-4 items-center flex-grow">
+        <PerPageSelector
+          :value="perPage"
+          :on-change="onPerPageChange"
+        />
+
+        <p class="hidden lg:block text-sm text-gray-700 flex-grow">
           <span class="font-medium">{{ pagination.from }}</span>
           {{ translations.to }}
           <span class="font-medium">{{ pagination.to }}</span>
@@ -144,11 +153,19 @@
 </template>
 
 <script setup>
+import PerPageSelector from "./PerPageSelector.vue"
 import { computed } from "vue";
 
 const props = defineProps({
     onClick: {
         type: Function,
+        required: false,
+    },
+    onPerPageChange: {
+        type: Function,
+        default() {
+            return () => {}
+        },
         required: false,
     },
     hasData: {
@@ -206,4 +223,8 @@ const nextPageUrl = computed(() => {
 
     return null;
 });
+
+const perPage = computed(() => {
+    return parseInt(pagination.value.per_page)
+})
 </script>

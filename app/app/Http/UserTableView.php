@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -15,15 +16,19 @@ class UserTableView
     {
         $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
             $query->where(function ($query) use ($value) {
-                $query->where('name', 'LIKE', "%{$value}%")->orWhere('email', 'LIKE', "%{$value}%");
+                Collection::wrap($value)->each(function ($value) use ($query) {
+                    $query
+                        ->orWhere('name', 'LIKE', "%{$value}%")
+                        ->orWhere('email', 'LIKE', "%{$value}%");
+                });
             });
         });
 
-        $users = QueryBuilder::for(User::class)
+        $users = QueryBuilder::for(User::query())
             ->defaultSort('name')
             ->allowedSorts(['name', 'email', 'language_code'])
             ->allowedFilters(['name', 'email', 'language_code', $globalSearch])
-            ->{$paginateMethod}(10)
+            ->{$paginateMethod}(request()->query('perPage', 10))
             ->withQueryString();
 
         return Inertia::render('Users', [
