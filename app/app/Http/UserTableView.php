@@ -36,10 +36,10 @@ class UserTableView
                 ->column(key: 'email', searchable: true, sortable: true)
                 ->column(key: 'language_code', label: 'Language')
                 ->column(label: 'Actions', custom: true)
-                ->selectFilter(key: 'language_code', label: 'Language', options: [
+                ->selectFilter(key: 'language_code', options: [
                     'en' => 'English',
                     'nl' => 'Dutch',
-                ]);
+                ], label: 'Language');
         });
     }
 }

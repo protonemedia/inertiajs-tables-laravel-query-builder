@@ -4,25 +4,22 @@
 [![npm](https://img.shields.io/npm/dt/@protonemedia/inertiajs-tables-laravel-query-builder.svg?style=flat-square)](https://www.npmjs.com/package/@protonemedia/inertiajs-tables-laravel-query-builder)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/protonemedia/inertiajs-tables-laravel-query-builder.svg?style=flat-square)](https://packagist.org/packages/protonemedia/inertiajs-tables-laravel-query-builder)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-![run-tests](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/workflows/run-tests/badge.svg)
+![run-tests](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/workflows/php/badge.svg)
 
 This package provides a *DataTables-like* experience for [Inertia.js](https://inertiajs.com/) with support for searching, filtering, sorting, toggling columns, and pagination. It generates URLs that can be consumed by Spatie's excellent [Laravel Query Builder](https://github.com/spatie/laravel-query-builder) package, with no additional logic needed. The components are styled with [Tailwind CSS 3.0](https://tailwindcss.com/), but it's fully customizable and you can bring your own components. The data refresh logic is based on Inertia's [Ping CRM demo](https://github.com/inertiajs/pingcrm).
 
 ![Inertia.js Table for Laravel Query Builder](https://user-images.githubusercontent.com/8403149/113340981-e3863680-932c-11eb-8017-7a6588916508.mp4)
 
-## Launcher 🚀
-
-Hey! We've built a Docker-based deployment tool to launch apps and sites fully containerized. You can find all features and the roadmap on our [website](https://uselauncher.com), and we are on [Twitter](https://twitter.com/uselauncher) as well!
-
-## Support
+## Sponsorship Support
 
 We proudly support the community by developing Laravel packages and giving them away for free. Keeping track of issues and pull requests takes time, but we're happy to help! If this package saves you time or if you're relying on it professionally, please consider [supporting the maintenance and development](https://github.com/sponsors/pascalbaljet).
 
 ## Features
 
-* Global search
+* Auto-fill: auto generates `thead` and `tbody` with support for custom cells
+* Global Search
 * Search per field
-* Filters
+* Select filters
 * Toggle columns
 * Sort columns
 * Pagination
@@ -35,14 +32,6 @@ We proudly support the community by developing Laravel packages and giving them 
 * [Inertia.js](https://inertiajs.com/)
 * [Tailwind CSS v3](https://tailwindcss.com/) + [Forms plugin](https://github.com/tailwindlabs/tailwindcss-forms)
 * PHP 8.0+
-
-## Roadmap
-
-* Remove @tailwindcss/forms dependency
-* Debounce delay for inputs
-* Convert Table.vue styling to proper Tailwind syntax
-* Improve styling on really small screens
-* Better documentation about customization and move to real renderless components
 
 ## Installation
 
@@ -60,64 +49,86 @@ The package will automatically register the Service Provider which provides a `t
 
 #### Search fields
 
-With the `addSearch` method, you can specify which attributes are searchable. Search queries are passed to the URL query as a `filter`. This integrates seamlessly with the [filtering feature](https://spatie.be/docs/laravel-query-builder/v3/features/filtering) of the Laravel Query Builder package.
+With the `searchInput` method, you can specify which attributes are searchable. Search queries are passed to the URL query as a `filter`. This integrates seamlessly with the [filtering feature](https://spatie.be/docs/laravel-query-builder/v5/features/filtering) of the Laravel Query Builder package.
 
-You need to pass in the attribute and the label as arguments. With the `addSearchRows` method, you can add multiple attributes at once.
+
+Though it's enough to just pass in the column key, you may specify a custom label and default value.
 
 ```php
-Inertia::render('Page/Index')->table(function ($table) {
-    $table->addSearch('name', 'Name');
+use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
 
-    $table->addSearchRows([
-        'email' => 'Email',
-        'job_title' => 'Job Title',
-    ]);
+Inertia::render('Page/Index')->table(function (InertiaTable $table) {
+    $table->searchInput('name');
+
+    $table->searchInput(
+        key: 'framework',
+        label: 'Find your framework',
+        defaultValue: 'Laravel'
+    );
 });
 ```
 
-#### Filters
+#### Select Filters
 
-Filters are similar to search fields, but they use a `select` element instead of an `input` element. This way, you can present the user a pre-defined set of options. Under the hood, this uses the same filtering feature of the Laravel Query Builder package.
+Select Filters are similar to search fields, but they use a `select` element instead of an `input` element. This way, you can present the user a pre-defined set of options. Under the hood, this uses the same filtering feature of the Laravel Query Builder package.
 
-This method takes three arguments: the attribute, the label, and a key-value array with the options.
+The `selectFilter` method requires two arguments: the key, and a key-value array with the options.
 
 ```php
-Inertia::render('Page/Index')->table(function ($table) {
-    $table->addFilter('language_code', 'Language', [
+Inertia::render('Page/Index')->table(function (InertiaTable $table) {
+    $table->selectFilter('language_code', [
         'en' => 'Engels',
         'nl' => 'Nederlands',
     ]);
 });
 ```
 
-#### Columns
-
-With the `addColumn` method, you can specify which columns you want to be toggleable. You need to pass in a key and label for each column. With the `addColumns` method, you can add multiple columns at once.
+By default, the `selectFilter` will add a *no filter* option to the array. You may disable this, or specify a custom label for it.
 
 ```php
-Inertia::render('Page/Index')->table(function ($table) {
-    $table->addColumn('name', 'Name');
-
-    $table->addColumns([
-        'email' => 'Email',
-        'language_code' => 'Language',
-    ]);
+Inertia::render('Page/Index')->table(function (InertiaTable $table) {
+    $table->selectFilter(
+        key: 'language_code',
+        options: $languages,
+        label: 'Language'
+        defaultValue: 'nl',
+        noFilterOption: true
+        noFilterOptionLabel: 'All languages'
+    );
 });
 ```
 
-The `addColumn` method has an optional third parameter to disable the column by default:
+#### Columns
+
+With the `column` method, you can specify which columns you want to be toggleable, sortable,and searchable. You need to pass in at least a key or label for each column.
 
 ```php
-$table->addColumn('name', 'Name', false);
+Inertia::render('Page/Index')->table(function (InertiaTable $table) {
+    $table->column('name', 'User Name');
+
+    $table->column(
+        key: 'name',
+        label: 'User Name',
+        canBeHidden: true,
+        hidden: false,
+        sortable: true,
+        searchable: true
+    );
+});
+
+The `searchable` option is a shortcut to the `searchInput` method. The example below will essentially call `$table->searchInput('name', 'User Name')`.
 ```
 
-#### Disable global search
 
-By default, global search is enabled. This query will be applied to the filters by the `global` attribute. If you don't want to use the global search, you can use the `disableGlobalSearch` method.
+#### Global Search
+
+You may enable Global Search
 
 ```php
-Inertia::render('Page/Index')->table(function ($table) {
-    $table->disableGlobalSearch();
+Inertia::render('Page/Index')->table(function (InertiaTable $table) {
+    $table->withGlobalSearch();
+
+    $table->withGlobalSearch('Search through the data...');
 });
 ```
 
@@ -191,76 +202,20 @@ module.exports = {
 
 #### Table component
 
-To use the `Table` component and all its related features, you need to add the `InteractsWithQueryBuilder` mixin to your component and add the `Tailwind2.Table` component to the `components` key.
-
-You can use the named `#head` slot to provide the table header and the named `#body` slot to provide the table body. You can use the `showColumn` method to determine if a column should be visible or not. You can use the `sortBy` method to set the column you want to sort by.
-
-#### Page component example
+To use the `Table` component and all its related features, all you need to do is import the `Table` component, pass the `$inertia` object and the `users` data to the component.
 
 ```vue
-<template>
-  <Table
-    :filters="queryBuilderProps.filters"
-    :search="queryBuilderProps.search"
-    :columns="queryBuilderProps.columns"
-    :on-update="setQueryBuilder"
-    :meta="users"
-  >
-    <template #head>
-      <tr>
-        <th @click.prevent="sortBy('name')">Name</th>
-        <th v-show="showColumn('email')" @click.prevent="sortBy('email')">Email</th>
-        <th v-show="showColumn('language_code')" @click.prevent="sortBy('language_code')">Language</th>
-      </tr>
-    </template>
+<script setup>
+import { Table } from "@protonemedia/inertiajs-tables-laravel-query-builder";
 
-    <template #body>
-      <tr v-for="user in users.data" :key="user.id">
-        <td>{{ user.name }}</td>
-        <td v-show="showColumn('email')">{{ user.email }}</td>
-        <td v-show="showColumn('language_code')">{{ user.language_code }}</td>
-      </tr>
-    </template>
-  </Table>
-</template>
-
-<script>
-import { InteractsWithQueryBuilder, Tailwind2 } from '@protonemedia/inertiajs-tables-laravel-query-builder';
-
-export default {
-  mixins: [InteractsWithQueryBuilder],
-
-  components: {
-    Table: Tailwind2.Table
-  },
-
-  props: {
-    users: Object
-  }
-};
+defineProps(["users"])
 </script>
+
+<template>
+  <Table :inertia="$inertia" :resource="users" />
+</template>
 ```
 
-#### Attributes and pagination
-
-The `filters`, `search`, `columns`, and `on-update` attributes of the `Table` component are required, but the the `InteractsWithQueryBuilder` mixin magically provides the values for those attributes. You just have to specify them like the example template above.
-
-When you pass a `meta` object to the table, it will automatically provide a pagination component.
-
-You can override the default pagination translations with the `setTranslations` method of the base component. You can do this in your main JavaScript file:
-
-```js
-import { Components } from "@protonemedia/inertiajs-tables-laravel-query-builder";
-
-Components.Pagination.setTranslations({
-  no_results_found: "No results found",
-  previous: "Previous",
-  next: "Next",
-  to: "to",
-  of: "of",
-  results: "results",
-});
-```
 
 #### Table.vue slots
 
@@ -270,6 +225,7 @@ The `Table.vue` has several slots that you can use to inject your own implementa
 | --- | --- |
 | tableFilter | The location of the button + dropdown to select filters. |
 | tableGlobalSearch | The location of the input element that handles the global search. |
+| tableReset | The location of the button that resets the table. |
 | tableAddSearchRow | The location of the button + dropdown to add additional search rows. |
 | tableColumns | The location of the button + dropdown to toggle columns. |
 | tableSearchRows | The location of the input elements that handle the additional search rows. |
@@ -287,70 +243,28 @@ Each slot is provided with props to interact with the parent `Table` component.
     <template v-slot:tableGlobalSearch="slotProps">
       <input
         placeholder="Custom Global Search Component..."
-        :value="slotProps.search.global.value"
-        @input="slotProps.changeGlobalSearchValue($event.target.value)"
+        @input="slotProps.onChange($event.target.value)"
       />
-    </template>
-
-    <template #body>
-      ...
     </template>
   </Table>
 </template>
 ```
 
-#### Bring your own components
-
-The templates and logic of the components are entirely separated. This way, you can create new templates while reusing the existing logic.
-
-There are nine components that you can import and use as a mixin for your templates. For example, to write your own `TableGlobalSearch` component, you can import the base component and use its logic by adding it as a mixin.
-
-```vue
-<template>
-  <input
-    class="form-input"
-    placeholder="Custom Global Search Component..."
-    :value="value"
-    @input="onChange($event.target.value)"
-  />
-</template>
-
-<script>
-import { Components } from '@protonemedia/inertiajs-tables-laravel-query-builder';
-
-export default {
-  mixins: [Components.TableGlobalSearch],
-};
-</script>
-```
-
-Available components:
-* Components.ButtonWithDropdown
-* Components.OnClickOutside
-* Components.Pagination
-* Components.Table
-* Components.TableAddSearchRow
-* Components.TableColumns
-* Components.TableFilter
-* Components.TableGlobalSearch
-* Components.TableSearchRows
-
-A good starting point would be to duplicate the `js/Tailwind2` folder into your app and start customizing the templates from there.
-
 ## Testing
 
-You can run the PHP test suite with `composer`:
+There's a huge Laravel Dusk E2E test-suite that can be found in the `app` directory. This is a Laravel + Inertia application.
 
 ```bash
-composer test
-```
-
-You can run the JS test suite with either `npm` or `yarn`:
-
-```bash
-npm run test
-
-yarn test
+cd app
+cp .env.example .env
+composer install
+npm install
+npm run production
+touch database/database.sqlite
+php artisan migrate:fresh --seed
+php artisan dusk:chrome-driver
+php artisan serve &
+php artisan dusk
 ```
 
 ## Changelog

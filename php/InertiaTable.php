@@ -234,16 +234,18 @@ class InertiaTable
      * @param bool $hidden
      * @param bool $sortable
      * @param bool $searchable
-     * @param bool $custom
      * @return self
      */
-    public function column(string $key = null, string $label = null, bool $canBeHidden = true, bool $hidden = false, bool $sortable = false, bool $searchable = false, bool $custom = false): self
+    public function column(string $key = null, string $label = null, bool $canBeHidden = true, bool $hidden = false, bool $sortable = false, bool $searchable = false): self
     {
+        $key   = $key ?: Str::kebab($label);
+        $label = $label ?: Str::headline($key);
+
         $this->columns = $this->columns->reject(function (Column $column) use ($key) {
             return $column->key === $key;
         })->push($column = new Column(
-            key: $key ?: Str::kebab($label),
-            label: $label ?: Str::headline($key),
+            key: $key,
+            label: $label,
             canBeHidden: $canBeHidden,
             hidden: $hidden,
             sortable: $sortable,
@@ -293,14 +295,14 @@ class InertiaTable
      * Add a select filter to the query builder.
      *
      * @param string $key
-     * @param string|null $label
      * @param array $options
+     * @param string|null $label
      * @param string|null $defaultValue
      * @param bool $noFilterOption
      * @param string|null $noFilterOptionLabel
      * @return self
      */
-    public function selectFilter(string $key, string $label = null, array $options, string $defaultValue = null, bool $noFilterOption = true, string $noFilterOptionLabel = null): self
+    public function selectFilter(string $key, array $options, string $label = null, string $defaultValue = null, bool $noFilterOption = true, string $noFilterOptionLabel = null): self
     {
         $this->filters = $this->filters->reject(function (Filter $filter) use ($key) {
             return $filter->key === $key;
