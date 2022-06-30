@@ -8,7 +8,7 @@
     <template #button>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5 mr-2 text-gray-400"
+        class="h-5 w-5 text-gray-400"
 
         viewBox="0 0 20 20"
         fill="currentColor"
@@ -19,7 +19,6 @@
           clip-rule="evenodd"
         />
       </svg>
-      <span>Filter</span>
     </template>
 
     <div

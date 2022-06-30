@@ -24,7 +24,21 @@
         class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md bg-white"
         @click.prevent="onClick(previousPageUrl)"
       >
-        {{ translations.previous }}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7 16l-4-4m0 0l4-4m-4 4h18"
+          />
+        </svg>
+        <span class="hidden sm:inline ml-2">{{ translations.previous }}</span>
       </component>
       <PerPageSelector
         :value="perPage"
@@ -41,7 +55,21 @@
         class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md bg-white"
         @click.prevent="onClick(nextPageUrl)"
       >
-        {{ translations.next }}
+        <span class="hidden sm:inline mr-2">{{ translations.next }}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M17 8l4 4m0 0l-4 4m4-4H3"
+          />
+        </svg>
       </component>
     </div>
 
