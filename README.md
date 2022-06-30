@@ -90,7 +90,7 @@ Inertia::render('Page/Index')->table(function (InertiaTable $table) {
     $table->selectFilter(
         key: 'language_code',
         options: $languages,
-        label: 'Language'
+        label: 'Language',
         defaultValue: 'nl',
         noFilterOption: true
         noFilterOptionLabel: 'All languages'
@@ -115,14 +115,13 @@ Inertia::render('Page/Index')->table(function (InertiaTable $table) {
         searchable: true
     );
 });
-
-The `searchable` option is a shortcut to the `searchInput` method. The example below will essentially call `$table->searchInput('name', 'User Name')`.
 ```
 
+The `searchable` option is a shortcut to the `searchInput` method. The example below will essentially call `$table->searchInput('name', 'User Name')`.
 
 #### Global Search
 
-You may enable Global Search
+You may enable Global Search with the `withGlobalSearch` method, and optionally specify a placeholder.
 
 ```php
 Inertia::render('Page/Index')->table(function (InertiaTable $table) {
@@ -130,6 +129,14 @@ Inertia::render('Page/Index')->table(function (InertiaTable $table) {
 
     $table->withGlobalSearch('Search through the data...');
 });
+```
+
+If you want to enable Global Search for every table by default, you may use the static `defaultGlobalSearch` method, for example, in the `AppServiceProvider` class:
+
+```php
+InertiaTable::defaultGlobalSearch();
+InertiaTable::defaultGlobalSearch('Default custom placeholder');
+InertiaTable::defaultGlobalSearch(false); // disable
 ```
 
 #### Example controller
@@ -151,7 +158,9 @@ class UserIndexController
     {
         $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
             $query->where(function ($query) use ($value) {
-                $query->where('name', 'LIKE', "%{$value}%")->orWhere('email', 'LIKE', "%{$value}%");
+                $query
+                  ->orWhere('name', 'LIKE', "%{$value}%")
+                  ->orWhere('email', 'LIKE', "%{$value}%");
             });
         });
 
@@ -165,17 +174,17 @@ class UserIndexController
         return Inertia::render('Users/Index', [
             'users' => $users,
         ])->table(function (InertiaTable $table) {
-            $table->addSearchRows([
-                'name' => 'Name',
-                'email' => 'Email address',
-            ])->addFilter('language_code', 'Language', [
-                'en' => 'Engels',
-                'nl' => 'Nederlands',
-            ])->addColumns([
-                'email' => 'Email address',
-                'language_code' => 'Language',
-            ]);
-        });
+            $table
+              ->withGlobalSearch()
+              ->defaultSort('name')
+              ->column(key: 'name', searchable: true, sortable: true, canBeHidden: false)
+              ->column(key: 'email', searchable: true, sortable: true)
+              ->column(key: 'language_code', label: 'Language')
+              ->column(label: 'Actions')
+              ->selectFilter(key: 'language_code', label: 'Language', options: [
+                  'en' => 'English',
+                  'nl' => 'Dutch',
+              ]);
     }
 }
 ```
@@ -216,6 +225,33 @@ defineProps(["users"])
 </template>
 ```
 
+The `resource` property automatically detects the data and additional pagination meta data. You may also pass this manually to the component with the `data` and `meta` properties:
+
+```vue
+<template>
+  <Table :inertia="$inertia" :data="users.data" :meta="users.meta" />
+</template>
+```
+
+The `Table` has some additional properties to tweak its front-end behaviour.
+
+```vue
+<template>
+  <Table
+    :striped="true"
+    :prevent-overlapping-requests="false"
+    :input-debounce-ms="1000"
+    :prevent-scroll="true"
+  />
+</template>
+```
+
+| Property | Description | Default |
+| --- | --- |
+| striped | Adds a *striped* layout to the table. | `false` |
+| preventOverlappingRequests | Cancels a previous visit on new user input to prevent inconsistent state | `true` |
+| inputDebounceMs | Number of ms to wait before refreshing the table on user input | 350 |
+| preventScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behaviour. You may also pass `table-top` to this property | false |
 
 #### Table.vue slots
 
@@ -239,7 +275,7 @@ Each slot is provided with props to interact with the parent `Table` component.
 
 ```vue
 <template>
-  <Table ...>
+  <Table>
     <template v-slot:tableGlobalSearch="slotProps">
       <input
         placeholder="Custom Global Search Component..."
@@ -249,6 +285,10 @@ Each slot is provided with props to interact with the parent `Table` component.
   </Table>
 </template>
 ```
+
+#### Multiple tables per page
+
+...
 
 ## Testing
 
