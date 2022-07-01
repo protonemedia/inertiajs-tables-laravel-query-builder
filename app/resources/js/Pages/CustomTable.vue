@@ -11,7 +11,6 @@ defineProps(["users"])
 <template>
   <BreezeGuestLayout>
     <Table
-      :inertia="$inertia"
       :meta="users"
     >
       <template #head>

@@ -114,7 +114,7 @@
         name="tableWrapper"
         :meta="resourceMeta"
       >
-        <TableWrapper :class="{ 'mt-2': !hasOnlyData }">
+        <TableWrapper :class="{ 'mt-3': !hasOnlyData }">
           <slot name="table">
             <table class="min-w-full divide-y divide-gray-200 bg-white">
               <thead class="bg-gray-50">
@@ -200,7 +200,7 @@ import TableGlobalSearch from "./TableGlobalSearch.vue";
 import TableSearchRows from "./TableSearchRows.vue";
 import TableReset from "./TableReset.vue";
 import TableWrapper from "./TableWrapper.vue";
-import { computed, onMounted, ref, watch, onUnmounted } from "vue"
+import { computed, onMounted, ref, watch, onUnmounted, getCurrentInstance } from "vue"
 import qs from "qs";
 import clone from "lodash-es/clone";
 import filter from "lodash-es/filter";
@@ -210,18 +210,15 @@ import isEqual from "lodash-es/isEqual";
 import map from "lodash-es/map";
 import pickBy from "lodash-es/pickBy";
 
+const app = getCurrentInstance()
+const $inertia = app.appContext.config.globalProperties.$inertia;
+
 const props = defineProps({
     name: {
         type: String,
         default: "default",
         required: false,
     },
-
-    inertia: {
-        type: Object,
-        required: true,
-    },
-
     striped: {
         type: Boolean,
         default: false,
@@ -272,8 +269,8 @@ const props = defineProps({
 });
 
 const queryBuilderProps = ref(
-    props.inertia.page.props.queryBuilderProps
-        ? props.inertia.page.props.queryBuilderProps[props.name] || {}
+    $inertia.page.props.queryBuilderProps
+        ? $inertia.page.props.queryBuilderProps[props.name] || {}
         : {}
 );
 
@@ -595,7 +592,7 @@ function visit(url) {
         return;
     }
 
-    props.inertia.get(
+    $inertia.get(
         url,
         {},
         {
@@ -616,8 +613,8 @@ function visit(url) {
                 isVisiting.value = false
             },
             onSuccess() {
-                if("queryBuilderProps" in props.inertia.page.props){
-                    queryBuilderProps.value = props.inertia.page.props.queryBuilderProps[props.name] || {}
+                if("queryBuilderProps" in $inertia.page.props){
+                    queryBuilderProps.value = $inertia.page.props.queryBuilderProps[props.name] || {}
                     queryBuilderData.value.cursor = queryBuilderProps.value.cursor
                     queryBuilderData.value.page = queryBuilderProps.value.page
                 }

@@ -11,7 +11,6 @@ defineProps(["users"])
 <template>
   <BreezeGuestLayout>
     <Table
-      :inertia="$inertia"
       :resource="users"
       :input-debounce-ms="50"
     >
