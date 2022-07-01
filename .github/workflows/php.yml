@@ -8,23 +8,43 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.1, 8.0, 7.4]
-        laravel: [9.*, 8.*]
+        php: [8.1, 8.0]
+        laravel: [9.*]
         dependency-version: [prefer-lowest, prefer-stable]
-        exclude:
-          - laravel: 9.*
-            php: 7.4
-        include:
-          - laravel: 9.*
-            testbench: 7.*
-          - laravel: 8.*
-            testbench: 6.*
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - if: ${{ steps.cache-npm.outputs.cache-hit == 'false' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
+
+      - name: "Install locked dependencies with npm"
+        run: |
+          npm ci --ignore-scripts
+          cd app
+          npm ci --ignore-scripts
+
+      - name: Build package
+        run: npm run build
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -33,10 +53,48 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, mysql, mysqli, pdo_mysql
           coverage: none
 
-      - name: Install dependencies
+      - name: Prepare demo app
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          cd app
+          cp .env.example .env
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+          npm run production
+          touch database/database.sqlite
+          php artisan migrate:fresh --seed
+          php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
+
+      - name: Start Chrome Driver
+        run: |
+          cd app
+          ./vendor/laravel/dusk/bin/chromedriver-linux &
+
+      - name: Run Laravel Server
+        run: |
+          cd app
+          php artisan serve &
 
       - name: Execute tests
-        run: vendor/bin/phpunit
+        run: |
+          cd app
+          php artisan dusk
+
+      - name: Upload Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: app/tests/Browser/screenshots
+
+      - name: Upload Console Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: console
+          path: app/tests/Browser/console
+
+      - name: Upload Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs
+          path: app/storage/logs

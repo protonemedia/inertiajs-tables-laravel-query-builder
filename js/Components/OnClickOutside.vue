@@ -1,40 +1,37 @@
 <template>
-  <div>
+  <div ref="root">
     <slot />
   </div>
 </template>
 
-<script>
-export default {
-  props: {
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue"
+
+const props = defineProps({
     do: {
-      type: Function,
-      required: true,
+        type: Function,
+        required: true,
     },
-  },
+});
 
-  data() {
-    return {
-      listener: null,
-    };
-  },
+const listener = ref(null);
+const root = ref(null);
 
-  mounted() {
-    this.listener = (e) => {
-      if (e.target === this.$el || this.$el.contains(e.target)) {
-        return;
-      }
+onMounted(() => {
+    listener.value = (e) => {
+        if (e.target === root.value || root.value.contains(e.target)) {
+            return;
+        }
 
-      this.do();
+        props.do();
     };
 
-    document.addEventListener("click", this.listener);
-    document.addEventListener("touchstart", this.listener);
-  },
+    document.addEventListener("click", listener.value);
+    document.addEventListener("touchstart", listener.value);
+})
 
-  beforeUnmount() {
-    document.removeEventListener("click", this.listener);
-    document.removeEventListener("touchstart", this.listener);
-  },
-};
+onBeforeUnmount(() => {
+    document.removeEventListener("click", listener.value);
+    document.removeEventListener("touchstart", listener.value);
+})
 </script>
