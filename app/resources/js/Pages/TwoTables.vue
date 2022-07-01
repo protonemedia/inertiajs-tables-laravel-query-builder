@@ -11,7 +11,6 @@ defineProps(["companies", "users"])
 <template>
   <BreezeGuestLayout>
     <Table
-      :inertia="$inertia"
       :resource="companies"
       name="companies"
       preserve-scroll="table-top"
@@ -20,7 +19,6 @@ defineProps(["companies", "users"])
 
     <Table
       class="mt-8"
-      :inertia="$inertia"
       :resource="users"
       name="users"
       preserve-scroll="table-top"

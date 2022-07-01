@@ -214,7 +214,7 @@ module.exports = {
 
 #### Table component
 
-To use the `Table` component and all its related features, you must import the `Table` component, pass the `$inertia` object, and the `users` data to the component.
+To use the `Table` component and all its related features, you must import the `Table` component and pass the `users` data to the component.
 
 ```vue
 <script setup>
@@ -224,7 +224,7 @@ defineProps(["users"])
 </script>
 
 <template>
-  <Table :inertia="$inertia" :resource="users" />
+  <Table :resource="users" />
 </template>
 ```
 
@@ -232,7 +232,7 @@ The `resource` property automatically detects the data and additional pagination
 
 ```vue
 <template>
-  <Table :inertia="$inertia" :data="users.data" :meta="users.meta" />
+  <Table :data="users.data" :meta="users.meta" />
 </template>
 ```
 
@@ -240,7 +240,7 @@ If you want to manually render the table, like in v1 of this package, you may us
 
 ```vue
 <template>
-  <Table :inertia="$inertia" :meta="users">
+  <Table :meta="users">
     <template #head>
       <tr>
         <th>User</th>
@@ -285,7 +285,7 @@ When using *auto-fill*, you may want to transform the presented data for a speci
 
 ```vue
 <template>
-  <Table :inertia="$inertia" :resource="users">
+  <Table :resource="users">
     <template #cell(actions)="{ item: user }">
       <a :href="`/users/${user.id}/edit`">
         Edit
@@ -355,14 +355,12 @@ defineProps(["companies", "users"])
 
 <template>
   <Table
-    :inertia="$inertia"
     :resource="companies"
     name="companies"
     preserve-scroll="table-top"
   />
 
   <Table
-    :inertia="$inertia"
     :resource="users"
     name="users"
     preserve-scroll="table-top"
@@ -419,6 +417,32 @@ php artisan dusk:chrome-driver
 php artisan serve
 php artisan dusk
 ```
+
+## Upgrading from v1
+
+### Server-side
+
+* The `addColumn` method has been renamed to `column`.
+* The `addFilter` method has been renamed to `selectFilter`.
+* The `addSearch` method has been renamed to `searchInput`.
+* For all renamed methods, check out the arguments as some have been changed.
+* The `addColumns` and `addSearchRows` methods have been removed.
+* Global Search is not enabled by default anymore.
+
+### Client-side
+
+* The `InteractsWithQueryBuilder` mixin has been removed and is no longer needed.
+* The `Table` component no longer needs the `filters`, `search`, `columns`, and `on-update` properties.
+* When using a custom `thead` or `tbody` slot, you need to provide [the styling](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/blob/c8e21649ad372d309eeb62a8f771aa4c7cd0089e/js/Tailwind2/Table.vue#L1) manually.
+* When using a custom `thead`, the `showColumn` method has been renamed to `show`.
+* The templates and logic of the components are not separated anymore. Use slots to inject your own implementations.
+
+## v2.1 Roadmap
+
+* Boolean filters
+* Date filters
+* Date range filters
+* Switch to Vite for the demo app
 
 ## Changelog
 
