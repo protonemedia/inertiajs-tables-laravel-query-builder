@@ -10,6 +10,7 @@ import TableGlobalSearch from "./Components/TableGlobalSearch.vue";
 import TableReset from "./Components/TableReset.vue";
 import TableSearchRows from "./Components/TableSearchRows.vue";
 import TableWrapper from "./Components/TableWrapper.vue";
+import { getTranslations, setTranslation, setTranslations } from "./translations";
 
 export {
     ButtonWithDropdown,
@@ -24,4 +25,7 @@ export {
     TableReset,
     TableSearchRows,
     TableWrapper,
+    getTranslations,
+    setTranslation,
+    setTranslations
 }

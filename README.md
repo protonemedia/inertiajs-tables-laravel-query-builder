@@ -370,6 +370,24 @@ defineProps(["companies", "users"])
 </template>
 ```
 
+#### Pagination translations
+
+You can override the default pagination translations with the `setTranslations` method. You can do this in your main JavaScript file:
+
+```js
+import { setTranslations } from "@protonemedia/inertiajs-tables-laravel-query-builder";
+
+setTranslations({
+  next: "Next",
+  no_results_found: "No results found",
+  of: "of",
+  per_page: "per page",
+  previous: "Previous",
+  results: "results",
+  to: "to"
+});
+```
+
 #### Table.vue slots
 
 The `Table.vue` has several slots that you can use to inject your own implementations.

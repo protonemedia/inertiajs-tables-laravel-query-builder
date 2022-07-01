@@ -42,6 +42,7 @@
       </component>
       <PerPageSelector
         :value="perPage"
+        :options="perPageOptions"
         :on-change="onPerPageChange"
       />
       <component
@@ -81,6 +82,7 @@
       <div class="flex flex-row space-x-4 items-center flex-grow">
         <PerPageSelector
           :value="perPage"
+          :options="perPageOptions"
           :on-change="onPerPageChange"
         />
 
@@ -183,11 +185,21 @@
 <script setup>
 import PerPageSelector from "./PerPageSelector.vue"
 import { computed } from "vue";
+import { getTranslations } from "../translations.js"
+
+const translations = getTranslations();
 
 const props = defineProps({
     onClick: {
         type: Function,
         required: false,
+    },
+    perPageOptions: {
+        type: Array,
+        default() {
+            return () => [15, 30, 50, 100]
+        },
+        required: false
     },
     onPerPageChange: {
         type: Function,
@@ -203,21 +215,7 @@ const props = defineProps({
     meta: {
         type: Object,
         required: false,
-    },
-    translations: {
-        type: Object,
-        required: false,
-        default: () => {
-            return {
-                no_results_found: "No results found",
-                previous: "Previous",
-                next: "Next",
-                to: "to",
-                of: "of",
-                results: "results",
-            };
-        },
-    },
+    }
 });
 
 const hasLinks = computed(() => {

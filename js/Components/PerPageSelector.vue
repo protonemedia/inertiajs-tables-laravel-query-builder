@@ -10,7 +10,7 @@
       :key="option"
       :value="option"
     >
-      {{ option }} per page
+      {{ option }} {{ translations.per_page }}
     </option>
   </select>
 </template>
@@ -18,8 +18,11 @@
 <script setup>
 import { computed } from "vue";
 import uniq from "lodash-es/uniq"
+import { getTranslations } from "../translations.js"
 
-const props =defineProps({
+const translations = getTranslations();
+
+const props = defineProps({
     value: {
         type: Number,
         default: 15,

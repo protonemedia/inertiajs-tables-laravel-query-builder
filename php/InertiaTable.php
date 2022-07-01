@@ -10,8 +10,9 @@ use Inertia\Response;
 
 class InertiaTable
 {
-    private string $name     = 'default';
-    private string $pageName = 'page';
+    private string $name          = 'default';
+    private string $pageName      = 'page';
+    private array $perPageOptions = [15, 30, 50, 100];
     private Request $request;
     private Collection $columns;
     private Collection $searchInputs;
@@ -105,6 +106,19 @@ class InertiaTable
     }
 
     /**
+     * Per Page options for this table.
+     *
+     * @param array $pageName
+     * @return self
+     */
+    public function perPageOptions(array $perPageOptions): self
+    {
+        $this->perPageOptions = $perPageOptions;
+
+        return $this;
+    }
+
+    /**
      * Default sort for this table.
      *
      * @param string $defaultSort
@@ -143,11 +157,12 @@ class InertiaTable
 
             'globalSearch' => $this->searchInputs->firstWhere('key', 'global'),
 
-            'cursor'      => $this->query('cursor'),
-            'sort'        => $this->query('sort', $this->defaultSort) ?: null,
-            'defaultSort' => $this->defaultSort,
-            'page'        => Paginator::resolveCurrentPage($this->pageName),
-            'pageName'    => $this->pageName,
+            'cursor'         => $this->query('cursor'),
+            'sort'           => $this->query('sort', $this->defaultSort) ?: null,
+            'defaultSort'    => $this->defaultSort,
+            'page'           => Paginator::resolveCurrentPage($this->pageName),
+            'pageName'       => $this->pageName,
+            'perPageOptions' => $this->perPageOptions,
         ];
     }
 

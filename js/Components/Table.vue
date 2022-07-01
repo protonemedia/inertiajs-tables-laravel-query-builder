@@ -173,12 +173,14 @@
             :on-click="visit"
             :has-data="hasData"
             :meta="resourceMeta"
+            :per-page-options="queryBuilderProps.perPageOptions"
             :on-per-page-change="onPerPageChange"
           >
             <Pagination
               :on-click="visit"
               :has-data="hasData"
               :meta="resourceMeta"
+              :per-page-options="queryBuilderProps.perPageOptions"
               :on-per-page-change="onPerPageChange"
             />
           </slot>
