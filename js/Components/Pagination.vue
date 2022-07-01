@@ -41,6 +41,7 @@
         <span class="hidden sm:inline ml-2">{{ translations.previous }}</span>
       </component>
       <PerPageSelector
+        dusk="per-page-mobile"
         :value="perPage"
         :options="perPageOptions"
         :on-change="onPerPageChange"
@@ -81,6 +82,7 @@
     >
       <div class="flex flex-row space-x-4 items-center flex-grow">
         <PerPageSelector
+          dusk="per-page-full"
           :value="perPage"
           :options="perPageOptions"
           :on-change="onPerPageChange"

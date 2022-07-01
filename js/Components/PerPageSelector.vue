@@ -1,6 +1,7 @@
 <template>
   <select
     name="per_page"
+    :dusk="dusk"
     :value="value"
     class="block focus:ring-indigo-500 focus:border-indigo-500 min-w-max shadow-sm text-sm border-gray-300 rounded-md"
     @change="onChange($event.target.value)"
@@ -23,6 +24,12 @@ import { getTranslations } from "../translations.js"
 const translations = getTranslations();
 
 const props = defineProps({
+    dusk: {
+        type: String,
+        default: null,
+        required: false,
+    },
+
     value: {
         type: Number,
         default: 15,

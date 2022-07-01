@@ -453,6 +453,7 @@ php artisan dusk
 * The `Table` component no longer needs the `filters`, `search`, `columns`, and `on-update` properties.
 * When using a custom `thead` or `tbody` slot, you need to provide [the styling](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/blob/c8e21649ad372d309eeb62a8f771aa4c7cd0089e/js/Tailwind2/Table.vue#L1) manually.
 * When using a custom `thead`, the `showColumn` method has been renamed to `show`.
+* The `setTranslations` method is no longer part of the `Pagination` component, but should be imported.
 * The templates and logic of the components are not separated anymore. Use slots to inject your own implementations.
 
 ## v2.1 Roadmap
