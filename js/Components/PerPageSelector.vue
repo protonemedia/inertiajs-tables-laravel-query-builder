@@ -44,7 +44,7 @@ const props = defineProps({
 });
 
 const perPageOptions = computed(() => {
-    let options = props.options
+    let options = [...props.options]
 
     options.push(parseInt(props.value))
 
