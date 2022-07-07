@@ -603,10 +603,6 @@ function visit(url) {
             preserveState: true,
             preserveScroll: props.preserveScroll !== false,
             onBefore(){
-                if(isVisiting.value && props.preventOverlappingRequests) {
-                    return false;
-                }
-
                 isVisiting.value = true
             },
             onCancelToken(cancelToken) {
