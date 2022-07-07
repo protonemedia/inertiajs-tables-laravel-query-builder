@@ -33,6 +33,8 @@ We proudly support the community by developing Laravel packages and giving them 
 * [Tailwind CSS v3](https://tailwindcss.com/) + [Forms plugin](https://github.com/tailwindlabs/tailwindcss-forms)
 * PHP 8.0+
 
+**Note**: There is currently an issue with using this package with Vite!
+
 ## Installation
 
 You need to install both the server-side package and the client-side package. Note that this package is only compatible with Laravel 9, Vue 3.0, and requires the Tailwind Forms plugin.
