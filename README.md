@@ -4,11 +4,11 @@
 [![npm](https://img.shields.io/npm/dt/@protonemedia/inertiajs-tables-laravel-query-builder.svg?style=flat-square)](https://www.npmjs.com/package/@protonemedia/inertiajs-tables-laravel-query-builder)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/protonemedia/inertiajs-tables-laravel-query-builder.svg?style=flat-square)](https://packagist.org/packages/protonemedia/inertiajs-tables-laravel-query-builder)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-![run-tests](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/workflows/php/badge.svg)
+[![run-tests](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/actions/workflows/php.yml/badge.svg?branch=main)](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/actions/workflows/php.yml)
 
 This package provides a *DataTables-like* experience for [Inertia.js](https://inertiajs.com/) with support for searching, filtering, sorting, toggling columns, and pagination. It generates URLs that can be consumed by Spatie's excellent [Laravel Query Builder](https://github.com/spatie/laravel-query-builder) package, with no additional logic needed. The components are styled with [Tailwind CSS 3.0](https://tailwindcss.com/), but it's fully customizable with slots. The data refresh logic is based on Inertia's [Ping CRM demo](https://github.com/inertiajs/pingcrm).
 
-![Inertia.js Table for Laravel Query Builder](https://user-images.githubusercontent.com/8403149/113340981-e3863680-932c-11eb-8017-7a6588916508.mp4)
+![Inertia.js Table for Laravel Query Builder](https://user-images.githubusercontent.com/8403149/177772674-7a2ef1c5-c356-4922-b682-723a30ccf7ef.mov)
 
 ## Sponsorship Support
 
