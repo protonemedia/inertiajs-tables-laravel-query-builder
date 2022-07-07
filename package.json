@@ -1,6 +1,6 @@
 {
   "name": "@protonemedia/inertiajs-tables-laravel-query-builder",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Inertia.js Front-end Components for Spatie's Laravel Query Builder",
   "author": "Pascal Baljet <pascal@protone.media>",
   "license": "MIT",

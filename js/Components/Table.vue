@@ -209,15 +209,21 @@ import isEqual from "lodash-es/isEqual";
 import map from "lodash-es/map";
 import pickBy from "lodash-es/pickBy";
 
-const app = getCurrentInstance()
-const $inertia = app.appContext.config.globalProperties.$inertia;
-
 const props = defineProps({
+    inertia: {
+        type: Object,
+        default: () => {
+            return {};
+        },
+        required: false,
+    },
+
     name: {
         type: String,
         default: "default",
         required: false,
     },
+
     striped: {
         type: Boolean,
         default: false,
@@ -266,6 +272,9 @@ const props = defineProps({
         required: false,
     },
 });
+
+const app = getCurrentInstance()
+const $inertia = app ? app.appContext.config.globalProperties.$inertia : props.inertia;
 
 const updates = ref(0)
 
