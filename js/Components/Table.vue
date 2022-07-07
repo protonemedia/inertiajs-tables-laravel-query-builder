@@ -6,7 +6,6 @@
       :dusk="`table-${name}`"
       class="min-w-0"
       :class="{'opacity-75': isVisiting}"
-      :disabled="preventOverlappingRequests && isVisiting"
     >
       <div class="flex flex-row flex-wrap sm:flex-nowrap justify-start px-4 sm:px-0">
         <div class="order-2 sm:order-1 mr-2 sm:mr-4">
@@ -268,11 +267,17 @@ const props = defineProps({
     },
 });
 
-const queryBuilderProps = ref(
-    $inertia.page.props.queryBuilderProps
+const updates = ref(0)
+
+const queryBuilderProps = computed(() => {
+    let data = $inertia.page.props.queryBuilderProps
         ? $inertia.page.props.queryBuilderProps[props.name] || {}
         : {}
-);
+
+    data._updates = updates.value;
+
+    return data;
+})
 
 const queryBuilderData = ref(queryBuilderProps.value);
 
@@ -364,8 +369,6 @@ function disableSearchInput(key) {
 function showSearchInput(key) {
     forcedVisibleSearchInputs.value.push(key);
 }
-
-const updates = ref(0)
 
 const canBeReset = computed(() => {
     if(forcedVisibleSearchInputs.value.length > 0){
@@ -614,7 +617,6 @@ function visit(url) {
             },
             onSuccess() {
                 if("queryBuilderProps" in $inertia.page.props){
-                    queryBuilderProps.value = $inertia.page.props.queryBuilderProps[props.name] || {}
                     queryBuilderData.value.cursor = queryBuilderProps.value.cursor
                     queryBuilderData.value.page = queryBuilderProps.value.page
                 }
