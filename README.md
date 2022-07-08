@@ -33,7 +33,7 @@ We proudly support the community by developing Laravel packages and giving them 
 * [Tailwind CSS v3](https://tailwindcss.com/) + [Forms plugin](https://github.com/tailwindlabs/tailwindcss-forms)
 * PHP 8.0+
 
-**Note**: There is currently an issue with using this package with Vite!
+**Note**: There is currently an [issue](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/issues/69) with using this package with Vite!
 
 ## Installation
 
