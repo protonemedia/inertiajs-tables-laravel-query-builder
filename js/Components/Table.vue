@@ -199,7 +199,7 @@ import TableGlobalSearch from "./TableGlobalSearch.vue";
 import TableSearchRows from "./TableSearchRows.vue";
 import TableReset from "./TableReset.vue";
 import TableWrapper from "./TableWrapper.vue";
-import { computed, onMounted, ref, watch, onUnmounted, getCurrentInstance } from "vue"
+import { computed, onMounted, ref, watch, onUnmounted, getCurrentInstance, Transition } from "vue"
 import qs from "qs";
 import clone from "lodash-es/clone";
 import filter from "lodash-es/filter";
