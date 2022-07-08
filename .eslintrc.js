@@ -7,6 +7,7 @@ module.exports = {
     ],
     rules: {
         "no-undef": 0,
+        "no-unused-vars": 0,
         "vue/multi-word-component-names": 0,
         "vue/no-v-html": 0,
         "vue/require-default-prop": 0,
