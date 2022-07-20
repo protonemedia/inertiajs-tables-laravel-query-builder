@@ -66,6 +66,7 @@
           :has-search-inputs-without-value="queryBuilderProps.hasSearchInputsWithoutValue"
           :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
           :on-add="showSearchInput"
+          :label="queryBuilderProps.globalSearch.label"
         >
           <TableAddSearchRow
             v-if="queryBuilderProps.hasSearchInputs"
@@ -73,6 +74,7 @@
             :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
             :has-search-inputs-without-value="queryBuilderProps.hasSearchInputsWithoutValue"
             :on-add="showSearchInput"
+            :label="queryBuilderProps.globalSearch.label"
           />
         </slot>
 
@@ -82,6 +84,7 @@
           :columns="queryBuilderProps.columns"
           :has-hidden-columns="queryBuilderProps.hasHiddenColumns"
           :on-change="changeColumnStatus"
+          :label="queryBuilderProps.globalSearch.label"
         >
           <TableColumns
             v-if="queryBuilderProps.hasToggleableColumns"
@@ -89,6 +92,7 @@
             :columns="queryBuilderProps.columns"
             :has-hidden-columns="queryBuilderProps.hasHiddenColumns"
             :on-change="changeColumnStatus"
+            :label="queryBuilderProps.globalSearch.label"
           />
         </slot>
       </div>
@@ -338,8 +342,8 @@ const resourceMeta = computed(() => {
 
     if("links" in props.resource && "meta" in props.resource) {
         if(Object.keys(props.resource.links).length === 4
-          && "next" in props.resource.links
-          && "prev" in props.resource.links) {
+            && "next" in props.resource.links
+            && "prev" in props.resource.links) {
             return {
                 ...props.resource.meta,
                 next_page_url: props.resource.links.next,
