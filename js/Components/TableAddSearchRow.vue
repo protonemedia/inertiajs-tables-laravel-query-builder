@@ -1,21 +1,24 @@
 <template>
   <ButtonWithDropdown
-    ref="dropdown"
-    dusk="add-search-row-dropdown"
-    :disabled="!hasSearchInputsWithoutValue"
-    class="w-auto"
+    placement="bottom-end"
+    dusk="columns-dropdown"
+    :active="hasHiddenColumns"
   >
     <template #button>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5 text-gray-400"
-
+        class="h-5 w-5"
+        :class="{
+          'text-gray-400': !hasHiddenColumns,
+          'text-green-400': hasHiddenColumns,
+        }"
         viewBox="0 0 20 20"
         fill="currentColor"
       >
+        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
         <path
           fill-rule="evenodd"
-          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+          d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
           clip-rule="evenodd"
         />
       </svg>
@@ -24,7 +27,7 @@
     <div
       role="menu"
       aria-orientation="horizontal"
-      aria-labelledby="add-search-input-menu"
+      aria-labelledby="toggle-columns-menu"
       class="min-w-max"
     >
       <div class="relative">
@@ -54,19 +57,41 @@
       </div>
 
       <div class="px-2">
-        <ul class="divide-y divide-gray-200">
+        <ul class="divide-y overflow-auto max-h-56 divide-gray-200">
           <li
-            v-for="(searchInput, key) in filteredSearchInputs"
+            v-for="(column, key) in filteredColumns"
+            v-show="column.can_be_hidden"
+            :key="key"
             class="py-2 flex items-center justify-between"
           >
-            <button
-              :key="key"
-              :dusk="`add-search-row-${searchInput.key}`"
+            <p
               class="text-left w-full px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-              role="menuitem"
-              @click.prevent="enableSearch(searchInput.key)"
             >
-              {{ searchInput.label }}
+              {{ column.label }}
+            </p>
+
+            <button
+              type="button"
+              class="ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-blue-500"
+              :class="{
+                'bg-green-500': !column.hidden,
+                'bg-gray-200': column.hidden,
+              }"
+              :aria-pressed="!column.hidden"
+              :aria-labelledby="`toggle-column-${column.key}`"
+              :aria-describedby="`toggle-column-${column.key}`"
+              :dusk="`toggle-column-${column.key}`"
+              @click.prevent="onChange(column.key, column.hidden)"
+            >
+              <span class="sr-only">Column status</span>
+              <span
+                aria-hidden="true"
+                :class="{
+                  'translate-x-5': !column.hidden,
+                  'translate-x-0': column.hidden,
+                }"
+                class="inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
+              />
             </button>
           </li>
         </ul>
@@ -80,17 +105,17 @@ import ButtonWithDropdown from "./ButtonWithDropdown.vue";
 import {ref, computed} from 'vue';
 
 const props = defineProps({
-    searchInputs: {
+    columns: {
         type: Object,
         required: true,
     },
 
-    hasSearchInputsWithoutValue: {
+    hasHiddenColumns: {
         type: Boolean,
         required: true,
     },
 
-    onAdd: {
+    onChange: {
         type: Function,
         required: true,
     },
@@ -102,22 +127,15 @@ const props = defineProps({
     },
 });
 
-const dropdown = ref(null)
-
-function enableSearch(key) {
-    props.onAdd(key);
-    dropdown.value.hide()
-}
-
 const filter = ref(null);
 
-const filteredSearchInputs = computed(() => {
+const filteredColumns = computed(() => {
     if(filter.value) {
-        return Object.values(props.searchInputs).filter(column => {
+        return props.columns.filter(column => {
             return column.label.toLowerCase().indexOf(filter.value.toLowerCase()) > -1;
         });
     }
 
-    return  props.searchInputs;
+    return  props.columns;
 });
 </script>

@@ -30,7 +30,6 @@
       aria-labelledby="toggle-columns-menu"
       class="min-w-max"
     >
-
       <div class="relative">
         <input
           class="m-2 pl-9 text-sm rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300"
@@ -58,7 +57,7 @@
       </div>
 
       <div class="px-2">
-        <ul class="divide-y divide-gray-200">
+        <ul class="divide-y overflow-auto max-h-56 divide-gray-200">
           <li
             v-for="(column, key) in filteredColumns"
             v-show="column.can_be_hidden"
