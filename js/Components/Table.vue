@@ -147,6 +147,7 @@
                       'hover:bg-gray-100': striped,
                       'hover:bg-gray-50': !striped
                     }"
+                    @click="rowClick(item, key)"
                   >
                     <td
                       v-for="column in queryBuilderProps.columns"
@@ -273,6 +274,8 @@ const props = defineProps({
     },
 });
 
+const emit = defineEmits(['rowClick']);
+
 const app = getCurrentInstance()
 const $inertia = app ? app.appContext.config.globalProperties.$inertia : props.inertia;
 
@@ -368,6 +371,10 @@ const hasData = computed(() => {
 });
 
 //
+
+function rowClick(item, key) {
+    emit('rowClick', item, key);
+}
 
 function disableSearchInput(key) {
     forcedVisibleSearchInputs.value = forcedVisibleSearchInputs.value.filter((search) => search != key);
