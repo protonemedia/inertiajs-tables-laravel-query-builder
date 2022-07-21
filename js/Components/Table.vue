@@ -274,7 +274,7 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['rowClick']);
+const emit = defineEmits(["rowClick"]);
 
 const app = getCurrentInstance()
 const $inertia = app ? app.appContext.config.globalProperties.$inertia : props.inertia;
@@ -371,7 +371,7 @@ const hasData = computed(() => {
 });
 
 function rowClick(item, key) {
-    emit('rowClick', item, key);
+    emit("rowClick", item, key);
 }
 
 function disableSearchInput(key) {
