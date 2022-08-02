@@ -43,7 +43,7 @@
 
 <script setup>
 import ButtonWithDropdown from "./ButtonWithDropdown.vue";
-import { ref } from "vue"
+import { ref } from "vue";
 
 const props = defineProps({
     searchInputs: {
@@ -62,10 +62,10 @@ const props = defineProps({
     },
 });
 
-const dropdown = ref(null)
+const dropdown = ref(null);
 
 function enableSearch(key) {
     props.onAdd(key);
-    dropdown.value.hide()
+    dropdown.value.hide();
 }
 </script>

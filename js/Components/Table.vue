@@ -199,7 +199,7 @@ import TableGlobalSearch from "./TableGlobalSearch.vue";
 import TableSearchRows from "./TableSearchRows.vue";
 import TableReset from "./TableReset.vue";
 import TableWrapper from "./TableWrapper.vue";
-import { computed, onMounted, ref, watch, onUnmounted, getCurrentInstance, Transition } from "vue"
+import { computed, onMounted, ref, watch, onUnmounted, getCurrentInstance, Transition } from "vue";
 import qs from "qs";
 import clone from "lodash-es/clone";
 import filter from "lodash-es/filter";
@@ -273,20 +273,20 @@ const props = defineProps({
     },
 });
 
-const app = getCurrentInstance()
+const app = getCurrentInstance();
 const $inertia = app ? app.appContext.config.globalProperties.$inertia : props.inertia;
 
-const updates = ref(0)
+const updates = ref(0);
 
 const queryBuilderProps = computed(() => {
     let data = $inertia.page.props.queryBuilderProps
         ? $inertia.page.props.queryBuilderProps[props.name] || {}
-        : {}
+        : {};
 
     data._updates = updates.value;
 
     return data;
-})
+});
 
 const queryBuilderData = ref(queryBuilderProps.value);
 
@@ -296,7 +296,7 @@ const pageName = computed(() =>{
 
 const forcedVisibleSearchInputs = ref([]);
 
-const tableFieldset = ref(null)
+const tableFieldset = ref(null);
 
 const hasOnlyData = computed(() => {
     if(queryBuilderProps.value.hasToggleableColumns) {
@@ -329,7 +329,7 @@ const resourceData = computed(() => {
     }
 
     return props.resource;
-})
+});
 
 const resourceMeta = computed(() => {
     if(Object.keys(props.resource).length === 0){
@@ -344,7 +344,7 @@ const resourceMeta = computed(() => {
                 ...props.resource.meta,
                 next_page_url: props.resource.links.next,
                 prev_page_url: props.resource.links.prev
-            }
+            };
         }
     }
 
@@ -393,7 +393,7 @@ const canBeReset = computed(() => {
     }
 
     const prefix = props.name === "default" ? "" : (props.name + "_");
-    let dirty = false
+    let dirty = false;
 
     forEach(["filter", "columns", "cursor", "sort"], (key) => {
         const value = queryStringData[prefix + key];
@@ -403,7 +403,7 @@ const canBeReset = computed(() => {
         }
 
         if(value !== undefined) {
-            dirty = true
+            dirty = true;
         }
     });
 
@@ -415,17 +415,17 @@ function resetQuery() {
 
     forEach(queryBuilderData.value.filters, (filter, key) => {
         queryBuilderData.value.filters[key].value = null;
-    })
+    });
 
     forEach(queryBuilderData.value.searchInputs, (filter, key) => {
         queryBuilderData.value.searchInputs[key].value = null;
-    })
+    });
 
     forEach(queryBuilderData.value.columns, (column, key) => {
         queryBuilderData.value.columns[key].hidden = column.can_be_hidden
             ? !queryBuilderProps.value.defaultVisibleToggleableColumns.includes(column.key)
             : false;
-    })
+    });
 
     queryBuilderData.value.sort = null;
     queryBuilderData.value.cursor = null;
@@ -471,7 +471,7 @@ function onPerPageChange(value) {
 function findDataKey(dataKey, key) {
     return findKey(queryBuilderData.value[dataKey], (value) => {
         return value.key == key;
-    })
+    });
 }
 
 function changeColumnStatus(key, visible) {
@@ -517,8 +517,8 @@ function getColumnsForQuery() {
 }
 
 function dataForNewQueryString() {
-    const filterForQuery = getFilterForQuery()
-    const columnsForQuery = getColumnsForQuery()
+    const filterForQuery = getFilterForQuery();
+    const columnsForQuery = getColumnsForQuery();
 
     const queryData = {};
 
@@ -561,10 +561,10 @@ function generateNewQueryString() {
     const prefix = props.name === "default" ? "" : (props.name + "_");
 
     forEach(["filter", "columns", "cursor", "sort"], (key) => {
-        delete queryStringData[prefix + key]
+        delete queryStringData[prefix + key];
     });
 
-    delete queryStringData[pageName.value]
+    delete queryStringData[pageName.value];
 
     forEach(dataForNewQueryString(), (value, key) =>{
         if(key === "page") {
@@ -574,7 +574,7 @@ function generateNewQueryString() {
         } else {
             queryStringData[prefix + key] = value;
         }
-    })
+    });
 
     let query = qs.stringify(queryStringData, {
         filter(prefix, value) {
@@ -596,8 +596,8 @@ function generateNewQueryString() {
     return query;
 }
 
-const isVisiting = ref(false)
-const visitCancelToken = ref(null)
+const isVisiting = ref(false);
+const visitCancelToken = ref(null);
 
 function visit(url) {
     if(!url) {
@@ -612,25 +612,25 @@ function visit(url) {
             preserveState: true,
             preserveScroll: props.preserveScroll !== false,
             onBefore(){
-                isVisiting.value = true
+                isVisiting.value = true;
             },
             onCancelToken(cancelToken) {
-                visitCancelToken.value = cancelToken
+                visitCancelToken.value = cancelToken;
             },
             onFinish() {
-                isVisiting.value = false
+                isVisiting.value = false;
             },
             onSuccess() {
                 if("queryBuilderProps" in $inertia.page.props){
-                    queryBuilderData.value.cursor = queryBuilderProps.value.cursor
-                    queryBuilderData.value.page = queryBuilderProps.value.page
+                    queryBuilderData.value.cursor = queryBuilderProps.value.cursor;
+                    queryBuilderData.value.page = queryBuilderProps.value.page;
                 }
 
                 if(props.preserveScroll === "table-top") {
                     const offset = -8;
                     const top = tableFieldset.value.getBoundingClientRect().top + window.pageYOffset + offset;
 
-                    window.scrollTo({top});
+                    window.scrollTo({ top });
                 }
 
                 updates.value++;
@@ -640,20 +640,20 @@ function visit(url) {
 }
 
 watch(queryBuilderData, () => {
-    visit(location.pathname + "?" +  generateNewQueryString())
-}, {deep: true})
+    visit(location.pathname + "?" +  generateNewQueryString());
+}, { deep: true });
 
 const inertiaListener = () => {
     updates.value++;
-}
+};
 
 onMounted(() => {
-    document.addEventListener("inertia:success", inertiaListener)
-})
+    document.addEventListener("inertia:success", inertiaListener);
+});
 
 onUnmounted(() => {
-    document.removeEventListener("inertia:success", inertiaListener)
-})
+    document.removeEventListener("inertia:success", inertiaListener);
+});
 
 //
 

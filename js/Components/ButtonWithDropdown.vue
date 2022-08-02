@@ -32,7 +32,7 @@ import OnClickOutside from "./OnClickOutside.vue";
 import { createPopper } from "@popperjs/core/lib/popper-lite";
 import preventOverflow from "@popperjs/core/lib/modifiers/preventOverflow";
 import flip from "@popperjs/core/lib/modifiers/flip";
-import { ref, watch, onMounted } from "vue"
+import { ref, watch, onMounted } from "vue";
 
 const props = defineProps({
     placement: {
@@ -58,7 +58,7 @@ const props = defineProps({
         default: false,
         required: false,
     },
-})
+});
 
 const opened = ref(false);
 const popper = ref(null);
@@ -73,7 +73,7 @@ function hide() {
 
 watch(opened, () => {
     popper.value.update();
-})
+});
 
 const button = ref(null);
 const tooltip = ref(null);
@@ -83,7 +83,7 @@ onMounted(() => {
         placement: props.placement,
         modifiers: [flip, preventOverflow],
     });
-})
+});
 
-defineExpose({ hide })
+defineExpose({ hide });
 </script>

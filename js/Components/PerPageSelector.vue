@@ -18,8 +18,8 @@
 
 <script setup>
 import { computed } from "vue";
-import uniq from "lodash-es/uniq"
-import { getTranslations } from "../translations.js"
+import uniq from "lodash-es/uniq";
+import { getTranslations } from "../translations.js";
 
 const translations = getTranslations();
 
@@ -39,7 +39,7 @@ const props = defineProps({
     options: {
         type: Array,
         default() {
-            return [15, 30, 50, 100]
+            return [15, 30, 50, 100];
         },
         required: false,
     },
@@ -51,11 +51,11 @@ const props = defineProps({
 });
 
 const perPageOptions = computed(() => {
-    let options = [...props.options]
+    let options = [...props.options];
 
-    options.push(parseInt(props.value))
+    options.push(parseInt(props.value));
 
-    return uniq(options).sort((a, b) => a - b)
-})
+    return uniq(options).sort((a, b) => a - b);
+});
 </script>
 

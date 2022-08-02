@@ -20,7 +20,7 @@
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",
-    "eslint": "eslint js/ --ext .js,.vue --fix"
+    "eslint": "./node_modules/.bin/eslint app/resources/js/ js/ --ext .js,.vue --fix"
   },
   "peerDependencies": {
     "@inertiajs/inertia-vue3": "^0.6",

@@ -28,4 +28,4 @@ export {
     getTranslations,
     setTranslation,
     setTranslations
-}
+};
