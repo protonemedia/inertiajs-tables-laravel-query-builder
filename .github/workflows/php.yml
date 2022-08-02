@@ -40,11 +40,11 @@ jobs:
       - name: "Install locked dependencies with npm"
         run: |
           npm ci --ignore-scripts
-          cd app
-          npm ci --ignore-scripts
 
       - name: Build package
-        run: npm run build
+        run: |
+          npm run build
+          npm pack
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -58,7 +58,8 @@ jobs:
           cd app
           cp .env.example .env
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
-          npm run production
+          npm ci --ignore-scripts
+          npm run build
           touch database/database.sqlite
           php artisan migrate:fresh --seed
           php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`

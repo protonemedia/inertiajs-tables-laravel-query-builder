@@ -29,5 +29,5 @@ defineProps({
         type: Function,
         required: true
     }
-})
+});
 </script>

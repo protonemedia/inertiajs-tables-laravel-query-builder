@@ -185,9 +185,9 @@
 </template>
 
 <script setup>
-import PerPageSelector from "./PerPageSelector.vue"
+import PerPageSelector from "./PerPageSelector.vue";
 import { computed } from "vue";
-import { getTranslations } from "../translations.js"
+import { getTranslations } from "../translations.js";
 
 const translations = getTranslations();
 
@@ -199,14 +199,14 @@ const props = defineProps({
     perPageOptions: {
         type: Array,
         default() {
-            return () => [15, 30, 50, 100]
+            return () => [15, 30, 50, 100];
         },
         required: false
     },
     onPerPageChange: {
         type: Function,
         default() {
-            return () => {}
+            return () => {};
         },
         required: false,
     },
@@ -253,6 +253,6 @@ const nextPageUrl = computed(() => {
 });
 
 const perPage = computed(() => {
-    return parseInt(pagination.value.per_page)
-})
+    return parseInt(pagination.value.per_page);
+});
 </script>

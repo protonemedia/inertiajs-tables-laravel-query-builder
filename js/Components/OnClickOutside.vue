@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue"
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const props = defineProps({
     do: {
@@ -28,10 +28,10 @@ onMounted(() => {
 
     document.addEventListener("click", listener.value);
     document.addEventListener("touchstart", listener.value);
-})
+});
 
 onBeforeUnmount(() => {
     document.removeEventListener("click", listener.value);
     document.removeEventListener("touchstart", listener.value);
-})
+});
 </script>

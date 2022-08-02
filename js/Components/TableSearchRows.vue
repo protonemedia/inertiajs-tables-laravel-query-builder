@@ -64,8 +64,8 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, nextTick } from "vue"
-import find from "lodash-es/find"
+import { computed, ref, watch, nextTick } from "vue";
+import find from "lodash-es/find";
 
 const skipUnwrap = { el: ref([]) };
 let el = computed(() => skipUnwrap.el.value);
@@ -93,7 +93,7 @@ const props = defineProps({
 });
 
 function isForcedVisible(key) {
-    return props.forcedVisibleSearchInputs.includes(key)
+    return props.forcedVisibleSearchInputs.includes(key);
 }
 
 watch(props.forcedVisibleSearchInputs, (inputs) => {
@@ -105,13 +105,13 @@ watch(props.forcedVisibleSearchInputs, (inputs) => {
 
     nextTick().then(() => {
         const inputElement = find(el.value, (el) => {
-            return el.__vnode.key ===  latestInput
-        })
+            return el.__vnode.key ===  latestInput;
+        });
 
         if(inputElement) {
             inputElement.focus();
         }
-    })
-}, {immediate: true})
+    });
+}, { immediate: true });
 </script>
 

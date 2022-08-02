@@ -5,7 +5,7 @@ import { Table } from "@protonemedia/inertiajs-tables-laravel-query-builder";
 // use this one for development:
 // import Table from "../../../../js/Components/Table.vue"
 
-defineProps(["users"])
+defineProps(["users"]);
 </script>
 
 <template>
