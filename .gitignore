@@ -31,3 +31,5 @@ coverage
 app/public/css/app.css
 app/public/js/app.js
 app/public/mix-manifest.json
+
+protonemedia-inertiajs-tables-laravel-query-builder-*.tgz
