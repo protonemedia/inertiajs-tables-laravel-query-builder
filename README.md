@@ -269,7 +269,7 @@ The `Table` has some additional properties to tweak its front-end behaviour.
     :striped="true"
     :prevent-overlapping-requests="false"
     :input-debounce-ms="1000"
-    :prevent-scroll="true"
+    :preserve-scroll="true"
   />
 </template>
 ```
