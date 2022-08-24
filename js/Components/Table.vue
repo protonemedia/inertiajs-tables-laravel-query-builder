@@ -109,6 +109,12 @@
         />
       </slot>
 
+      <TableActiveFilters
+        v-if="queryBuilderProps.hasEnabledFilters"
+        :filters="queryBuilderProps.filters"
+        :on-filter-change="changeFilterValue"
+      />
+
       <slot
         name="tableWrapper"
         :meta="resourceMeta"
@@ -195,11 +201,12 @@ import HeaderCell from "./HeaderCell.vue";
 import TableAddSearchRow from "./TableAddSearchRow.vue";
 import TableColumns from "./TableColumns.vue";
 import TableFilter from "./TableFilter.vue";
+import TableActiveFilters from "./TableActiveFilters.vue";
 import TableGlobalSearch from "./TableGlobalSearch.vue";
 import TableSearchRows from "./TableSearchRows.vue";
 import TableReset from "./TableReset.vue";
 import TableWrapper from "./TableWrapper.vue";
-import { computed, onMounted, ref, watch, onUnmounted, getCurrentInstance, Transition } from "vue";
+import { computed, getCurrentInstance, onMounted, onUnmounted, provide, ref, Transition, watch } from "vue";
 import qs from "qs";
 import clone from "lodash-es/clone";
 import filter from "lodash-es/filter";
@@ -271,7 +278,20 @@ const props = defineProps({
         },
         required: false,
     },
+
+    activeClasses: {
+        type: Object,
+        required: false,
+        default() {
+            return {
+                text: "text-green-400",
+                border: "border-green-300"
+            };
+        }
+    }
 });
+
+provide("activeClasses", props.activeClasses);
 
 const app = getCurrentInstance();
 const $inertia = app ? app.appContext.config.globalProperties.$inertia : props.inertia;
@@ -290,7 +310,7 @@ const queryBuilderProps = computed(() => {
 
 const queryBuilderData = ref(queryBuilderProps.value);
 
-const pageName = computed(() =>{
+const pageName = computed(() => {
     return queryBuilderProps.value.pageName;
 });
 
@@ -299,19 +319,19 @@ const forcedVisibleSearchInputs = ref([]);
 const tableFieldset = ref(null);
 
 const hasOnlyData = computed(() => {
-    if(queryBuilderProps.value.hasToggleableColumns) {
+    if (queryBuilderProps.value.hasToggleableColumns) {
         return false;
     }
 
-    if(queryBuilderProps.value.hasFilters) {
+    if (queryBuilderProps.value.hasFilters) {
         return false;
     }
 
-    if(queryBuilderProps.value.hasSearchInputs) {
+    if (queryBuilderProps.value.hasSearchInputs) {
         return false;
     }
 
-    if(queryBuilderProps.value.globalSearch) {
+    if (queryBuilderProps.value.globalSearch) {
         return false;
     }
 
@@ -320,11 +340,11 @@ const hasOnlyData = computed(() => {
 });
 
 const resourceData = computed(() => {
-    if(Object.keys(props.resource).length === 0){
+    if (Object.keys(props.resource).length === 0) {
         return props.data;
     }
 
-    if("data" in props.resource) {
+    if ("data" in props.resource) {
         return props.resource.data;
     }
 
@@ -332,14 +352,14 @@ const resourceData = computed(() => {
 });
 
 const resourceMeta = computed(() => {
-    if(Object.keys(props.resource).length === 0){
+    if (Object.keys(props.resource).length === 0) {
         return props.meta;
     }
 
-    if("links" in props.resource && "meta" in props.resource) {
-        if(Object.keys(props.resource.links).length === 4
-          && "next" in props.resource.links
-          && "prev" in props.resource.links) {
+    if ("links" in props.resource && "meta" in props.resource) {
+        if (Object.keys(props.resource.links).length === 4
+            && "next" in props.resource.links
+            && "prev" in props.resource.links) {
             return {
                 ...props.resource.meta,
                 next_page_url: props.resource.links.next,
@@ -348,7 +368,7 @@ const resourceMeta = computed(() => {
         }
     }
 
-    if("meta" in props.resource) {
+    if ("meta" in props.resource) {
         return props.resource.meta;
     }
 
@@ -356,11 +376,11 @@ const resourceMeta = computed(() => {
 });
 
 const hasData = computed(() => {
-    if(resourceData.value.length > 0){
+    if (resourceData.value.length > 0) {
         return true;
     }
 
-    if(resourceMeta.value.total > 0) {
+    if (resourceMeta.value.total > 0) {
         return true;
     }
 
@@ -380,7 +400,7 @@ function showSearchInput(key) {
 }
 
 const canBeReset = computed(() => {
-    if(forcedVisibleSearchInputs.value.length > 0){
+    if (forcedVisibleSearchInputs.value.length > 0) {
         return true;
     }
 
@@ -388,7 +408,7 @@ const canBeReset = computed(() => {
 
     const page = queryStringData[pageName.value];
 
-    if(page > 1) {
+    if (page > 1) {
         return true;
     }
 
@@ -398,11 +418,11 @@ const canBeReset = computed(() => {
     forEach(["filter", "columns", "cursor", "sort"], (key) => {
         const value = queryStringData[prefix + key];
 
-        if(key === "sort" && value === queryBuilderProps.value.defaultSort) {
+        if (key === "sort" && value === queryBuilderProps.value.defaultSort) {
             return;
         }
 
-        if(value !== undefined) {
+        if (value !== undefined) {
             dirty = true;
         }
     });
@@ -438,7 +458,7 @@ function changeSearchInputValue(key, value) {
     clearTimeout(debounceTimeouts[key]);
 
     debounceTimeouts[key] = setTimeout(() => {
-        if(visitCancelToken.value && props.preventOverlappingRequests){
+        if (visitCancelToken.value && props.preventOverlappingRequests) {
             visitCancelToken.value.cancel();
         }
 
@@ -509,7 +529,7 @@ function getColumnsForQuery() {
         return column.key;
     }).sort();
 
-    if (isEqual(visibleColumnKeys, queryBuilderProps.value.defaultVisibleToggleableColumns)){
+    if (isEqual(visibleColumnKeys, queryBuilderProps.value.defaultVisibleToggleableColumns)) {
         return {};
     }
 
@@ -522,11 +542,11 @@ function dataForNewQueryString() {
 
     const queryData = {};
 
-    if(Object.keys(filterForQuery).length > 0) {
+    if (Object.keys(filterForQuery).length > 0) {
         queryData.filter = filterForQuery;
     }
 
-    if(Object.keys(columnsForQuery).length > 0) {
+    if (Object.keys(columnsForQuery).length > 0) {
         queryData.columns = columnsForQuery;
     }
 
@@ -535,20 +555,20 @@ function dataForNewQueryString() {
     const sort = queryBuilderData.value.sort;
     const perPage = queryBuilderData.value.perPage;
 
-    if(cursor) {
+    if (cursor) {
         queryData.cursor = cursor;
     }
 
-    if(page > 1) {
+    if (page > 1) {
         queryData.page = page;
     }
 
-    if(perPage > 1) {
+    if (perPage > 1) {
         queryData.perPage = perPage;
     }
 
 
-    if(sort) {
+    if (sort) {
         queryData.sort = sort;
     }
 
@@ -566,10 +586,10 @@ function generateNewQueryString() {
 
     delete queryStringData[pageName.value];
 
-    forEach(dataForNewQueryString(), (value, key) =>{
-        if(key === "page") {
+    forEach(dataForNewQueryString(), (value, key) => {
+        if (key === "page") {
             queryStringData[pageName.value] = value;
-        } else if(key === "perPage") {
+        } else if (key === "perPage") {
             queryStringData.perPage = value;
         } else {
             queryStringData[prefix + key] = value;
@@ -600,7 +620,7 @@ const isVisiting = ref(false);
 const visitCancelToken = ref(null);
 
 function visit(url) {
-    if(!url) {
+    if (!url) {
         return;
     }
 
@@ -611,7 +631,7 @@ function visit(url) {
             replace: true,
             preserveState: true,
             preserveScroll: props.preserveScroll !== false,
-            onBefore(){
+            onBefore() {
                 isVisiting.value = true;
             },
             onCancelToken(cancelToken) {
@@ -621,12 +641,12 @@ function visit(url) {
                 isVisiting.value = false;
             },
             onSuccess() {
-                if("queryBuilderProps" in $inertia.page.props){
+                if ("queryBuilderProps" in $inertia.page.props) {
                     queryBuilderData.value.cursor = queryBuilderProps.value.cursor;
                     queryBuilderData.value.page = queryBuilderProps.value.page;
                 }
 
-                if(props.preserveScroll === "table-top") {
+                if (props.preserveScroll === "table-top") {
                     const offset = -8;
                     const top = tableFieldset.value.getBoundingClientRect().top + window.pageYOffset + offset;
 
@@ -640,7 +660,7 @@ function visit(url) {
 }
 
 watch(queryBuilderData, () => {
-    visit(location.pathname + "?" +  generateNewQueryString());
+    visit(location.pathname + "?" + generateNewQueryString());
 }, { deep: true });
 
 const inertiaListener = () => {
@@ -658,7 +678,7 @@ onUnmounted(() => {
 //
 
 function sortBy(column) {
-    if(queryBuilderData.value.sort == column) {
+    if (queryBuilderData.value.sort == column) {
         queryBuilderData.value.sort = `-${column}`;
     } else {
         queryBuilderData.value.sort = column;
