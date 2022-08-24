@@ -147,7 +147,7 @@ class InertiaTable
 
             'filters'           => $this->transformFilters(),
             'hasFilters'        => $this->filters->isNotEmpty(),
-            'hasEnabledFilters' => $this->filters->filter->value->isNotEmpty(),
+            'hasEnabledFilters' => $this->filters->whereNotNull('value')->isNotEmpty(),
 
             'searchInputs'                => $searchInputs              = $this->transformSearchInputs(),
             'searchInputsWithoutGlobal'   => $searchInputsWithoutGlobal = $searchInputs->where('key', '!=', 'global'),
