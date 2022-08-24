@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-start my-3 text-sm">
-    <div class="">
+    <div class="flex items-center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-5 w-5 text-gray-300"
@@ -13,16 +13,22 @@
           clip-rule="evenodd"
         />
       </svg>
+      <span class="text-gray-400 ml-1">{{ numFilters }} active <span v-text="numFilters === 1 ? 'filter' : 'filters'"></span>:</span>
     </div>
 
     <button
-      v-for="(filter) in filters.filter((filter) => filter.value)"
+      v-for="(filter) in activeFilters"
       :key="filter.label"
       class="block group ml-3 flex items-center justify-between px-2 py-1 rounded bg-gray-100"
+      :class="`hover:${activeClasses.text}`"
       @click="onFilterChange(filter.key, null)"
     >
-      <span class="capitalize text-gray-500">{{ filter.label.replace('_', ' ') }}</span>:
-      <span class="ml-1 group-hover:line-through">{{ filter.options[filter.value] }}</span>
+      <span
+        class="capitalize text-gray-500"
+        :class="`group-hover:${activeClasses.text}`"
+      >
+        {{ filter.label.replace('_', ' ') }}
+      </span>:<span class="ml-1">{{ filter.options[filter.value] }}</span>
 
       <svg
         :class="`group-hover:${activeClasses.text}`"
@@ -42,9 +48,9 @@
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { computed, inject } from "vue";
 
-defineProps({
+const props = defineProps({
     filters: {
         type: Object,
         required: true,
@@ -57,5 +63,9 @@ defineProps({
 });
 
 const activeClasses = inject("activeClasses");
+
+const activeFilters = computed(() => props.filters.filter((filter) => filter.value !== null));
+
+const numFilters = computed(() => activeFilters.value.length);
 
 </script>
