@@ -18,7 +18,7 @@
             class="w-3 h-3 ml-2"
             :class="{
               'text-gray-400': !cell.sorted,
-              'text-green-500': cell.sorted,
+              [activeClasses.text]: cell.sorted,
             }"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 320 512"
@@ -49,12 +49,17 @@
 </template>
 
 <script setup>
+
+import { inject } from "vue";
+
 const props = defineProps({
     cell: {
         type: Object,
         required: true,
     },
 });
+
+const activeClasses = inject("activeClasses");
 
 function onClick() {
     if (props.cell.sortable) {

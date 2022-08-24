@@ -199,7 +199,7 @@ import TableGlobalSearch from "./TableGlobalSearch.vue";
 import TableSearchRows from "./TableSearchRows.vue";
 import TableReset from "./TableReset.vue";
 import TableWrapper from "./TableWrapper.vue";
-import { computed, onMounted, ref, watch, onUnmounted, getCurrentInstance, Transition } from "vue";
+import { computed, onMounted, ref, watch, onUnmounted, getCurrentInstance, Transition, provide } from "vue";
 import qs from "qs";
 import clone from "lodash-es/clone";
 import filter from "lodash-es/filter";
@@ -271,7 +271,20 @@ const props = defineProps({
         },
         required: false,
     },
+
+    activeClasses:{
+        type: Object,
+        required: false,
+        default() {
+            return {
+                text: "text-green-400",
+                border: "border-green-300"
+            };
+        }
+    }
 });
+
+provide("activeClasses", props.activeClasses);
 
 const app = getCurrentInstance();
 const $inertia = app ? app.appContext.config.globalProperties.$inertia : props.inertia;

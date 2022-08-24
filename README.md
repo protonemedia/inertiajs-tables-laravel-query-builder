@@ -269,17 +269,19 @@ The `Table` has some additional properties to tweak its front-end behaviour.
     :striped="true"
     :prevent-overlapping-requests="false"
     :input-debounce-ms="1000"
-    :preserve-scroll="true"
+    :prevent-scroll="true"
+    :active-classes="{text: 'text-red-500', border: 'border-red-300'}"
   />
 </template>
 ```
 
-| Property | Description | Default |
-| --- | --- | --- |
-| striped | Adds a *striped* layout to the table. | `false` |
-| preventOverlappingRequests | Cancels a previous visit on new user input to prevent an inconsistent state. | `true` |
-| inputDebounceMs | Number of ms to wait before refreshing the table on user input. | 350 |
-| preventScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behavior. You may also pass `table-top` to this property to scroll to the top of the table on new data. | false |
+| Property                   | Description                                                                                                                                                                                               | Default                                                |
+|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| striped                    | Adds a *striped* layout to the table.                                                                                                                                                                     | `false`                                                |
+| preventOverlappingRequests | Cancels a previous visit on new user input to prevent an inconsistent state.                                                                                                                              | `true`                                                 |
+| inputDebounceMs            | Number of ms to wait before refreshing the table on user input.                                                                                                                                           | 350                                                    |
+| preventScroll              | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behavior. You may also pass `table-top` to this property to scroll to the top of the table on new data. | false                                                  |
+| activeClasses              | Configures the CSS classes to apply on active elements like filters & column buttons and sorting indicator                                                                                                | {text: 'text-green-400', border: 'border-green-300' }  |
 
 #### Custom column cells
 
