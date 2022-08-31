@@ -7,9 +7,12 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Inertia\Response;
+use Illuminate\Support\Traits\Conditionable;
 
 class InertiaTable
 {
+    use Conditionable;
+    
     private string $name          = 'default';
     private string $pageName      = 'page';
     private array $perPageOptions = [15, 30, 50, 100];
