@@ -8,7 +8,7 @@
       :class="{'opacity-75': isVisiting}"
     >
       <div class="flex flex-row flex-wrap sm:flex-nowrap justify-start px-4 sm:px-0">
-        <div class="order-2 sm:order-1 mr-2 sm:mr-4">
+        <div v-if="queryBuilderProps.hasFilters" class="order-2 sm:order-1 mr-2 sm:mr-4">
           <slot
             name="tableFilter"
             :has-filters="queryBuilderProps.hasFilters"
