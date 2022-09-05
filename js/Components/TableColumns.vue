@@ -31,7 +31,7 @@
       class="min-w-max"
     >
       <div class="px-2">
-        <ul class="divide-y divide-gray-200">
+        <ul class="divide-y divide-gray-200 dark:divide-gray-500">
           <li
             v-for="(column, key) in props.columns"
             v-show="column.can_be_hidden"
@@ -39,14 +39,14 @@
             class="py-2 flex items-center justify-between"
           >
             <p
-              class="text-sm text-gray-900"
+              class="text-sm text-gray-900 dark:text-gray-100"
             >
               {{ column.label }}
             </p>
 
             <button
               type="button"
-              class="ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-blue-500"
+              class="ml-4 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-light-blue-500"
               :class="{
                 'bg-green-500': !column.hidden,
                 'bg-gray-200': column.hidden,

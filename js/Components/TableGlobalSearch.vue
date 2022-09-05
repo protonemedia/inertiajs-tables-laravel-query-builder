@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <input
-      class="block w-full pl-9 text-sm rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300"
+      class="block w-full pl-9 text-sm rounded-md shadow-sm focus:ring-indigo-500 focus:border-gray-500 border-gray-300 focus:ring-2 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-500"
       :placeholder="label"
       :value="value"
       type="text"
