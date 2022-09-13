@@ -10,7 +10,7 @@
         class="h-5 w-5"
         :class="{
           'text-gray-400': !hasEnabledFilters,
-          'text-green-400': hasEnabledFilters,
+          [activeClasses.text]: hasEnabledFilters,
         }"
         viewBox="0 0 20 20"
         fill="currentColor"
@@ -60,6 +60,7 @@
 
 <script setup>
 import ButtonWithDropdown from "./ButtonWithDropdown.vue";
+import { inject } from "vue";
 
 defineProps({
     hasEnabledFilters: {
@@ -77,5 +78,7 @@ defineProps({
         required: true,
     },
 });
-</script>
 
+const activeClasses = inject("activeClasses");
+
+</script>

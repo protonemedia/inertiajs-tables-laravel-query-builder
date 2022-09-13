@@ -10,7 +10,7 @@
         class="h-5 w-5"
         :class="{
           'text-gray-400': !hasHiddenColumns,
-          'text-green-400': hasHiddenColumns,
+          [activeClasses.text]: hasHiddenColumns,
         }"
         viewBox="0 0 20 20"
         fill="currentColor"
@@ -76,6 +76,7 @@
 
 <script setup>
 import ButtonWithDropdown from "./ButtonWithDropdown.vue";
+import { inject } from "vue";
 
 const props = defineProps({
     columns: {
@@ -93,4 +94,5 @@ const props = defineProps({
         required: true,
     },
 });
+const activeClasses = inject("activeClasses");
 </script>
