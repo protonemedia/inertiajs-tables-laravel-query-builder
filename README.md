@@ -100,7 +100,7 @@ Inertia::render('Page/Index')->table(function (InertiaTable $table) {
         options: $languages,
         label: 'Language',
         defaultValue: 'nl',
-        noFilterOption: true
+        noFilterOption: true,
         noFilterOptionLabel: 'All languages'
     );
 });
