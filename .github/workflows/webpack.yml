@@ -42,4 +42,4 @@ jobs:
         run: |
           cd app-webpack
           npm ci --ignore-scripts
-          npm run build
+          npm run prod
