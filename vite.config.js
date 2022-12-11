@@ -10,14 +10,11 @@ export default defineConfig({
         lib: {
             entry: resolve(__dirname, "js/main.js"),
             name: "Inertia.js Tables for Laravel Query Builder",
-            fileName: (format) => `inertiajs-tables-laravel-query-builder.${format}.js`
+            fileName: "inertiajs-tables-laravel-query-builder",
         },
         rollupOptions: {
             external: [
                 /^@inertiajs.*/,
-                /^@popperjs.*/,
-                /^lodash-es.*/,
-                "qs",
                 "vue"
             ],
             output: {
@@ -27,4 +24,4 @@ export default defineConfig({
             }
         }
     }
-})
+});

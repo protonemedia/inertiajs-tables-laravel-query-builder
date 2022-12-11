@@ -6,15 +6,15 @@
   "author": "Pascal Baljet <pascal@protone.media>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/inertiajs-tables-laravel-query-builder.umd.js",
-  "module": "./dist/inertiajs-tables-laravel-query-builder.es.js",
+  "main": "./dist/inertiajs-tables-laravel-query-builder.umd.cjs",
+  "module": "./dist/inertiajs-tables-laravel-query-builder.js",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/inertiajs-tables-laravel-query-builder.es.js",
-      "require": "./dist/inertiajs-tables-laravel-query-builder.umd.js"
+      "import": "./dist/inertiajs-tables-laravel-query-builder.js",
+      "require": "./dist/inertiajs-tables-laravel-query-builder.umd.cjs"
     }
   },
   "scripts": {
