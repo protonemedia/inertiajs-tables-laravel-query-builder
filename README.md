@@ -100,7 +100,7 @@ Inertia::render('Page/Index')->table(function (InertiaTable $table) {
         options: $languages,
         label: 'Language',
         defaultValue: 'nl',
-        noFilterOption: true
+        noFilterOption: true,
         noFilterOptionLabel: 'All languages'
     );
 });
@@ -275,7 +275,7 @@ The `Table` has some additional properties to tweak its front-end behaviour.
     :striped="true"
     :prevent-overlapping-requests="false"
     :input-debounce-ms="1000"
-    :prevent-scroll="true"
+    :preserve-scroll="true"
   />
 </template>
 ```
@@ -285,7 +285,7 @@ The `Table` has some additional properties to tweak its front-end behaviour.
 | striped | Adds a *striped* layout to the table. | `false` |
 | preventOverlappingRequests | Cancels a previous visit on new user input to prevent an inconsistent state. | `true` |
 | inputDebounceMs | Number of ms to wait before refreshing the table on user input. | 350 |
-| preventScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behavior. You may also pass `table-top` to this property to scroll to the top of the table on new data. | false |
+| preserveScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behavior. You may also pass `table-top` to this property to scroll to the top of the table on new data. | false |
 
 #### Custom column cells
 
