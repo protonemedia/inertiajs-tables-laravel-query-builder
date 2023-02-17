@@ -11,10 +11,10 @@ class Filter implements Arrayable
         public string $key,
         public string $label,
         public array $options,
-        public ?string $value = null,
         public bool $noFilterOption,
         public string $noFilterOptionLabel,
-        public string $type
+        public string $type,
+        public ?string $value = null,
     ) {
     }
 
