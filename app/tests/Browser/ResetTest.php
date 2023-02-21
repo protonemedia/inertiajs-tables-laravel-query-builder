@@ -18,6 +18,7 @@ class ResetTest extends DuskTestCase
                 ->get();
 
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 ->assertSeeIn('tr:first-child td:nth-child(2)', $users->get(0)->email)
                 ->assertMissing('@reset-table')
                 ->press('@columns-dropdown')
@@ -43,6 +44,7 @@ class ResetTest extends DuskTestCase
             $firstDutchUser = $users->firstWhere('language_code', 'nl');
 
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 ->assertSeeIn('tr:first-child td:nth-child(1)', $users->get(0)->name)
                 ->assertMissing('@reset-table')
                 ->press('@filters-dropdown')
@@ -69,6 +71,7 @@ class ResetTest extends DuskTestCase
                 ->get();
 
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 // First user
                 ->assertSeeIn('tr:first-child td:nth-child(1)', $users->get(0)->name)
                 ->assertMissing('@reset-table')
@@ -95,6 +98,7 @@ class ResetTest extends DuskTestCase
                 ->get();
 
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 // First user
                 ->assertSeeIn('tr:first-child td:nth-child(1)', $users->get(0)->name)
                 ->assertMissing('@reset-table')
@@ -120,6 +124,7 @@ class ResetTest extends DuskTestCase
             $usersByEmail = $users->sortBy->email->values();
 
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 // First user
                 ->assertSeeIn('tr:first-child td:nth-child(1)', $users->get(0)->name)
                 ->assertSeeIn('tr:last-child td:nth-child(1)', $users->get(9)->name)
@@ -149,6 +154,7 @@ class ResetTest extends DuskTestCase
 
             $browser
                 ->visit('/users/eloquent')
+                ->waitFor('table')
                 ->assertSeeIn('tr:first-child td:nth-child(1)', $users->get(0)->name)
                 ->assertSeeIn('tr:last-child td:nth-child(1)', $users->get(9)->name)
                 ->assertMissing('@reset-table')
