@@ -12,7 +12,7 @@ jobs:
         laravel: ["9", "10"]
         dependency-version: [prefer-lowest, prefer-stable]
 
-    name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
+    name: L${{ matrix.laravel}} - P${{ matrix.php }} - ${{ matrix.dependency-version }}
 
     steps:
       - name: Checkout code
@@ -55,7 +55,7 @@ jobs:
 
       - name: Downgrade to Laravel 9
         run: |
-          cp app
+          cd app
           rm composer.json
           mv composer-l9.json composer.json
         if: "matrix.laravel == '9'"
