@@ -9,7 +9,7 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.2, 8.1]
-        laravel: [9.*, 10.*]
+        laravel: ["9", "10"]
         dependency-version: [prefer-lowest, prefer-stable]
 
     name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
@@ -52,6 +52,13 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, mysql, mysqli, pdo_mysql
           coverage: none
+
+      - name: Downgrade to Laravel 9
+        run: |
+          cp app
+          rm composer.json
+          mv composer-l9.json composer.json
+        if: "matrix.laravel == '9'"
 
       - name: Prepare demo app
         run: |
