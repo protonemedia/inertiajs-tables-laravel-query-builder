@@ -5,7 +5,7 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "@protonemedia/inertiajs-tables-laravel-query-builder": "file:../protonemedia-inertiajs-tables-laravel-query-builder-2.1.0.tgz",
+        "@protonemedia/inertiajs-tables-laravel-query-builder": "file:../protonemedia-inertiajs-tables-laravel-query-builder-2.2.0.tgz",
         "@tailwindcss/forms": "^0.5.0",
         "@vitejs/plugin-vue": "^3.0",
         "autoprefixer": "^10.4.2",
