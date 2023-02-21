@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - "8.0"
+          - "8.1"
         node-version:
           - 16
 
