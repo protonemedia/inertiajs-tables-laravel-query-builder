@@ -8,7 +8,7 @@
       :class="{'opacity-75': isVisiting}"
     >
       <div class="flex flex-row flex-wrap sm:flex-nowrap justify-start px-4 sm:px-0">
-        <div class="order-2 sm:order-1 mr-2 sm:mr-4">
+        <div class="order-2 sm:order-1">
           <slot
             name="tableFilter"
             :has-filters="queryBuilderProps.hasFilters"
@@ -16,12 +16,14 @@
             :filters="queryBuilderProps.filters"
             :on-filter-change="changeFilterValue"
           >
-            <TableFilter
-              v-if="queryBuilderProps.hasFilters"
-              :has-enabled-filters="queryBuilderProps.hasEnabledFilters"
-              :filters="queryBuilderProps.filters"
-              :on-filter-change="changeFilterValue"
-            />
+          <div class="mr-2 sm:mr-4" 
+              v-if="queryBuilderProps.hasFilters">
+              <TableFilter
+                :has-enabled-filters="queryBuilderProps.hasEnabledFilters"
+                :filters="queryBuilderProps.filters"
+                :on-filter-change="changeFilterValue"
+              />
+          </div>
           </slot>
         </div>
 
