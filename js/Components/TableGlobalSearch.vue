@@ -27,10 +27,14 @@
 </template>
 
 <script setup>
+  import { getTranslations } from "../translations.js";
+
+const translations = getTranslations();
+
 defineProps({
     label: {
         type: String,
-        default: "Search...",
+        default: translations.search,
         required: false,
     },
 
