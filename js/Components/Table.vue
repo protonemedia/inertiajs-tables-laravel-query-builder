@@ -49,7 +49,7 @@
 
         <slot
           name="tableReset"
-          can-be-reset="canBeReset"
+          :can-be-reset="canBeReset"
           :on-click="resetQuery"
         >
           <div
