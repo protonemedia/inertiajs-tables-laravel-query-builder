@@ -208,6 +208,7 @@ import forEach from "lodash-es/forEach";
 import isEqual from "lodash-es/isEqual";
 import map from "lodash-es/map";
 import pickBy from "lodash-es/pickBy";
+import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
     inertia: {
@@ -604,9 +605,8 @@ function visit(url) {
         return;
     }
 
-    $inertia.get(
+    router.visit(
         url,
-        {},
         {
             replace: true,
             preserveState: true,
