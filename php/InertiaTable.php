@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Inertia\Response;
 use Illuminate\Support\Traits\Conditionable;
+use Inertia\Response;
 
 class InertiaTable
 {

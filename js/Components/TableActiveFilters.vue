@@ -13,7 +13,7 @@
           clip-rule="evenodd"
         />
       </svg>
-      <span class="text-gray-400 ml-1">{{ numFilters }} active <span v-text="numFilters === 1 ? 'filter' : 'filters'"></span>:</span>
+      <span class="text-gray-400 ml-1">{{ numFilters }} active <span v-text="numFilters === 1 ? 'filter' : 'filters'" />:</span>
     </div>
 
     <button
