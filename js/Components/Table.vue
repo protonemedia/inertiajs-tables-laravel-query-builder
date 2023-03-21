@@ -33,14 +33,14 @@
             name="tableGlobalSearch"
             :has-global-search="queryBuilderProps.globalSearch"
             :label="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.label : null"
-            :value="queryBuilderProps.globalSearch ? queryBuilderProps.globalSearch.value : null"
+            :value="queryBuilderData.globalSearch ? queryBuilderData.globalSearch.value : null"
             :on-change="changeGlobalSearchValue"
           >
             <TableGlobalSearch
               v-if="queryBuilderProps.globalSearch"
               class="flex-grow"
               :label="queryBuilderProps.globalSearch.label"
-              :value="queryBuilderProps.globalSearch.value"
+              :value="queryBuilderData.globalSearch.value"
               :on-change="changeGlobalSearchValue"
             />
           </slot>
@@ -102,7 +102,7 @@
       >
         <TableSearchRows
           v-if="queryBuilderProps.hasSearchInputsWithValue || forcedVisibleSearchInputs.length > 0"
-          :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
+          :search-inputs="queryBuilderData.searchInputsWithoutGlobal"
           :forced-visible-search-inputs="forcedVisibleSearchInputs"
           :on-change="changeSearchInputValue"
           :on-remove="disableSearchInput"
@@ -278,6 +278,8 @@ const $inertia = app ? app.appContext.config.globalProperties.$inertia : props.i
 
 const updates = ref(0);
 
+const preserveState = ref(true);
+
 const queryBuilderProps = computed(() => {
     let data = $inertia.page.props.queryBuilderProps
         ? $inertia.page.props.queryBuilderProps[props.name] || {}
@@ -430,6 +432,7 @@ function resetQuery() {
     queryBuilderData.value.sort = null;
     queryBuilderData.value.cursor = null;
     queryBuilderData.value.page = 1;
+    preserveState.value = false; // force reload
 }
 
 const debounceTimeouts = {};
@@ -599,7 +602,7 @@ function generateNewQueryString() {
 const isVisiting = ref(false);
 const visitCancelToken = ref(null);
 
-function visit(url) {
+function visit(url, preserveState = true) {
     if(!url) {
         return;
     }
@@ -609,7 +612,7 @@ function visit(url) {
         {},
         {
             replace: true,
-            preserveState: true,
+            preserveState: preserveState,
             preserveScroll: props.preserveScroll !== false,
             onBefore(){
                 isVisiting.value = true;
@@ -640,7 +643,9 @@ function visit(url) {
 }
 
 watch(queryBuilderData, () => {
-    visit(location.pathname + "?" +  generateNewQueryString());
+    let preserveStateVisit = preserveState.value;
+    preserveState.value = true; // reset preserveState
+    visit(location.pathname + "?" +  generateNewQueryString(), preserveStateVisit);
 }, { deep: true });
 
 const inertiaListener = () => {
