@@ -169,14 +169,14 @@
 
           <slot
             name="pagination"
-            :on-click="visit"
+            :on-click="visitPageFromUrl"
             :has-data="hasData"
             :meta="resourceMeta"
             :per-page-options="queryBuilderProps.perPageOptions"
             :on-per-page-change="onPerPageChange"
           >
             <Pagination
-              :on-click="visit"
+              :on-click="visitPageFromUrl"
               :has-data="hasData"
               :meta="resourceMeta"
               :per-page-options="queryBuilderProps.perPageOptions"
@@ -555,6 +555,20 @@ function dataForNewQueryString() {
     return queryData;
 }
 
+function visitPageFromUrl(url){
+    if(!url) {
+        return null;
+    }
+    
+    const pageName = $inertia.page.props.queryBuilderProps[props.name].pageName ?? 'page';
+    const page = new URL(url)?.searchParams?.get(pageName);
+    if(page !== null) {
+        queryBuilderData.value.page = page;
+    } else {
+        visit(url);
+    }
+}
+
 function generateNewQueryString() {
     const queryStringData = qs.parse(location.search.substring(1));
 
@@ -621,11 +635,6 @@ function visit(url) {
                 isVisiting.value = false;
             },
             onSuccess() {
-                if("queryBuilderProps" in $inertia.page.props){
-                    queryBuilderData.value.cursor = queryBuilderProps.value.cursor;
-                    queryBuilderData.value.page = queryBuilderProps.value.page;
-                }
-
                 if(props.preserveScroll === "table-top") {
                     const offset = -8;
                     const top = tableFieldset.value.getBoundingClientRect().top + window.pageYOffset + offset;
