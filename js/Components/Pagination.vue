@@ -140,10 +140,11 @@
                 "
                 :href="link.url"
                 :dusk="link.url ? `pagination-${link.label}` : null"
-                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700"
+                class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700"
                 :class="{
                   'cursor-not-allowed': !link.url,
                   'hover:bg-gray-50': link.url,
+                  'bg-white': !link.active,
                   'bg-gray-100': link.active,
                 }"
                 @click.prevent="onClick(link.url)"
