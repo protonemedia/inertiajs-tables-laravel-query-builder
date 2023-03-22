@@ -7,8 +7,11 @@
       class="min-w-0"
       :class="{'opacity-75': isVisiting}"
     >
-      <div class="flex flex-row flex-wrap sm:flex-nowrap justify-start px-4 sm:px-0">
-        <div class="order-2 sm:order-1 mr-2 sm:mr-4">
+      <div class="flex flex-row flex-wrap justify-start space-x-2 sm:flex-nowrap">
+        <div
+          v-if="queryBuilderProps.hasFilters"
+          class="order-2 sm:order-1"
+        >
           <slot
             name="tableFilter"
             :has-filters="queryBuilderProps.hasFilters"
@@ -17,7 +20,7 @@
             :on-filter-change="changeFilterValue"
           >
             <TableFilter
-              v-if="queryBuilderProps.hasFilters"
+
               :has-enabled-filters="queryBuilderProps.hasEnabledFilters"
               :filters="queryBuilderProps.filters"
               :on-filter-change="changeFilterValue"
@@ -27,7 +30,7 @@
 
         <div
           v-if="queryBuilderProps.globalSearch"
-          class="flex flex-row w-full sm:w-auto sm:flex-grow order-1 sm:order-2 mb-2 sm:mb-0 sm:mr-4"
+          class="flex flex-row order-1 w-full mb-2 sm:w-auto sm:flex-grow sm:order-2 sm:mb-0 "
         >
           <slot
             name="tableGlobalSearch"
@@ -54,7 +57,7 @@
         >
           <div
             v-if="canBeReset"
-            class="order-5 sm:order-3 sm:mr-4 ml-auto"
+            class="order-5 ml-auto sm:order-3"
           >
             <TableReset :on-click="resetQuery" />
           </div>
@@ -69,7 +72,7 @@
         >
           <TableAddSearchRow
             v-if="queryBuilderProps.hasSearchInputs"
-            class="order-3 sm:order-4 mr-2 sm:mr-4"
+            class="order-3 sm:order-4"
             :search-inputs="queryBuilderProps.searchInputsWithoutGlobal"
             :has-search-inputs-without-value="queryBuilderProps.hasSearchInputsWithoutValue"
             :on-add="showSearchInput"
@@ -85,7 +88,7 @@
         >
           <TableColumns
             v-if="queryBuilderProps.hasToggleableColumns"
-            class="order-4 mr-4 sm:mr-0 sm:order-5"
+            class="order-4 sm:order-5"
             :columns="queryBuilderProps.columns"
             :has-hidden-columns="queryBuilderProps.hasHiddenColumns"
             :on-change="changeColumnStatus"
@@ -121,7 +124,7 @@
       >
         <TableWrapper :class="{ 'mt-3': !hasOnlyData }">
           <slot name="table">
-            <table class="min-w-full divide-y divide-gray-200 bg-white">
+            <table class="min-w-full bg-white divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <slot
                   name="head"
@@ -129,7 +132,7 @@
                   :sort-by="sortBy"
                   :header="header"
                 >
-                  <tr class="font-medium text-xs uppercase text-left tracking-wider text-gray-500 py-3 px-6">
+                  <tr class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                     <HeaderCell
                       v-for="column in queryBuilderProps.columns"
                       :key="`table-${name}-header-${column.key}`"
@@ -159,7 +162,7 @@
                       v-for="column in queryBuilderProps.columns"
                       v-show="show(column.key)"
                       :key="`table-${name}-row-${key}-column-${column.key}`"
-                      class="text-sm py-4 px-6 text-gray-500 whitespace-nowrap"
+                      class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"
                     >
                       <slot
                         :name="`cell(${column.key})`"
@@ -286,7 +289,9 @@ const props = defineProps({
         default() {
             return {
                 text: "text-green-400",
-                border: "border-green-300"
+                border: "border-green-300",
+                focusRing: "focus:ring-indigo-500",
+                focusBorder: "focus:border-indigo-500"
             };
         }
     }
