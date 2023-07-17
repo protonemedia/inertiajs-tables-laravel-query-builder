@@ -6,6 +6,8 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![run-tests](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/actions/workflows/php.yml/badge.svg?branch=main)](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/actions/workflows/php.yml)
 
+## [⚠️ Don't start using this package for new projects ⚠️](https://github.com/protonemedia/inertiajs-tables-laravel-query-builder/issues/122)
+
 This package provides a *DataTables-like* experience for [Inertia.js](https://inertiajs.com/) with support for searching, filtering, sorting, toggling columns, and pagination. It generates URLs that can be consumed by Spatie's excellent [Laravel Query Builder](https://github.com/spatie/laravel-query-builder) package, with no additional logic needed. The components are styled with [Tailwind CSS 3.0](https://tailwindcss.com/), but it's fully customizable with slots. The data refresh logic is based on Inertia's [Ping CRM demo](https://github.com/inertiajs/pingcrm).
 
 [![Inertia.js Table for Laravel Query Builder](https://protone.media/storage/introducing-inertiajs-tables-a-datatables-like-package-for-laravel-query-builder.jpg)](https://user-images.githubusercontent.com/8403149/177773377-86c32d69-8f86-47e4-8063-ea227e480d10.mp4)
@@ -100,7 +102,7 @@ Inertia::render('Page/Index')->table(function (InertiaTable $table) {
         options: $languages,
         label: 'Language',
         defaultValue: 'nl',
-        noFilterOption: true
+        noFilterOption: true,
         noFilterOptionLabel: 'All languages'
     );
 });
@@ -275,7 +277,7 @@ The `Table` has some additional properties to tweak its front-end behaviour.
     :striped="true"
     :prevent-overlapping-requests="false"
     :input-debounce-ms="1000"
-    :prevent-scroll="true"
+    :preserve-scroll="true"
   />
 </template>
 ```
@@ -285,7 +287,7 @@ The `Table` has some additional properties to tweak its front-end behaviour.
 | striped | Adds a *striped* layout to the table. | `false` |
 | preventOverlappingRequests | Cancels a previous visit on new user input to prevent an inconsistent state. | `true` |
 | inputDebounceMs | Number of ms to wait before refreshing the table on user input. | 350 |
-| preventScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behavior. You may also pass `table-top` to this property to scroll to the top of the table on new data. | false |
+| preserveScroll | Configures the [Scroll preservation](https://inertiajs.com/scroll-management#scroll-preservation) behavior. You may also pass `table-top` to this property to scroll to the top of the table on new data. | false |
 
 #### Custom column cells
 

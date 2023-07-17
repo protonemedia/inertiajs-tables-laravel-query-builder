@@ -24,6 +24,7 @@ class TwoTablesTest extends DuskTestCase
                 ->get();
 
             $browser->visit('/two-tables/eloquent')
+                ->waitFor('table')
                 // Table with companies
                 ->within('@table-companies', function (Browser $browser) use ($companies) {
                     $browser
@@ -59,6 +60,7 @@ class TwoTablesTest extends DuskTestCase
                 ->get();
 
             $browser->visit('/two-tables/eloquent')
+                ->waitFor('table')
                 ->within('@table-companies', function (Browser $browser) use ($companies) {
                     $browser
                         ->click('@pagination-2')
@@ -100,6 +102,7 @@ class TwoTablesTest extends DuskTestCase
             $usersByEmail = $users->sortBy->email->values();
 
             $browser->visit('/two-tables/spatie')
+                ->waitFor('table')
                 ->within('@table-companies', function (Browser $browser) use ($companies) {
                     $browser
                         ->click('@sort-name')
@@ -141,6 +144,7 @@ class TwoTablesTest extends DuskTestCase
                 ->get();
 
             $browser->visit('/two-tables/spatie')
+                ->waitFor('table')
                 ->within('@table-companies', function (Browser $browser) use ($companies) {
                     $browser
                         ->click('@columns-dropdown')
@@ -183,6 +187,7 @@ class TwoTablesTest extends DuskTestCase
             ]);
 
             $browser->visit('/two-tables/spatie')
+                ->waitFor('table')
                 ->within('@table-companies', function (Browser $browser) use ($companies) {
                     $browser
                         ->click('@add-search-row-dropdown')

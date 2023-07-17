@@ -23,6 +23,7 @@ class FilterTest extends DuskTestCase
             $firstDutchUser = $users->firstWhere('language_code', 'nl');
 
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 ->assertSeeIn('tr:first-child td:nth-child(1)', $users->get(0)->name)
                 ->press('@filters-dropdown')
                 ->select('language_code', 'nl')

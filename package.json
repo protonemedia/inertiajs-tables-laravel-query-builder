@@ -1,6 +1,6 @@
 {
   "name": "@protonemedia/inertiajs-tables-laravel-query-builder",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Inertia.js Front-end Components for Spatie's Laravel Query Builder",
   "private": false,
   "author": "Pascal Baljet <pascal@protone.media>",
@@ -23,7 +23,7 @@
     "eslint": "./node_modules/.bin/eslint app/resources/js/ js/ --ext .js,.vue --fix"
   },
   "peerDependencies": {
-    "@inertiajs/inertia-vue3": "^0.6",
+    "@inertiajs/vue3": "^1.0.2",
     "vue": "^3.2.37"
   },
   "dependencies": {

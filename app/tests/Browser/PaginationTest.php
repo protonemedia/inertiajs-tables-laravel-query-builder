@@ -41,6 +41,7 @@ class PaginationTest extends DuskTestCase
             $browser
                 ->visit($url)
                 ->resize(1920, 1080)
+                ->waitFor('table')
                 ->assertMissing('@pagination-simple-previous')
                 ->assertMissing('@pagination-simple-next')
 
@@ -113,6 +114,7 @@ class PaginationTest extends DuskTestCase
             $browser
                 ->visit($url)
                 ->resize(1920, 1080)
+                ->waitFor('table')
 
                 ->assertMissing('@pagination-next')
                 ->assertMissing('@pagination-previous')

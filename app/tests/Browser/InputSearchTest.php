@@ -23,6 +23,7 @@ class InputSearchTest extends DuskTestCase
                 ->get();
 
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 // First user
                 ->assertSeeIn('tr:first-child td:nth-child(1)', $users->get(0)->name)
                 ->assertDontSee('Pascal Baljet')
