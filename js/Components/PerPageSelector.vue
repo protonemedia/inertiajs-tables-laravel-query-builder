@@ -3,7 +3,7 @@
     name="per_page"
     :dusk="dusk"
     :value="value"
-    class="block focus:ring-indigo-500 focus:border-indigo-500 min-w-max shadow-sm text-sm border-gray-300 rounded-md"
+    class="block focus:ring-indigo-500 focus:border-indigo-500 min-w-max shadow-sm text-sm border-gray-300 rounded-md dark:bg-gray-700 dark:text-gray-100 dark:border-gray-500"
     @change="onChange($event.target.value)"
   >
     <option
