@@ -12,9 +12,9 @@
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.9",
         "laravel/breeze": "^1.9",
-        "laravel/dusk": "^7.0",
-        "laravel/framework": "^10.0",
-        "laravel/sanctum": "^2.8|^3.0",
+        "laravel/dusk": "^6.24",
+        "laravel/framework": "^9.37",
+        "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.7",
         "protonemedia/inertiajs-tables-laravel-query-builder": "@dev",
         "spatie/laravel-query-builder": "^5.0",
@@ -26,7 +26,7 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0|^2.0"
+        "spatie/laravel-ignition": "^1.0"
     },
     "repositories": [
         {

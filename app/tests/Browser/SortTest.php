@@ -20,6 +20,7 @@ class SortTest extends DuskTestCase
             $usersByEmail = $users->sortBy->email->values();
 
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 // First user
                 ->assertSeeIn('tr:first-child td:nth-child(1)', $users->get(0)->name)
                 ->assertSeeIn('tr:last-child td:nth-child(1)', $users->get(9)->name)

@@ -14,6 +14,7 @@ class AutoFillTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 // Header names
                 ->assertSeeIn('th:nth-child(1)', Str::upper('Name'))
                 ->assertSeeIn('th:nth-child(2)', Str::upper('Email'))
@@ -35,6 +36,7 @@ class AutoFillTest extends DuskTestCase
             $users = User::orderBy('name')->limit(10)->get();
 
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 // First user
                 ->assertSeeIn('tr:first-child td:nth-child(1)', $users->first()->name)
                 ->assertSeeIn('tr:first-child td:nth-child(2)', $users->first()->email)

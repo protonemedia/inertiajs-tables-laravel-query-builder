@@ -18,6 +18,7 @@ class ColumnTest extends DuskTestCase
                 ->get();
 
             $browser->visit('/users/eloquent')
+                ->waitFor('table')
                 ->assertSeeIn('tr:first-child td:nth-child(2)', $users->get(0)->email)
                 ->press('@columns-dropdown')
                 ->press('@toggle-column-email')

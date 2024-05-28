@@ -13,6 +13,7 @@ class CustomTableTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/custom')
+                ->waitFor('table')
                 ->assertSeeIn('th:nth-child(1)', 'User')
                 ->assertSeeIn('tr:first-child td:nth-child(1)', User::first()->name)
                 ->assertPresent('@pagination-1');
